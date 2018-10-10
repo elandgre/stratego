@@ -54,7 +54,8 @@ class Board():
                 if curr_count >= self.starting_piece_counts[piece_name]:
                     return False
                 piece_counts[piece_name] += 1
-
+            else:
+                piece_counts[piece_name] = 1
         if player_number == 1:
             self.player1_piece_counts = piece_counts
             for j in range(10):
@@ -119,12 +120,12 @@ class Board():
                 if (winner,loser) != (-1,-1):
                     self.board[end[0]][end[1]] = winner
                     if loser > self.player2_offset:
-                        player2_piece_counts[self.piece_map[loser - self.player2_offset]] -= 1
+                        self.player2_piece_counts[self.piece_names[loser - self.player2_offset]] -= 1
                         if player == 1:
                             self.player2_piece_positions.remove(end)
                             self.player1_piece_positions.add(end)
                     else:
-                        player1_piece_counts[self.piece_map[loser]] -= 1
+                        self.player1_piece_counts[self.piece_names[loser]] -= 1
                         if player == 2:
                             self.player1.piece_positions.remove(end)
                             self.player1.piece_positions.add(end)
@@ -137,7 +138,7 @@ class Board():
                     return (my_piece,other_piece)
             else:
                 if player == 1:
-                    self.player2_piece_positions.add(end)
+                    self.player1_piece_positions.add(end)
                 else:
                     self.player2_piece_positions.add(end)
                 self.board[end[0]][end[1]] = my_piece
@@ -182,16 +183,15 @@ class Board():
 
         elif end[0] < 0 or end[0] > 9 or end[1] < 0 or end[1] > 9:
             return False
-
         if self.board[end[0]][end[1]] == self.piece_map['mountain']:
             return False
 
         if player == 1:
-            if end in self.player1_piece_positions:
+            if end in self.player1_piece_positions or not start in self.player1_piece_positions:
                 return False
             piece_num = self.board[start[0]][start[1]]
         else:
-            if end in self.player2_piece_positions:
+            if end in self.player2_piece_positions or not start in self.player2_piece_positions:
                 return False
             piece_num = self.board[start[0]][start[1]] - self.player2_offset
 
