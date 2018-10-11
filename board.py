@@ -179,11 +179,13 @@ class Board():
         assert player in [1,2]
         if start == end:
             return False
+
         elif start[0] < 0 or start[0] > 9 or start[1] < 0 or start[1] > 9:
             return False
 
         elif end[0] < 0 or end[0] > 9 or end[1] < 0 or end[1] > 9:
             return False
+
         if self.board[end[0]][end[1]] == self.piece_map['mountain']:
             return False
 
@@ -233,6 +235,47 @@ class Board():
             return 2
         else:
             return 0
+    def get_valid_scout_moves(start,player):
+        pass
+    def get_valid_piece_moves(start,player):
+        assert player in [1,2]
+        piece_num = self.board[start[0]][start[1]]
+        if player == 2:
+            piece_num -= self.player2_offset
+        piece_name = self.piece_names[piece_num]
+        if not piece_name in self.moveable_pieces:
+            return []
+        if piece_name == 'scout':
+            return self.get_valid_scout_moves()
+        else:
+            moves = []
+            directions = [(-1,0),(1,0),(0,-1,(0,1))]
+            for d in directions:
+                x,y = start[0] + d[0],start[1] + d[1]
+                if x >= 0 and x <= 9  and y >= 0 and y <= 9:
+                    if player == 1:
+                        if not (x,y) in self.player1_piece_positions and self.piece_names[self.board[x][y]] != 'mountain':
+                            moves.append(start,(x,y))
+                    else:
+                        if not (x,y) in self.player2_piece_positions and self.piece_names[self.board[x][y]] != 'mountain':
+                            moves.append(start,(x,y))
+            return moves
+    def get_valid_moves(player):
+        assert player in [1,2]
+        if player == 1:
+            positions = self.player1_piece_positions
+        else:
+            positions = self.player2_piece_postions
+        move_map = {}
+        for start in positions:
+            moves = self.get_valid_piece_moves(start,player)
+            for move in moves:
+                if move[0] in move_map:
+                    move_map[move[0]].append(move[1])
+                else:
+                    move_map[move[0]] = [move[1]]
+
+
 
     def __repr__(self):
         return repr(np.array(self.board))
