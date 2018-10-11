@@ -7,7 +7,8 @@ class Player:
     def get_starting_state(self):
         if not self.ai:
             return [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,12,12,12]
-
+        else:
+            return self.ai.get_starting_state()
     def get_move(self):
         if not self.ai:
             invalid_input = True
@@ -21,5 +22,7 @@ class Player:
                     print "where (x1,y1) is the starting position"
                     print "and (x2,y2) is the ending position"
             return (x1,y1),(x2,y2)
+        else:
+            return self.ai.get_move()
     def is_human(self):
         return not self.ai
