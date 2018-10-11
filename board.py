@@ -15,7 +15,7 @@ class Board():
         self.player2_piece_counts = {}
         self.starting_pieces_per_player = 40
         self.board = [[0 for i in range(10)] for i in range(10)]
-        self.add_mountains()
+        self.add_mountains(self.board)
         self.player2_offset = 100
         self.player1_initialized = False
         self.player2_initialized = False
@@ -24,12 +24,12 @@ class Board():
         self.player1_piece_positions = set()
         self.player2_piece_positions = set()
 
-    def add_mountains(self):
+    def add_mountains(self,board):
         rows = [4,5]
         columns = [2,3,6,7]
         for row in rows:
             for column in columns:
-                self.board[row][column] = self.piece_map['mountain']
+                board[row][column] = self.piece_map['mountain']
 
     def add_player(self,pieces,player_number):
         assert player_number in [1,2]
@@ -142,6 +142,7 @@ class Board():
                 else:
                     self.player2_piece_positions.add(end)
                 self.board[end[0]][end[1]] = my_piece
+                return (my_piece,other_piece)
         else:
             return False
 
@@ -208,6 +209,30 @@ class Board():
                 if d == (d1,d2):
                     return True
         return False
+
+    def get_player_view(self,player):
+        assert player in [1,2]
+        new_board = np.zeros((10,10),dtype=int)
+        if player == 1:
+            for x,y in self.player1_piece_positions:
+                new_board[x][y] = self.board[x][y]
+            for x,y in self.player2_piece_positions:
+                new_board[x][y] = 999
+            new_board = np.rot90(np.rot90(new_board))
+        else:
+            for x,y in self.player2_piece_positions:
+                new_board[x][y] = self.board[x][y] - self.player2_offset
+            for x,y in self.player1_piece_positions:
+                new_board[x][y] = 999
+        return new_board
+
+    def get_winner(self):
+        if self.player1_won:
+            return 1
+        elif self.player2_won:
+            return 2
+        else:
+            return 0
 
     def __repr__(self):
         return repr(np.array(self.board))
