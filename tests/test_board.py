@@ -1,4 +1,5 @@
 from game.board import *
+from game.constants import *
 
 def test_init():
     #simple test to make sure that the constructor runs
@@ -96,7 +97,7 @@ def test_simple_move():
 
     view_one = board.get_player_view(1)
     assert old_view_one[9-old[0]][9-old[1]] == view_one[9-new[0]][9-new[1]]
-    assert view_one[9-old[0]][9-old[1]] == 0
+    assert view_one[9-old[0]][9-old[1]] == piece_diplay_map[pieces.EMPTY.value]
 
     board.move(new, old, 1)
 
@@ -364,8 +365,8 @@ def test_p1_attacking_and_win():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[3][9] == 8
-    assert view_two[6][0] == HIDDEN
+    assert view_one[3][9] == piece_diplay_map[pieces.COLONEL.value]
+    assert view_two[6][0] == piece_diplay_map[pieces.HIDDEN.value]
 
 def test_p1_attacking_and_loose():
     board = Board()
@@ -397,8 +398,8 @@ def test_p1_attacking_and_loose():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[3][9] == HIDDEN
-    assert view_two[6][0] == 8
+    assert view_one[3][9] == piece_diplay_map[pieces.HIDDEN.value]
+    assert view_two[6][0] == piece_diplay_map[pieces.COLONEL.value]
 
 def test_p2_attacking_and_loose():
     board = Board()
@@ -436,8 +437,8 @@ def test_p2_attacking_and_loose():
     print(view_one)
     print(view_two)
 
-    assert view_one[6][9] == 8
-    assert view_two[3][0] == HIDDEN
+    assert view_one[6][9] == piece_diplay_map[pieces.COLONEL.value]
+    assert view_two[3][0] == piece_diplay_map[pieces.HIDDEN.value]
 
 def test_p2_attacking_and_win():
     board = Board()
@@ -472,8 +473,8 @@ def test_p2_attacking_and_win():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[6][9] == HIDDEN
-    assert view_two[3][0] == 8
+    assert view_one[6][9] == piece_diplay_map[pieces.HIDDEN.value]
+    assert view_two[3][0] == piece_diplay_map[pieces.COLONEL.value]
 
 def test_p1_attacking_and_tie():
     board = Board()
@@ -505,8 +506,8 @@ def test_p1_attacking_and_tie():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[3][9] == 0
-    assert view_two[6][0] == 0
+    assert view_one[3][9] == piece_diplay_map[pieces.EMPTY.value]
+    assert view_two[6][0] == piece_diplay_map[pieces.EMPTY.value]
 
 def test_p2_attacking_and_tie():
     board = Board()
@@ -541,8 +542,8 @@ def test_p2_attacking_and_tie():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[6][9] == 0
-    assert view_two[3][0] == 0
+    assert view_one[6][9] == piece_diplay_map[pieces.EMPTY.value]
+    assert view_two[3][0] == piece_diplay_map[pieces.EMPTY.value]
 
 def test_p1_minner_attack_bomb():
     board = Board()
@@ -574,8 +575,8 @@ def test_p1_minner_attack_bomb():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[3][9] == 3
-    assert view_two[6][0] == HIDDEN
+    assert view_one[3][9] == piece_diplay_map[pieces.MINER.value]
+    assert view_two[6][0] == piece_diplay_map[pieces.HIDDEN.value]
 
 def test_p2_minner_attack_bomb():
     board = Board()
@@ -609,8 +610,8 @@ def test_p2_minner_attack_bomb():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[6][0] == HIDDEN
-    assert view_two[3][9] == 3
+    assert view_one[6][0] == piece_diplay_map[pieces.HIDDEN.value]
+    assert view_two[3][9] == piece_diplay_map[pieces.MINER.value]
 
 def test_p1_spy_attack_marshal():
     board = Board()
@@ -642,8 +643,8 @@ def test_p1_spy_attack_marshal():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[3][9] == 1
-    assert view_two[6][0] == HIDDEN
+    assert view_one[3][9] == piece_diplay_map[pieces.SPY.value]
+    assert view_two[6][0] == piece_diplay_map[pieces.HIDDEN.value]
 
 def test_p2_spy_attack_marshal():
     board = Board()
@@ -677,8 +678,8 @@ def test_p2_spy_attack_marshal():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[6][0] == HIDDEN
-    assert view_two[3][9] == 1
+    assert view_one[6][0] == piece_diplay_map[pieces.HIDDEN.value]
+    assert view_two[3][9] == piece_diplay_map[pieces.SPY.value]
 
 def test_p1_marshal_attack_spy():
     board = Board()
@@ -710,8 +711,8 @@ def test_p1_marshal_attack_spy():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[3][9] == 10
-    assert view_two[6][0] == HIDDEN
+    assert view_one[3][9] == piece_diplay_map[pieces.MARSHAL.value]
+    assert view_two[6][0] == piece_diplay_map[pieces.HIDDEN.value]
 
 def test_p2_marshal_attack_spy():
     board = Board()
@@ -745,5 +746,5 @@ def test_p2_marshal_attack_spy():
     view_one = board.get_player_view(1)
     view_two = board.get_player_view(2)
 
-    assert view_one[6][0] == HIDDEN
-    assert view_two[3][9] == 10
+    assert view_one[6][0] == piece_diplay_map[pieces.HIDDEN.value]
+    assert view_two[3][9] == piece_diplay_map[pieces.MARSHAL.value]
