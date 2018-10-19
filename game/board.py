@@ -136,8 +136,8 @@ class Board():
                     else:
                         self.player1_piece_counts[self.piece_names[loser]] -= 1
                         if player == 2:
-                            self.player1.piece_positions.remove(end)
-                            self.player1.piece_positions.add(end)
+                            self.player1_piece_positions.remove(end)
+                            self.player1_piece_positions.add(end)
                     return (my_piece,other_piece)
                 else:
                     #wiki playes equal rank peices both get removed is this
