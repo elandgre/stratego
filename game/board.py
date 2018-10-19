@@ -1,4 +1,8 @@
 import numpy as np
+
+HIDDEN = 999
+MOUNTAIN = 111
+
 class Board():
     def __init__(self):
         self.piece_names = ['empty','spy','scout',
@@ -15,6 +19,7 @@ class Board():
         self.player2_piece_counts = {}
         self.starting_pieces_per_player = 40
         self.board = [[0 for i in range(10)] for i in range(10)]
+        # why pass in the board here?
         self.add_mountains(self.board)
         self.player2_offset = 100
         self.player1_initialized = False
@@ -35,13 +40,14 @@ class Board():
         assert player_number in [1,2]
         if player_number == 1 and self.player1_initialized:
             return False
-
+        # why do we want to force palyer one to be inited first
         elif self.player2_initialized:
             return False
 
         if len(pieces) != self.starting_pieces_per_player:
-            print(len(pieces))
+            #print("You passed in {} peices for player {}, thats too many".format(len(pieces), player_number))
             return False
+
         piece_counts = {}
         for piece in pieces:
             if piece <= 0 or piece >= len(self.piece_names) - 1:
@@ -219,13 +225,19 @@ class Board():
             for x,y in self.player1_piece_positions:
                 new_board[x][y] = self.board[x][y]
             for x,y in self.player2_piece_positions:
-                new_board[x][y] = 999
+                new_board[x][y] = HIDDEN
             new_board = np.rot90(np.rot90(new_board))
         else:
             for x,y in self.player2_piece_positions:
                 new_board[x][y] = self.board[x][y] - self.player2_offset
             for x,y in self.player1_piece_positions:
-                new_board[x][y] = 999
+                new_board[x][y] = HIDDEN
+        rows = [4,5]
+        columns = [2,3,6,7]
+        for i in rows:
+            for j in columns:
+                new_board[i][j] = MOUNTAIN
+
         return new_board
 
     def get_winner(self):
