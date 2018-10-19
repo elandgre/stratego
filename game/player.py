@@ -18,9 +18,9 @@ class Player:
                     (x1,y1),(x2,y2) = input()
                     invalid_input = False
                 except Exception as e:
-                    print "input must be of the form: (x1,y1),(x2,y2)"
-                    print "where (x1,y1) is the starting position"
-                    print "and (x2,y2) is the ending position"
+                    print "input must be of the form: (i1,j1),(i2,j2)"
+                    print "where (i1,j1) is the starting position"
+                    print "and (i2,j2) is the ending position"
             return (x1,y1),(x2,y2)
         else:
             return self.ai.get_move()
