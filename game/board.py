@@ -84,11 +84,11 @@ class Board():
     def attack(self,attacking,defending,player):
         assert player in [1,2]
         if player == 1:
-            my_piece = attacking - self.player2_offset
-            other_piece = defending
-        else:
             my_piece = attacking
             other_piece = defending - self.player2_offset
+        else:
+            my_piece = attacking - self.player2_offset
+            other_piece = defending
 
         if other_piece == self.piece_map['bomb']:
             if my_piece == self.piece_map['miner']:
@@ -137,7 +137,7 @@ class Board():
                         self.player1_piece_counts[self.piece_names[loser]] -= 1
                         if player == 2:
                             self.player1_piece_positions.remove(end)
-                            self.player1_piece_positions.add(end)
+                            self.player2_piece_positions.add(end)
                     return (my_piece,other_piece)
                 else:
                     #wiki playes equal rank peices both get removed is this
@@ -170,7 +170,7 @@ class Board():
             for i in range(1, abs(diff[0])):
                 if diff[0] < 0:
                     i = -i
-                if self.piece_names[self.board[x1 + i][y1]] != 'empty':
+                if self.piece_names[self.board[x1 + i][y1] % self.player2_offset ] != 'empty':
                 #cleaner yes?
                 #(x1+i,y1) in self.player1_piece_positions or (x1+i,y1) in self.player2_piece_positions or self.piece_maps[(x1+i,y1)] == 'mountain':
                     return False
@@ -178,7 +178,7 @@ class Board():
             for j in range(1, abs(diff[1])):
                 if diff[1] < 0:
                     j = -j
-                if self.piece_names[self.board[x1][y1+j]] != 'empty':
+                if self.piece_names[self.board[x1][y1+j] % self.player2_offset ] != 'empty':
                 #cleaner yes?
                 #(x1,y1+j) in self.player1_piece_positions or (x1,y1+j) in self.player2_piece_positions or self.piece_maps[(x1,y1+j)] == 'mountain':
                     return False
@@ -279,7 +279,7 @@ class Board():
                 else:
                     if not (x,y) in self.player2_piece_positions and self.piece_names[self.board[x][y]] != 'mountain':
                         moves.append((start,(x,y)))
-                if self.piece_names[self.board[x][y]] != 'empty':
+                if self.piece_names[self.board[x][y] % self.player2_offset] != 'empty':
                     jumping_over = True
                 x,y = start[0] + d[0],start[1] + d[1]
         return moves
