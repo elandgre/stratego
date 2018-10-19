@@ -140,6 +140,8 @@ class Board():
                             self.player1.piece_positions.add(end)
                     return (my_piece,other_piece)
                 else:
+                    #wiki playes equal rank peices both get removed is this
+                    #just a different variant
                     if player == 1:
                         self.player1_piece_positions.add(start)
                     else:
@@ -161,6 +163,7 @@ class Board():
         x1,y1 = start
         x2,y2 = end
         diff = x2-x1,y2-y1
+        #check its not tryna move to where it is now
         if diff[0] and diff[1]:
             return False
         elif diff[0]:
@@ -178,8 +181,11 @@ class Board():
         #check the last tile
         if self.board[end[0]][end[1]] == 'mountain':
             return False
+
         if player == 1 and end in self.player1_piece_positions:
             return False
+        #this forces the player 1 scout to never be able to attack
+        #the player two, but player 2 could still attack player 1
         elif end in self.player2_piece_positions:
             return False
         return True
@@ -213,6 +219,7 @@ class Board():
                 return False
 
         if self.piece_names[piece_num] == 'scout':
+            print('scout move')
             return self.is_valid_scout_move_helper(start,end,player)
 
         else:
@@ -255,7 +262,23 @@ class Board():
             return 0
 
     def get_valid_scout_moves(self, start,player):
-        pass
+        moves = []
+        directions = [(-1,0),(1,0),(0,-1,(0,1))]
+
+        for d in directions:
+            x,y = start[0] + d[0],start[1] + d[1]
+            jumping_over = False
+            while self.in_bounds(x, y) and not jumping_over:
+                if player == 1:
+                    if not (x,y) in self.player1_piece_positions and self.piece_names[self.board[x][y]] != 'mountain':
+                        moves.append((start,(x,y)))
+                else:
+                    if not (x,y) in self.player2_piece_positions and self.piece_names[self.board[x][y]] != 'mountain':
+                        moves.append((start,(x,y)))
+                if self.piece_names[self.board[x][y]] != 'empty':
+                    jumping_over = True
+                x,y = start[0] + d[0],start[1] + d[1]
+        return moves
 
     def get_valid_piece_moves(self, start,player):
         assert player in [1,2]
@@ -297,6 +320,9 @@ class Board():
                     move_map[move[0]] = [move[1]]
         return move_map
 
+
+    def in_bounds(self, x, y):
+        return x >= 0 and x <= 9  and y >= 0 and y <= 9
 
     def __repr__(self):
         return repr(np.array(self.board))
