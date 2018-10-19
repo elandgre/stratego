@@ -266,22 +266,39 @@ def test_basic_scout_not_diag():
 
     bad_move(board, old, new, 2)
 
-def test_scout_attacking():
+def test_basic_scout_not_jumping_player_2():
     board = Board()
     a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,11,12,12,12,12,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (6, 9)
-    new = (3, 9)
+    old = (3, 0)
+    new = (5, 0)
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+
+
+    old = (6, 0)
+    new = (4, 0)
+
+    bad_move(board, old, new, 2)
+
+def test_basic_scout_not_jumping_player_1():
+    board = Board()
+    a_start_state = [1,8,12,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,11,12,12,12,12,12,2]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+    old = (6, 0)
+    new = (4, 0)
 
     assert board.is_valid_move(old, new, 2)
     assert board.move(old, new, 2)
 
-    old = (3, 0)
-    new = (6, 0)
 
-    assert board.is_valid_move(old, new, 1)
-    assert board.move(old, new, 1)
+    old = (3, 0)
+    new = (5, 0)
+
+    bad_move(board, old, new, 1)
 
 
 
@@ -301,10 +318,159 @@ def test_all_valid_moves():
         for end in two_moves[end]:
             assert board.is_valid_move(start, end, 2)
 
-#TODO: test scout moves
-#TODO: test attacking moves
-#TODO: test special moves
+def _scout_attacking():
+    board = Board()
+    a_start_state = [1,8,12,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,11,12,12,12,12,12,2]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+    old = (6, 9)
+    new = (3, 9)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+
+    old = (3, 0)
+    new = (6, 0)
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+
+def test_p1_attacking_and_win():
+    board = Board()
+    a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,12,8,8,9,10,11,12,12,12,12,12,7]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+
+    old = (3, 0)
+    new = (4, 0)
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+
+    old = new
+    new = (5, 0)
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+
+    #attack!!!
+    old = new
+    new = (6, 0)
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+    #p1 should be victorious
+    #in both views the p1 peice should be in this spot
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
+
+    assert view_one[3][9] == 8
+    assert view_two[6][0] == HIDDEN
+
+def test_p1_attacking_and_loose():
+    board = Board()
+    a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,12,8,7,9,10,11,12,12,12,12,12,8]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+
+    old = (3, 0)
+    new = (4, 0)
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+
+    old = new
+    new = (5, 0)
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
 
 
+    #attack!!!
+    old = new
+    new = (6, 0)
 
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+    #p1 should be victorious
+    #in both views the p1 peice should be in this spot
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
 
+    assert view_one[3][9] == HIDDEN
+    assert view_two[6][0] == 8
+
+def test_p2_attacking_and_loose():
+    board = Board()
+    a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,12,8,8,9,10,11,12,12,12,12,12,7]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+
+    old = (6, 0)
+    new = (5, 0)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+
+    old = new
+    new = (4, 0)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
+    print(view_one)
+    print(view_two)
+
+    #attack!!!
+    old = new
+    new = (3, 0)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+    #p1 should be victorious
+    #in both views the p1 peice should be in this spot
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
+    print(view_one)
+    print(view_two)
+
+    assert view_one[6][9] == 8
+    assert view_two[3][0] == HIDDEN
+
+def test_p2_attacking_and_win():
+    board = Board()
+    a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,12,8,7,9,10,11,12,12,12,12,12,8]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+
+    old = (6, 0)
+    new = (5, 0)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+
+    old = new
+    new = (4, 0)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
+
+    #attack!!!
+    old = new
+    new = (3, 0)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+    #p1 should be victorious
+    #in both views the p1 peice should be in this spot
+
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
+
+    assert view_one[6][9] == HIDDEN
+    assert view_two[3][0] == 8
