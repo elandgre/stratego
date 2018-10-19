@@ -188,9 +188,7 @@ class Board():
 
         if player == 1 and end in self.player1_piece_positions:
             return False
-        #this forces the player 1 scout to never be able to attack
-        #the player two, but player 2 could still attack player 1
-        elif end in self.player2_piece_positions:
+        elif player == 2 and end in self.player2_piece_positions:
             return False
         return True
 
