@@ -543,3 +543,79 @@ def test_p2_attacking_and_tie():
 
     assert view_one[6][9] == 0
     assert view_two[3][0] == 0
+
+def test_p1_minner_attack_bomb():
+    board = Board()
+    a_start_state = [1,2,2,2,2,2,2,2,2,8,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,12,7,3,9,10,11,12,12,12,12,8,12]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+
+    old = (3, 0)
+    new = (4, 0)
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+
+    old = new
+    new = (5, 0)
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+
+
+    #attack!!!
+    old = new
+    new = (6, 0)
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+    #p1 should be victorious
+    #in both views the p1 peice should be in this spot
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
+
+    assert view_one[3][9] == 3
+    assert view_two[6][0] == HIDDEN
+
+def test_p2_minner_attack_bomb():
+    board = Board()
+    a_start_state = [1,2,2,2,2,2,2,2,2,8,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,12,7,3,9,10,11,12,12,12,12,8,12]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
+    print(view_one)
+    print(view_two)
+
+    old = (6, 9)
+    new = (5, 9)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+
+    old = new
+    new = (4, 9)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
+    print(view_one)
+    print(view_two)
+
+    #attack!!!
+    old = new
+    new = (3, 9)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+    #p1 should be victorious
+    #in both views the p1 peice should be in this spot
+
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
+
+    assert view_one[6][0] == HIDDEN
+    assert view_two[3][9] == 3
