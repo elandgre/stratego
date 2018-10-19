@@ -235,6 +235,36 @@ def test_move_bomb():
     new = (5, 0)
     bad_move(board, old, new, 2)
 
+def test_basic_scout_move():
+    board = Board()
+    a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,11,12,12,12,12,12,12]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+    old = (3, 0)
+    new = (5, 0)
+    print(board.get_player_view(1))
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+
+    old = (6, 9)
+    new = (4, 9)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+
+def test_basic_scout_not_diag():
+    board = Board()
+    a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,11,12,12,12,12,12,12]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+    old = (3, 0)
+    new = (5, 1)
+    bad_move(board, old, new, 1)
+
+    old = (6, 9)
+    new = (4, 8)
+
+    bad_move(board, old, new, 2)
 
 def test_all_valid_moves():
     board = Board()

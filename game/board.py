@@ -163,20 +163,24 @@ class Board():
         x1,y1 = start
         x2,y2 = end
         diff = x2-x1,y2-y1
-        #check its not tryna move to where it is now
+        #check its not tryna move diagonally
         if diff[0] and diff[1]:
             return False
         elif diff[0]:
-            for i in range(abs(diff[0])):
+            for i in range(1, abs(diff[0])):
                 if diff[0] < 0:
                     i = -i
-                if (x1+i,y1) in self.player1_piece_positions or (x1+i,y1) in self.player2_piece_positions or self.piece_maps[(x1+i,y1)] == 'mountain':
+                if self.piece_names[self.board[x1 + i][y1]] != 'empty':
+                #cleaner yes?
+                #(x1+i,y1) in self.player1_piece_positions or (x1+i,y1) in self.player2_piece_positions or self.piece_maps[(x1+i,y1)] == 'mountain':
                     return False
         else:
-            for j in range(abs(diff[1])):
+            for j in range(1, abs(diff[1])):
                 if diff[1] < 0:
                     j = -j
-                if (x1,y1+j) in self.player1_piece_positions or (x1,y1+j) in self.player2_piece_positions or self.piece_maps[(x1,y1+j)] == 'mountain':
+                if self.piece_names[self.board[x1][y1+j]] != 'empty':
+                #cleaner yes?
+                #(x1,y1+j) in self.player1_piece_positions or (x1,y1+j) in self.player2_piece_positions or self.piece_maps[(x1,y1+j)] == 'mountain':
                     return False
         #check the last tile
         if self.board[end[0]][end[1]] == 'mountain':
