@@ -253,6 +253,7 @@ class Board():
             return 2
         else:
             return 0
+
     def get_valid_scout_moves(self, start,player):
         pass
 

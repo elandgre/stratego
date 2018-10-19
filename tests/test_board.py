@@ -254,6 +254,7 @@ def test_all_valid_moves():
 
 #TODO: test scout moves
 #TODO: test attacking moves
+#TODO: test special moves
 
 
 
