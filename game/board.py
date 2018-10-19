@@ -117,35 +117,47 @@ class Board():
         assert self.player2_initialized
         print self.board
         if self.is_valid_move(start,end,player):
+            #peice values
             my_piece = self.board[start[0]][start[1]]
             other_piece = self.board[end[0]][end[1]]
+
+            #remove my peice from the board
             self.board[start[0]][start[1]] = self.piece_map["empty"]
             if player == 1:
                 self.player1_piece_positions.remove(start)
             else:
                 self.player2_piece_positions.remove(start)
+
+            #theres an attack
             if other_piece != self.piece_map["empty"]:
                 winner,loser = self.attack(my_piece,other_piece,player)
                 if (winner,loser) != (-1,-1):
+                    #not a tie
+                    #set winner
                     self.board[end[0]][end[1]] = winner
+                    #remove looser add winner
                     if loser > self.player2_offset:
+                        #player 1 wins
                         self.player2_piece_counts[self.piece_names[loser - self.player2_offset]] -= 1
                         if player == 1:
                             self.player2_piece_positions.remove(end)
                             self.player1_piece_positions.add(end)
                     else:
+                        #player 2 wins
                         self.player1_piece_counts[self.piece_names[loser]] -= 1
                         if player == 2:
                             self.player1_piece_positions.remove(end)
                             self.player2_piece_positions.add(end)
                     return (my_piece,other_piece)
                 else:
-                    #wiki playes equal rank peices both get removed is this
-                    #just a different variant
+                    #a tie
+                    self.board[end[0]][end[1]] = self.piece_map["empty"]
+                    #remove other players piece from the board
                     if player == 1:
-                        self.player1_piece_positions.add(start)
+                        self.player2_piece_positions.remove(end)
                     else:
-                        self.player2_piece_positions.add(start)
+                        self.player1_piece_positions.remove(end)
+
                     return (my_piece,other_piece)
             else:
                 if player == 1:
