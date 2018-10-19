@@ -81,6 +81,14 @@ def test_player_rel():
             assert view_two[9-i][9-j] == a_start_state[pos]
             assert view_one[9-i][9-j] == view_two[9-i][9-j]
 
+def test_not_win():
+    board = Board()
+    a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,12,12,12]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+
+    assert not board.get_winner()
+
 def test_simple_move():
     #tests simple valid move
     board = Board()
@@ -748,3 +756,33 @@ def test_p2_marshal_attack_spy():
 
     assert view_one[6][0] == piece_diplay_map[pieces.HIDDEN.value]
     assert view_two[3][9] == piece_diplay_map[pieces.MARSHAL.value]
+
+def test_p1_flag_cap():
+    board = Board()
+    a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,12,12,12,12,12,12,11]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+    old = (3, 0)
+    new = (6, 0)
+
+
+    assert board.is_valid_move(old, new, 1)
+    assert board.move(old, new, 1)
+    assert board.get_winner() == 1
+
+
+def test_p2_flag_cap():
+    board = Board()
+    a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,12,12,12,12,12,12,11]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+    old = (6, 9)
+    new = (3, 9)
+
+    assert board.is_valid_move(old, new, 2)
+    assert board.move(old, new, 2)
+    assert board.get_winner() == 2
+
+
+
+
