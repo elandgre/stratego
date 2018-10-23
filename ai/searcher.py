@@ -3,6 +3,6 @@ class Evaluator():
         raise NotImplementedError
         #do the stuff with the paramterss
 
-    def evaluate(self, state):
+    def search(self, state, legal_moves):
         return 0
 
