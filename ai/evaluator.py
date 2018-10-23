@@ -4,5 +4,5 @@ class Searcher():
         raise NotImplementedError
 
     def evaluate(self, state):
-        #do the search
+        #return the value of the state
         raise NotImplementedError

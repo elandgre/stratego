@@ -3,6 +3,7 @@ class Evaluator():
         raise NotImplementedError
         #do the stuff with the paramterss
 
-    def search(self, state, legal_moves):
-        return 0
+    def search(self, state, valid_moves, time, evaluator):
+    	#return best move given the search with evaluator
+        raise NotImplementedError
 
