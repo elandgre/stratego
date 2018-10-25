@@ -1,5 +1,5 @@
 
-class Searcher():
+class Evaluator():
     def __init__(self):
         raise NotImplementedError
 

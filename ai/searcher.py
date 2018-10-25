@@ -1,4 +1,4 @@
-class Evaluator():
+class Searcher():
     def __init__(self, parameters):
         raise NotImplementedError
         #do the stuff with the paramterss
