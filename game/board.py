@@ -1,6 +1,6 @@
 import numpy as np
 from utils.constants import *
-
+import copy
 
 class Board():
     def __init__(self):
@@ -18,6 +18,20 @@ class Board():
         self.player2_won = False
         self.player1_piece_positions = set()
         self.player2_piece_positions = set()
+
+    def copy(self):
+        new_board = Board()
+        new_board.player1_piece_counts = copy.deepcopy(self.player1_piece_counts)
+        new_board.player2_piece_counts = copy.deepcopy(self.player2_piece_counts)
+        new_board.board = copy.deepcopy(self.board)
+        new_board.player1_initialized = self.player1_initialized
+        new_board.player2_initialized = self.player2_initialized
+        new_board.player1_won = self.player1_won
+        new_board.player2_won = self.player2_won
+        new_board.player1_piece_positions = copy.deepcopy(self.player1_piece_positions)
+        new_board.player2_piece_positions = copy.deepcopy(self.player2_piece_positions)
+
+
 
     def add_mountains(self,board):
         rows = [4,5]
@@ -319,6 +333,8 @@ class Board():
 
     def get_valid_moves_list(self, player):
         assert player in [1,2]
+        if self.get_winner() : return []
+
         if player == 1:
             positions = self.player1_piece_positions
         else:
@@ -338,6 +354,8 @@ class Board():
 
     def get_valid_moves_map(self, player):
         assert player in [1,2]
+        if self.get_winner() : return {}
+
         if player == 1:
             positions = self.player1_piece_positions
         else:

@@ -132,3 +132,16 @@ class Engine:
             return self.board.get_valid_moves_list(1)
         else:
             return self.board.get_valid_moves_list(2)
+
+    def get_all_next_moves(self):
+        def next_moves(board):
+            return []
+
+    def get_p_percent_next_moves(self, p):
+        def next_moves(board):
+            return []
+
+
+
+
+
