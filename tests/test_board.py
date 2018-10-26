@@ -317,14 +317,14 @@ def test_all_valid_moves():
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
 
-    one_moves = board.get_valid_moves(1)
+    one_moves = board.get_valid_moves_map(1)
     for start in one_moves.keys():
-        for end in one_moves[end]:
+        for end in one_moves[start]:
             assert board.is_valid_move(start, end, 1)
 
-    two_moves = board.get_valid_moves(2)
+    two_moves = board.get_valid_moves_map(2)
     for start in two_moves.keys():
-        for end in two_moves[end]:
+        for end in two_moves[start]:
             assert board.is_valid_move(start, end, 2)
 
 def test_scout_attacking():

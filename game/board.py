@@ -1,27 +1,13 @@
 import numpy as np
-from constants import *
+from utils.constants import *
 
 
 class Board():
     def __init__(self):
-        self.starting_piece_counts = {
-            pieces.SPY.value: 1,
-            pieces.SCOUT.value: 8,
-            pieces.MINER.value: 5,
-            pieces.SERGEANT.value: 4,
-            pieces.LIEUTENANT.value: 4,
-            pieces.CAPTAIN.value: 4,
-            pieces.MAJOR.value: 3,
-            pieces.COLONEL.value: 2,
-            pieces.GENERAL.value: 1,
-            pieces.MARSHAL.value: 1,
-            pieces.FLAG.value: 1,
-            pieces.BOMB.value: 6
-        }
+
         self.moveable_pieces = {i for i in range(1,11)}
         self.player1_piece_counts = {}
         self.player2_piece_counts = {}
-        self.starting_pieces_per_player = 40
         self.board = [[0 for i in range(10)] for i in range(10)]
         # why pass in the board here?
         self.add_mountains(self.board)
@@ -48,7 +34,7 @@ class Board():
         elif self.player2_initialized:
             return False
 
-        if len(pieces) != self.starting_pieces_per_player:
+        if len(pieces) != starting_pieces_per_player:
             #print("You passed in {} pieces for player {}, thats too many".format(len(pieces), player_number))
             return False
 
@@ -57,11 +43,11 @@ class Board():
             if piece <= 0 or piece >= len(piece_names) - 1:
                 return False
             piece_name = piece_names[piece]
-            if not piece_name in self.starting_piece_counts:
+            if not piece_name in starting_piece_counts:
                 return False
             if piece_name in piece_counts:
                 curr_count = piece_counts[piece_name]
-                if curr_count >= self.starting_piece_counts[piece_name]:
+                if curr_count >= starting_piece_counts[piece_name]:
                     return False
                 piece_counts[piece_name] += 1
             else:
@@ -119,7 +105,6 @@ class Board():
     def move(self,start,end,player):
         assert self.player1_initialized
         assert self.player2_initialized
-        print self.board
         if self.is_valid_move(start,end,player):
             #peice values
             my_piece = self.board[start[0]][start[1]]
@@ -145,13 +130,13 @@ class Board():
                         self.player2_piece_counts[piece_names[loser - self.player2_offset]] -= 1
                         if player == 1:
                             self.player2_piece_positions.remove(end)
-                            self.player1_piece_positions.add(end)
+                        self.player1_piece_positions.add(end)
                     else:
                         #player 2 wins
                         self.player1_piece_counts[piece_names[loser]] -= 1
                         if player == 2:
                             self.player1_piece_positions.remove(end)
-                            self.player2_piece_positions.add(end)
+                        self.player2_piece_positions.add(end)
                     return (my_piece,other_piece)
                 else:
                     #a tie
@@ -161,7 +146,6 @@ class Board():
                         self.player2_piece_positions.remove(end)
                     else:
                         self.player1_piece_positions.remove(end)
-
                     return (my_piece,other_piece)
             else:
                 if player == 1:
@@ -173,6 +157,19 @@ class Board():
         else:
             print "invalid move"
             return False
+
+    def check_win(self):
+        has_move1 = False
+        has_move2 = False
+
+        for piece in mobile_pieces:
+            if(self.player1_piece_counts[piece] > 0): has_move1 = True
+            if(self.player2_piece_counts[piece] > 0): has_move2 = True
+
+        if not has_move1 : self.player2_won = True
+        if not has_move2 : self.player1_won = True
+
+
 
     def is_valid_scout_move_helper(self,start,end,player):
         assert player in [1,2]
@@ -225,7 +222,6 @@ class Board():
 
         if player == 1:
             if end in self.player1_piece_positions or not start in self.player1_piece_positions:
-                print(self.player1_piece_positions)
                 return False
             piece_num = self.board[start[0]][start[1]]
         else:
@@ -287,14 +283,14 @@ class Board():
             jumping_over = False
             while self.in_bounds(x, y) and not jumping_over:
                 if player == 1:
-                    if not (x,y) in self.player1_piece_positions and piece_names[self.board[x][y]] != pieces.MOUNTAIN.value:
+                    if (not (x,y) in self.player1_piece_positions) and piece_names[self.board[x][y] % self.player2_offset] != pieces.MOUNTAIN.value:
                         moves.append((start,(x,y)))
                 else:
-                    if not (x,y) in self.player2_piece_positions and piece_names[self.board[x][y]] != pieces.MOUNTAIN.value:
+                    if (not (x,y) in self.player2_piece_positions) and piece_names[self.board[x][y] % self.player2_offset] != pieces.MOUNTAIN.value:
                         moves.append((start,(x,y)))
                 if piece_names[self.board[x][y] % self.player2_offset] != pieces.EMPTY.value:
                     jumping_over = True
-                x,y = start[0] + d[0],start[1] + d[1]
+                x,y = x + d[0],y + d[1]
         return moves
 
     def get_valid_piece_moves(self, start,player):
@@ -303,10 +299,10 @@ class Board():
         if player == 2:
             piece_num -= self.player2_offset
         piece_name = piece_names[piece_num]
-        if not piece_name in self.moveable_pieces:
+        if not piece_num in self.moveable_pieces:
             return []
         if piece_name == 'scout':
-            return self.get_valid_scout_moves()
+            return self.get_valid_scout_moves(start, player)
         else:
             moves = []
             directions = [(-1,0),(1,0),(0,-1,(0,1))]
@@ -314,14 +310,33 @@ class Board():
                 x,y = start[0] + d[0],start[1] + d[1]
                 if x >= 0 and x <= 9  and y >= 0 and y <= 9:
                     if player == 1:
-                        if not (x,y) in self.player1_piece_positions and piece_names[self.board[x][y]] != pieces.MOUNTAIN.value:
+                        if not (x,y) in self.player1_piece_positions and piece_names[self.board[x][y] % self.player2_offset] != pieces.MOUNTAIN.value:
                             moves.append((start,(x,y)))
                     else:
-                        if not (x,y) in self.player2_piece_positions and piece_names[self.board[x][y]] != pieces.MOUNTAIN.value:
+                        if not (x,y) in self.player2_piece_positions and piece_names[self.board[x][y] % self.player2_offset] != pieces.MOUNTAIN.value:
                             moves.append((start,(x,y)))
             return moves
 
-    def get_valid_moves(self, player):
+    def get_valid_moves_list(self, player):
+        assert player in [1,2]
+        if player == 1:
+            positions = self.player1_piece_positions
+        else:
+            positions = self.player2_piece_positions
+        all_moves = []
+        for start in positions:
+
+            moves = self.get_valid_piece_moves(start,player)
+            all_moves.extend(moves)
+
+        if len(all_moves) == 0 :
+            if player == 1:
+                self.player2_won = True
+            else:
+                self.player1_won = True
+        return all_moves
+
+    def get_valid_moves_map(self, player):
         assert player in [1,2]
         if player == 1:
             positions = self.player1_piece_positions
@@ -335,6 +350,13 @@ class Board():
                     move_map[move[0]].append(move[1])
                 else:
                     move_map[move[0]] = [move[1]]
+
+        if move_map == {} :
+            if player == 1:
+                self.player2_won = True
+            else:
+                self.player1_won = True
+
         return move_map
 
 

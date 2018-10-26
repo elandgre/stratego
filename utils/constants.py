@@ -51,6 +51,19 @@ starting_piece_counts = {
     pieces.BOMB.value: 6
 }
 
+
+mobile_pieces = set([
+    pieces.SPY.value,
+    pieces.SCOUT.value,
+    pieces.MINER.value,
+    pieces.SERGEANT.value,
+    pieces.LIEUTENANT.value,
+    pieces.CAPTAIN.value,
+    pieces.MAJOR.value,
+    pieces.COLONEL.value,
+    pieces.GENERAL.value,
+    pieces.MARSHAL.value])
+
 starting_pieces_per_player = 40
 
 piece_map = {piece_names[i]:i for i in range(len(piece_names))}

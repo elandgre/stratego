@@ -1,11 +1,11 @@
 default:
-		python game/play.py	
+		python -m game.play
 
 stratego:
-		python game/play.py	
+		python -m game.play
 
 test:
 		python -m pytest
 
 clean:
-		find . -name '*.pyc' -delete 
+		find . -name '*.pyc' -delete

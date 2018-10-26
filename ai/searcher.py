@@ -1,6 +1,6 @@
-class Searcher():
+class Searcher(object):
     def __init__(self, parameters):
-        raise NotImplementedError
+        pass
         #do the stuff with the paramterss
 
     def search(self, state, valid_moves, time, evaluator):
