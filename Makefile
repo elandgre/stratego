@@ -1,11 +1,14 @@
 default:
-		python -m game.play
+	python -m game.play
+
+frontend:
+	python -m gui.gui
 
 stratego:
-		python -m game.play
+	python -m game.play
 
 test:
-		python -m pytest
+	python -m pytest
 
 clean:
-		find . -name '*.pyc' -delete
+	find . -name '*.pyc' -delete

@@ -2,8 +2,14 @@
 
 from tkinter import *
 import numpy as np
+from game.engine import Engine
+import utils.constants
 
 class GUI:
+
+	def callback(self):
+		print("fuck")
+
 	def __init__(self, master):
 		self.tiles = []
 		self.master = master
@@ -13,6 +19,12 @@ class GUI:
 		Grid.columnconfigure(master, 0, weight=1)
 		self.frame.grid(row=0, column=0)
 
+
+
+		e = Engine()
+		e.setup_board()
+		board = e.get_board(1)
+
 		# board setup
 		for i in range(10):
 			Grid.rowconfigure(self.frame, i, weight=1)
@@ -21,15 +33,13 @@ class GUI:
 				tile = Button(self.frame)
 				tile.config(height=40,
 							width=40,
-							bg="grey",
-							fg="black",
-							highlightcolor="green",
-							activebackground="blue")
+							command=self.callback,
+							text=board[i][j])
 				tile.grid(row=i, column=j)
 				self.tiles.append(tile)
 
 	def update(self):
-		pass # TODO
+		pass
 
 
 def main():
