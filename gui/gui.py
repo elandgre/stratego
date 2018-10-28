@@ -8,7 +8,6 @@ import game.constants
 class GUI:
 
 	def callback(self):
-		# temp
 		print("fuck")
 
 	def __init__(self, master):
@@ -23,20 +22,8 @@ class GUI:
 
 
 		e = Engine()
-		#e.run()
-		#count = 1
-		state1 = e.player1.get_starting_state()
-		#
-		if(e.board.add_player(state1,1)):
-			board = e.board.get_player_view(1)
-
-		state2 = e.player2.get_starting_state()
-		if(e.board.add_player(state2,2)):
-			board = e.board.get_player_view(2)
-		#added_player = e.board.add_player(state2, 2)
-		#print(added_player)
-    	#if added_player:
-    	#	board = e.board.get_player_view(2)
+		e.setup_board()
+		board = e.get_board(1)
 
 		# board setup
 		for i in range(10):
@@ -46,24 +33,8 @@ class GUI:
 				tile = Button(self.frame)
 				tile.config(height=40,
 							width=40,
-
-#<<<<<<< Updated upstream
 							command=self.callback,
-							text=board[i][j]) #change this line
-				#count += 1 #change this line
-#=======
-#							bg="grey",
-#							fg="black",
-#							highlightcolor="green",
-#							activebackground="blue",
-#							text = "")
-#				tile.bind("<Button>", self.callback)
-#>>>>>>> Stashed changes
-
-				#bg="grey",
-				#fg="black",
-				#highlightcolor="green",
-				#activebackground="blue")
+							text=board[i][j]) 
 				tile.grid(row=i, column=j)
 				self.tiles.append(tile)
 
