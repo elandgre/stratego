@@ -172,17 +172,6 @@ class Board():
             print "invalid move"
             return False
 
-    def check_win(self):
-        has_move1 = False
-        has_move2 = False
-
-        for piece in mobile_pieces:
-            if(self.player1_piece_counts[piece] > 0): has_move1 = True
-            if(self.player2_piece_counts[piece] > 0): has_move2 = True
-
-        if not has_move1 : self.player2_won = True
-        if not has_move2 : self.player1_won = True
-
 
 
     def is_valid_scout_move_helper(self,start,end,player):
@@ -280,7 +269,35 @@ class Board():
 
         return new_board
 
+    def get_full_view(self):
+        new_board = np.zeros((10,10),dtype=int)
+        for x,y in self.player1_piece_positions:
+            new_board[x][y] = piece_diplay_map[piece_names[self.board[x][y]]]
+
+        #new_board = np.rot90(np.rot90(new_board))
+        for x,y in self.player2_piece_positions:
+            new_board[x][y] = piece_diplay_map[piece_names[self.board[x][y] - self.player2_offset]]
+
+        rows = [4,5]
+        columns = [2,3,6,7]
+        for i in rows:
+            for j in columns:
+                new_board[i][j] = piece_diplay_map[pieces.MOUNTAIN.value]
+
+        return new_board
+
+    def _check_win(self):
+        has_move1 = False
+        has_move2 = False
+
+        has_move1 = ([] != self.get_valid_moves_list(1))
+        has_move2 = ([] != self.get_valid_moves_list(2))
+
+        if not has_move1 : self.player2_won = True
+        if not has_move2 : self.player1_won = True
+
     def get_winner(self):
+        self._check_win()
         if self.player1_won:
             return 1
         elif self.player2_won:
@@ -333,7 +350,6 @@ class Board():
 
     def get_valid_moves_list(self, player):
         assert player in [1,2]
-        if self.get_winner() : return []
 
         if player == 1:
             positions = self.player1_piece_positions
@@ -344,12 +360,6 @@ class Board():
 
             moves = self.get_valid_piece_moves(start,player)
             all_moves.extend(moves)
-
-        if len(all_moves) == 0 :
-            if player == 1:
-                self.player2_won = True
-            else:
-                self.player1_won = True
         return all_moves
 
     def get_valid_moves_map(self, player):
@@ -369,11 +379,6 @@ class Board():
                 else:
                     move_map[move[0]] = [move[1]]
 
-        if move_map == {} :
-            if player == 1:
-                self.player2_won = True
-            else:
-                self.player1_won = True
 
         return move_map
 

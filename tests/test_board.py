@@ -1,5 +1,5 @@
 from game.board import *
-from game.constants import *
+from utils.constants import *
 
 def test_init():
     #simple test to make sure that the constructor runs
@@ -784,5 +784,12 @@ def test_p2_flag_cap():
     assert board.get_winner() == 2
 
 
+def test_get_full_board():
+    board = Board()
+    a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,12,12,12,12,12,12,11]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
 
+
+    print(board.get_full_view())
 
