@@ -66,7 +66,7 @@ class Engine:
 
         return BasicAI(self, time.time(), TIME_PER_MOVE, starter, evaluator, searcher )
 
-    def run(self):
+    def setup_board(self):
         invalid_state = True
         while invalid_state:
             states = self.player1.get_starting_state()
@@ -81,43 +81,56 @@ class Engine:
                 invalid_state = False
             else:
                 print("invalid list of starting states")
+
+    def get_board(self, player):
+        return self.board.get_player_view(player)
+
+    def make_move(self, player1_turn):
+        self.player1_turn = player1_turn
+        invalid_move = True
+        if self.player1_turn:
+            if self.player1.is_human():
+                print(self.board.get_player_view(1))
+        else:
+            if self.player2.is_human():
+                print(self.board.get_player_view(2))
+        while invalid_move:
+            if self.player1_turn:
+                print("player 1")
+                start,end = self.player1.get_move()
+                if(start == None and end == None):
+                    print "empty"
+                    return self.player1_turn
+                if self.player1.is_human():
+                    start = start[0],9-start[1]
+                    end = end[0],9-end[1]
+
+                if self.board.move(start,end,1):
+                    self.player1_turn = False
+                    invalid_move = False
+                return self.player1_turn
+            else:
+                print("player 2")
+                start,end = self.player2.get_move()
+                if(start == None and end == None):
+                    print "empty"
+                    return self.player1_turn
+                    break
+                if(self.player2.is_human()) :
+                    start = 9-start[0],start[1]
+                    end = 9-end[0],end[1]
+
+
+                if self.board.move(start,end,2):
+                    self.player1_turn = True
+                    invalid_move = False
+                return self.player1_turn
+
+    def run(self):
+        self.setup_board()
         self.player1_turn = True
         while not self.board.get_winner():
-            invalid_move = True
-            if self.player1_turn:
-                if self.player1.is_human():
-                    print(self.board.get_player_view(1))
-            else:
-                if self.player2.is_human():
-                    print(self.board.get_player_view(2))
-            while invalid_move:
-                if self.player1_turn:
-                    print("player 1")
-                    start,end = self.player1.get_move()
-                    if(start == None and end == None):
-                        print "empty"
-                        break
-                    if self.player1.is_human():
-                        start = start[0],9-start[1]
-                        end = end[0],9-end[1]
-
-                    if self.board.move(start,end,1):
-                        self.player1_turn = False
-                        invalid_move = False
-                else:
-                    print("player 2")
-                    start,end = self.player2.get_move()
-                    if(start == None and end == None):
-                        print "empty"
-                        break
-                    if(self.player2.is_human()) :
-                        start = 9-start[0],start[1]
-                        end = 9-end[0],end[1]
-
-
-                    if self.board.move(start,end,2):
-                        self.player1_turn = True
-                        invalid_move = False
+            self.player1_turn = self.make_move(self.player1_turn)
             self.board.check_win()
         return self.board.get_winner()
 
