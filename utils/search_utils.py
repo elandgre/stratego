@@ -1,7 +1,7 @@
 def minimax(player, state, alpha, beta, depth, limit, next_states, evaluator):
     if(depth == limit): return evaluator(state, player)
     else:
-        children = next_states(state)
+        children = next_states(state, player)
         if(children == []): return evaluator(state, player)
         else:
             if(player == 1):

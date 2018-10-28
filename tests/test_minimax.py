@@ -10,24 +10,47 @@ def eval_func(d):
         return d[state]
     return f
 
+basic_next_s = next_states_func({
+    'a' : ['b', 'c'],
+    'b' : ['d', 'e'],
+    'c' : ['f', 'g'],
+    'd' : ['h', 'i'],
+    'e' : ['j', 'k'],
+    'f' : ['l', 'm'],
+    'g' : ['n', 'o'],
+    'h' : [],
+    'i' : [],
+    'j' : [],
+    'k' : [],
+    'l' : [],
+    'm' : [],
+    'n' : [],
+    'o' : []
+})
+
+basic_eval_f = eval_func({
+    'a' : 0,
+    'b' : 2,
+    'c' : 1,
+    'd' : 4,
+    'e' : 2,
+    'f' : 2,
+    'g' : 2,
+    'h' : 5,
+    'i' : 1,
+    'j' : 1,
+    'k' : 1,
+    'l' : 1,
+    'm' : 1,
+    'n' : 0,
+    'o' : 0
+})
+
 def test_0_limit():
-    next_s = next_states_func({
-        'a' : ['b', 'c', 'd'],
-        'b' : ['e', 'f'],
-        'c' : ['f'],
-        'd' : ['e'],
-        'e' : [],
-        'f' : ['g']
-        })
+    assert 0 == minimax_search('a', 0, basic_next_s, basic_eval_f, 0)
 
-    eval_f = eval_func({
-        'a' : 5,
-        'b' : 4,
-        'c' : 3,
-        'd' : 4,
-        'e' : 3,
-        'f' : 1,
-        'g' : 0
-        })
+def test_goal():
+    assert 5 == minimax_search('h', 2, basic_next_s, basic_eval_f, 0)
 
-    minimax_search('a', 0, next_s, eval_f, 0)
+def test_full():
+    assert 1 == minimax_search('a', 3, basic_next_s, basic_eval_f, 0)
