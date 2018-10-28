@@ -3,7 +3,7 @@
 from tkinter import *
 import numpy as np
 from game.engine import Engine
-import game.constants
+import utils.constants
 
 class GUI:
 
@@ -34,7 +34,7 @@ class GUI:
 				tile.config(height=40,
 							width=40,
 							command=self.callback,
-							text=board[i][j]) 
+							text=board[i][j])
 				tile.grid(row=i, column=j)
 				self.tiles.append(tile)
 
