@@ -10,6 +10,7 @@ class Engine:
     def __init__(self):
         self.player1 = None
         self.player2 = None
+
         if player1_config[Settings.AI.value]:
             #init the ai for player one
             self.player1 = Player(self, self._setup_ai(player1_config))
@@ -23,7 +24,7 @@ class Engine:
         else:
             self.player2 = Player(self)
 
-
+        self.num_moves = 0
         self.board = Board()
         self.player1_turn = True
 
@@ -102,6 +103,7 @@ class Engine:
                         end = end[0],9-end[1]
 
                     if self.board.move(start,end,1):
+                        self.num_moves += 1
                         self.player1_turn = False
                         invalid_move = False
                 else:
@@ -116,9 +118,10 @@ class Engine:
 
 
                     if self.board.move(start,end,2):
+                        self.num_moves += 1
                         self.player1_turn = True
                         invalid_move = False
-            self.board.check_win()
+
         return self.board.get_winner()
 
     def get_state(self):
@@ -132,6 +135,9 @@ class Engine:
             return self.board.get_valid_moves_list(1)
         else:
             return self.board.get_valid_moves_list(2)
+
+    def get_num_moves(self):
+        return self.num_moves
 
     def get_all_next_moves(self):
         def next_moves(board):
