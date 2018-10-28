@@ -360,12 +360,6 @@ class Board():
 
             moves = self.get_valid_piece_moves(start,player)
             all_moves.extend(moves)
-
-        if len(all_moves) == 0 :
-            if player == 1:
-                self.player2_won = True
-            else:
-                self.player1_won = True
         return all_moves
 
     def get_valid_moves_map(self, player):
@@ -385,11 +379,6 @@ class Board():
                 else:
                     move_map[move[0]] = [move[1]]
 
-        if move_map == {} :
-            if player == 1:
-                self.player2_won = True
-            else:
-                self.player1_won = True
 
         return move_map
 
