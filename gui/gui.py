@@ -26,9 +26,13 @@ class GUI:
 		#e.run()
 		#count = 1
 		state1 = e.player1.get_starting_state()
-		#state2 = e.player2.get_starting_state()
+		#
 		if(e.board.add_player(state1,1)):
 			board = e.board.get_player_view(1)
+
+		state2 = e.player2.get_starting_state()
+		if(e.board.add_player(state2,2)):
+			board = e.board.get_player_view(2)
 		#added_player = e.board.add_player(state2, 2)
 		#print(added_player)
     	#if added_player:
