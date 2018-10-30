@@ -392,25 +392,27 @@ class Board():
 
         return move_map
 
-    def all_moved_peice_positions(self, player):
+    def all_moved_peice_positions(self, player, perspective):
         #TODO: returns set of the peices of the oponent which have been moved
-        #in the players perspective
-        pass
+        #in the perspective
+        return set()
 
-    def all_players_peice_positions(self, player):
+    def all_players_peice_positions(self, player, perspective):
         #TODO: gets set of all the players of the player
         #in the players perspective
-        pass
+        return set()
+
+    def get_players_revealed_peice_positions(self, player, perspective):
+        #TODO: gets set of all the players of the player
+        #in the players perspective
+        return set()
+
 
     def get_piece_at_position(self, pos, player):
-        #TODO: return the peice name of the piece at the position in the players
+        #TODO: return the peice name of the piece at the position in the
         #perspective
-        pass
+        return ''
 
-    def get_players_revealed_peice_positions(self, player):
-        #TODO: gets set of all the players of the player
-        #in the players perspective
-        pass
 
     def in_bounds(self, x, y):
         return x >= 0 and x <= 9  and y >= 0 and y <= 9

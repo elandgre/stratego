@@ -181,31 +181,43 @@ class Engine:
         return self.num_moves < 2
 
     def get_oponents_peices(self):
-        #TODO: set of PIECE POSITION
-        return set()
+        if self.player1_turn:
+            return self.board.all_players_peice_positions(2, 1)
+        else:
+            return self.board.all_players_peice_positions(1, 2)
 
     def get_my_peices(self):
-        #set of PIECE POSITION
         #may not be needed
-        return set()
+        if self.player1_turn:
+            return self.board.all_players_peice_positions(1, 1)
+        else:
+            return self.board.all_players_peice_positions(2, 2)
 
     def get_oponents_moved_peices(self):
-        #TODO: set of PIECE POSITION
-        return set()
+        if self.player1_turn:
+            return self.board.all_moved_peice_positions(2, 1)
+        else:
+            return self.board.all_moved_peice_positions(1, 2)
 
     def get_my_moved_peices(self):
-        #set of PIECE POSITION
         #may not be needed
-        return set()
+        if self.player1_turn:
+            return self.board.all_moved_peice_positions(1, 1)
+        else:
+            return self.board.all_moved_peice_positions(2, 2)
 
     def get_oponents_revealed_peices(self):
-        #TODO: set of PIECE POSITION revealed
-        return set()
+        if self.player1_turn:
+            return self.board.get_players_revealed_peice_positions(2, 1)
+        else:
+            return self.board.get_players_revealed_peice_positions(1, 2)
 
     def get_my_revealed_peices(self):
-        #set of PIECE POSITION revealed
         #may not be needed
-        return set()
+        if self.player1_turn:
+            return self.board.get_players_revealed_peice_positions(1, 1)
+        else:
+            return self.board.get_players_revealed_peice_positions(2, 2)
 
     def get_peice_at(self, pos):
         if self.player1_turn:
