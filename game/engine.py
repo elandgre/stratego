@@ -152,30 +152,40 @@ class Engine:
         return self.num_moves
 
     def is_first_move(self):
-        pass
+        return self.num_moves < 2
 
     def get_oponents_peices(self):
+        #TODO: set of PIECE POSITION
         pass
 
     def get_my_peices(self):
+        #set of PIECE POSITION
         #may not be needed
         pass
 
     def get_oponents_moved_peices(self):
+        #TODO: set of PIECE POSITION
         pass
 
     def get_my_moved_peices(self):
+        #set of PIECE POSITION
         #may not be needed
         pass
 
+    def get_peice_at(self, pos):
+        if self.player1_turn:
+            return self.board.get_piece_at_position(pos, 1)
+        else:
+            return self.board.get_piece_at_position(pos, 2)
 
-    def get_all_next_moves(self):
-        def next_moves(board):
-            return []
 
-    def get_p_percent_next_moves(self, p):
-        def next_moves(board):
-            return []
+#    def get_all_next_moves(self):
+#        def next_moves(board):
+#            return []
+
+#    def get_p_percent_next_moves(self, p):
+#        def next_moves(board):
+#            return []
 
 
 
