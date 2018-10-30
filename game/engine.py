@@ -172,11 +172,21 @@ class Engine:
         #may not be needed
         pass
 
+    def get_oponents_revealed_peices(self):
+        #TODO: set of PIECE POSITION revealed
+        pass
+
+    def get_my_revealed_peices(self):
+        #set of PIECE POSITION revealed
+        #may not be needed
+        pass
+
     def get_peice_at(self, pos):
         if self.player1_turn:
             return self.board.get_piece_at_position(pos, 1)
         else:
             return self.board.get_piece_at_position(pos, 2)
+
 
 
 #    def get_all_next_moves(self):

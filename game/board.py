@@ -23,6 +23,9 @@ class Board():
         self.player1_moved_pieces = set()
         self.player2_moved_pieces = set()
 
+        self.player1_revealed_pieces = set()
+        self.player2_revealed_pieces = set()
+
 
     def copy(self):
         new_board = Board()
@@ -402,6 +405,11 @@ class Board():
     def get_piece_at_position(self, pos, player):
         #TODO: return the peice name of the piece at the position in the players
         #perspective
+        pass
+
+    def get_players_revealed_peice_positions(self, player):
+        #TODO: gets set of all the players of the player
+        #in the players perspective
         pass
 
     def in_bounds(self, x, y):
