@@ -1,43 +1,18 @@
 from ai import AI
+from game.config import *
+from utils.constants import *
 
-
-class ReachableParameters(Enum):
-    INITIAL_MOVE = 'initial' # 0 - 9
-    ATTACKING_UNMOVED = 'attack unmoved' # 10 -19
-    ATTACKING_WEAKER = 'attacking weaker' #20-29
-    WALK_TO_OTHER_SIDE = 'walk to side of a peice? or other side of the board' #30 -39
-    MOVE_TO_RIGHT = 'move the price to the right' # 40 - 49
-    MOVE_TO_OWN_SIDE = 'move to our side of the board'# 50 - 59
-    MOVE_TO_LEFT = 'move to the left' # 60 - 69
-    ATTACK_UNKNOWN_MOVED = 'attack an unkown peice that has moved' # 70-79
-    MOVE_AROUND_LAKE = 'move around the lake' # 80 - 89
-    MOVE_ALONG_WALL = 'move along the outer walls of the board'# 90 - 99
-    RANDOM_MOVE = 'make a random move' # 100 - 109
-
-paramStart = {
-    ReachableParameters.INITIAL_MOVE.value : 0,
-    ReachableParameters.ATTACKING_UNMOVED.value : 10,
-    ReachableParameters.ATTACKING_WEAKER.value : 20,
-    ReachableParameters.WALK_TO_OTHER_SIDE.value : 30,
-    ReachableParameters.MOVE_TO_RIGHT.value : 40,
-    ReachableParameters.MOVE_TO_OWN_SIDE.value: 50,
-    ReachableParameters.MOVE_TO_LEFT.value : 60,
-    ReachableParameters.ATTACK_UNKNOWN_MOVED.value: 70,
-    ReachableParameters.MOVE_AROUND_LAKE.value : 80,
-    ReachableParameters.MOVE_ALONG_WALL : 90,
-    ReachableParameters.RANDOM_MOVE : 100
-}
-
-def get_param_index(param, peice):
-    return paramStart[param] + piece_map[peice] - 1
 
 class ReachableAI(AI):
     def __init__(self,engine,start_time,time_per_move,starter,params):
-        super(BasicAI, self).__init__(engine,start_time,time_per_move, starter)
+        super(ReachableAI, self).__init__(engine,start_time,time_per_move, starter)
         self.parameters = params
 
     def get_starting_state(self):
         return self.starter.start()
+
+    def _get_param_index(self, param, peice):
+        return paramStart[param] + piece_map[peice] - 1
 
     def get_move(self):
         state = self.engine.get_state()
@@ -46,7 +21,7 @@ class ReachableAI(AI):
 
         other_pieces = self.engine.get_oponents_peices()
         other_moved_peices = self.engine.get_oponents_moved_peices()
-        revealed_peices = self.engin.get_oponents_revealed_peices()
+        revealed_peices = self.engine.get_oponents_revealed_peices()
         #appaently this does set minus in python
         other_unmoved_peices = other_pieces - other_moved_peices
         other_unknown_pieces = other_pieces - revealed_peices
@@ -57,7 +32,7 @@ class ReachableAI(AI):
         for move in valid_moves:
             start, end = move
             piece = self.engine.get_peice_at(start)
-            val = append(eval_move(move, piece, other_pieces, other_moved_peices, other_unmoved_peices, other_unknown_pieces))
+            val = self.eval_move(move, piece, other_pieces, other_moved_peices, other_unmoved_peices, other_unknown_pieces)
             if(val > max_val):
                 max_val = val
                 max_move = move
@@ -67,32 +42,32 @@ class ReachableAI(AI):
         valuation = 0
         #intial
         if self.engine.is_first_move():
-            valuation += parameters[get_param_index(ReachableParameters.INITIAL_MOVE.value, piece)]
+            valuation += self.parameters[self._get_param_index(ReachableParameters.INITIAL_MOVE.value, piece)]
         #attack unmoved
         if end in other_unmoved_pieces:
-            valuation += parameters[get_param_index(ReachableParameters.ATTACKING_UNMOVED.value, piece)]
+            valuation += self.parameters[self._get_param_index(ReachableParameters.ATTACKING_UNMOVED.value, piece)]
         #attack waeker
         if end in other_pieces:
             other_piece = self.engine.get_peice_at(end)
             if piece_map[other_piece] < piece_map[piece]:
-                valuation += parameters[get_param_index(ReachableParameters.ATTACKING_WEAKER.value, piece)]
+                valuation += self.parameters[self._get_param_index(ReachableParameters.ATTACKING_WEAKER.value, piece)]
         (i1, j1) = start
         (i2, j2) = end
         # walk to otherside
         if i2 > i1 :
-            valuation += parameters[get_param_index(ReachableParameters.MOVE_TO_OTHER_SIDE.value, piece)]
+            valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_TO_OTHER_SIDE.value, piece)]
         # move to right
         if j2 > j1 :
-            valuation += parameters[get_param_index(ReachableParameters.MOVE_TO_RIGHT.value, piece)]
+            valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_TO_RIGHT.value, piece)]
         # move to own side
         if i2 < i1 :
-            valuation += parameters[get_param_index(ReachableParameters.MOVE_TO_OWN_SIDE.value, piece)]
+            valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_TO_OWN_SIDE.value, piece)]
         # move to left
         if j2 < j1 :
-            valuation += parameters[get_param_index(ReachableParameters.MOVE_TO_LEFT.value, piece)]
+            valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_TO_LEFT.value, piece)]
         #attack unknown moved
         if end in other_moved_pieces and end in other_unkown_pieces:
-            valuation += parameters[get_param_index(ReachableParameters.ATTACK_UNKNOWN_MOVED.value, piece)]
+            valuation += self.parameters[self._get_param_index(ReachableParameters.ATTACK_UNKNOWN_MOVED.value, piece)]
         #TODO: move around lake
         #TODO: move along wall
         #TODO: random

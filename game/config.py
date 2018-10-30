@@ -1,20 +1,16 @@
 from enum import Enum
 
 
-TIME_PER_MOVE = 10
 
 
-########################################################
-#invincible type config
 class Settings(Enum):
     AI = 'is an ai'
     START_TYPE = 'type_of_start_state'
-    SEARCH_PARAMS = 'search_parmeters'
+    START_PARAMS = 'params_for_start_state'
     SEARCH_TYPE = 'type_of_search'
-    SEARCH_DEPTH = 'depth_of_search'
-    SEARCH_WIDTH = 'percentage_of_stocastic_paths_expored'
-    EVALUATION_TYPE = 'eval_type'
-    EVALUATION_PARAMS = 'eval_paramters'
+    SEARCH_PARAMS = 'search_parmeters'
+    AI_TYPE = 'eval_type'
+    AI_PARAMS = 'ai parameters'
 
 
 class StartType(Enum):
@@ -22,54 +18,52 @@ class StartType(Enum):
     BETTER = 'better'
 
 class SearchType(Enum):
+    NONE = 'no searcher'
+    GREEDY = 'gready search'
     RANDOM = 'random'
     FULL = 'full_tree_search'
     STOCASTIC = 'stocatic_search'
 
-class EvaluationType(Enum):
+class BasicSearchParams(Enum):
+    SERACH_DEPTH = 'number of levels to expore'
+
+class AIType(Enum):
     NONE = 'none'
-    FLAG_ATTACK = 'flag_attack'
-    FLAG_DEFENCE = 'flag_defence'
-    STRATEGIC_DEFENCE = 'strat_defence'
-    MIXED = 'combination'
+    INVINCLBLE = 'invincible'
+    REACHABLE = 'reachable'
 
-class FlagAttackParams(Enum):
-    RADIUS = 'radius'
+class ReachableParameters(Enum):
+    INITIAL_MOVE = 'initial' # 0 - 9
+    ATTACKING_UNMOVED = 'attack unmoved' # 10 -19
+    ATTACKING_WEAKER = 'attacking weaker' #20-29
+    WALK_TO_OTHER_SIDE = 'walk to side of a peice? or other side of the board' #30 -39
+    MOVE_TO_RIGHT = 'move the price to the right' # 40 - 49
+    MOVE_TO_OWN_SIDE = 'move to our side of the board'# 50 - 59
+    MOVE_TO_LEFT = 'move to the left' # 60 - 69
+    ATTACK_UNKNOWN_MOVED = 'attack an unkown peice that has moved' # 70-79
+    MOVE_AROUND_LAKE = 'move around the lake' # 80 - 89
+    MOVE_ALONG_WALL = 'move along the outer walls of the board'# 90 - 99
+    RANDOM_MOVE = 'make a random move' # 100 - 109
 
-class FlagDefenceParams(Enum):
-    RADIUS = 'radius'
-
-class StrategicDefenceParams(Enum):
-    RADIUS = 'radius'
-
-player1_config = {
-    Settings.AI.value : True,
-    Settings.START_TYPE.value : StartType.RANDOM.value,
-    Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
-    Settings.SEARCH_PARAMS.value : {
-            Settings.SEARCH_DEPTH.value : 1,
-            Settings.SEARCH_WIDTH.value : 1
-    },
-    Settings.EVALUATION_TYPE.value : EvaluationType.NONE.value,
-    Settings.EVALUATION_PARAMS.value : {
-        FlagAttackParams.RADIUS.value : 1
-    }
+paramStart = {
+    ReachableParameters.INITIAL_MOVE.value : 0,
+    ReachableParameters.ATTACKING_UNMOVED.value : 10,
+    ReachableParameters.ATTACKING_WEAKER.value : 20,
+    ReachableParameters.WALK_TO_OTHER_SIDE.value : 30,
+    ReachableParameters.MOVE_TO_RIGHT.value : 40,
+    ReachableParameters.MOVE_TO_OWN_SIDE.value: 50,
+    ReachableParameters.MOVE_TO_LEFT.value : 60,
+    ReachableParameters.ATTACK_UNKNOWN_MOVED.value: 70,
+    ReachableParameters.MOVE_AROUND_LAKE.value : 80,
+    ReachableParameters.MOVE_ALONG_WALL : 90,
+    ReachableParameters.RANDOM_MOVE : 100
 }
 
-player2_config = {
-    Settings.AI.value : True,
-    Settings.START_TYPE.value : StartType.RANDOM.value,
-    Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
-    Settings.SEARCH_PARAMS.value : {
-            Settings.SEARCH_DEPTH.value : 1,
-            Settings.SEARCH_WIDTH.value : 1
-    },
-    Settings.EVALUATION_TYPE.value :  EvaluationType.NONE.value,
-    Settings.EVALUATION_PARAMS.value : {
-        FlagAttackParams.RADIUS.value : 1
-    }
-}
-##############################################################
+
+
+
+
+
 
 
 
