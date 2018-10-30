@@ -16,8 +16,13 @@ class Board():
         self.player2_initialized = False
         self.player1_won = False
         self.player2_won = False
+
         self.player1_piece_positions = set()
         self.player2_piece_positions = set()
+
+        self.player1_moved_pieces = set()
+        self.player2_moved_pieces = set()
+
 
     def copy(self):
         new_board = Board()
@@ -381,6 +386,14 @@ class Board():
 
 
         return move_map
+
+    def all_moved_peices(self, player):
+        #returns the peices of the oponent which have been moved
+        pass
+
+    def all_players_peices(self, player):
+        #gets all the players of the player
+        pass
 
 
     def in_bounds(self, x, y):

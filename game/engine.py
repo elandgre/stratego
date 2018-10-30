@@ -109,7 +109,7 @@ class Engine:
                 if self.board.move(start,end,1):
                     self.player1_turn = False
                     invalid_move = False
-                self.num_moves += 1 
+                self.num_moves += 1
                 return self.player1_turn
             else:
                 print("player 2")
@@ -126,7 +126,7 @@ class Engine:
                 if self.board.move(start,end,2):
                     self.player1_turn = True
                     invalid_move = False
-                self.num_moves += 1 
+                self.num_moves += 1
                 return self.player1_turn
 
     def run(self):
@@ -150,6 +150,24 @@ class Engine:
 
     def get_num_moves(self):
         return self.num_moves
+
+    def is_first_move(self):
+        pass
+
+    def get_oponents_peices(self):
+        pass
+
+    def get_my_peices(self):
+        #may not be needed
+        pass
+
+    def get_oponents_moved_peices(self):
+        pass
+
+    def get_my_moved_peices(self):
+        #may not be needed
+        pass
+
 
     def get_all_next_moves(self):
         def next_moves(board):

@@ -66,3 +66,22 @@ player2_config = {
         FlagAttackParams.RADIUS.value : 1
     }
 }
+
+
+
+
+
+class ReachableParameters(Enum):
+    INITIAL_MOVE = 'initial' # 0 - 9
+    ATTACKING_UNMOVED = 'attack unmoved' # 10 -19
+    ATTACKING_WEAKER = 'attacking weaker' #20-29
+    WALK_TO_SIDE = 'walk to side of a peice' #30 -39
+    MOVE_TO_RIGHT = 'move the price to the right' # 40 - 49
+    MOVE_TO_OWN_SIDE = 'move to our side of the board'# 50 - 59
+    MOVE_TO_LEFT = 'move to the left' # 60 - 69
+    ATTACK_UNKNOWN_MOVED = 'attack an unkown peice that has moved' # 70-79
+    MOVE_AROUND_LAKE = 'move around the lake' # 80 - 89
+    MOVE_ALONG_WALL = 'move along the outer walls of the board'# 90 - 99
+    RANDOM_MOVE = 'make a random move' # 100 - 109
+
+
