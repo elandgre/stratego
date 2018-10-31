@@ -1,5 +1,5 @@
 from skopt import Optimizer
-class GPTrainer(): #trains using Bayesian global optimization with GPs against random play
+class GBRTTrainer(): #trains using Bayesian global optimization with GPs against random play
 	def __init__(self,training_ai,param_ranges,n_iter,n_games):
         self.training_ai = training_ai
 		self.starting_params = starting_params
@@ -15,7 +15,7 @@ class GPTrainer(): #trains using Bayesian global optimization with GPs against r
         #return wins / self.n_games
 
 	def train():
-		opt = Optimizer(self.param_ranges,"gp")
+		opt = Optimizer(self.param_ranges,"GBRT")
 		r = opt.run(self.objective,n_iter=self.n_iter)
 		self.params = r.x
 		print("trained paramaters are: ")
