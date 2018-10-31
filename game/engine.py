@@ -9,6 +9,10 @@ from ai.reachable_ai import ReachableAI
 
 class Engine:
     def __init__(self, player1_config=None, player2_config=None, time_per_move=None):
+        self.restart(player1_config, player2_config, time_per_move)
+
+
+    def restart(self, player1_config=None, player2_config=None, time_per_move=None):
         if not player1_config :
             player1_config = {
                 Settings.AI.value : True,

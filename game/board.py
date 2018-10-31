@@ -91,9 +91,9 @@ class Board():
                     self.player2_piece_positions.add((9 - i,9 - j))
                     self.board[9 - i][9 - j] = pieces[piece_num] + self.player2_offset
             self.player2_initialized = True
-        print(self.get_player_view(1))
-        print(self.get_player_view(2))
-        print(self.get_full_view())
+        #print(self.get_player_view(1))
+        #print(self.get_player_view(2))
+        #print(self.get_full_view())
         return True
 
     def attack(self,attacking,defending,player):
