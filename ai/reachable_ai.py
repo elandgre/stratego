@@ -14,6 +14,13 @@ class ReachableAI(AI):
     def _get_param_index(self, param, peice):
         return paramStart[param] + piece_map[peice] - 1
 
+    def get_random_move(self,valid_moves):
+        num_moves = len(valid_moves)
+        if num_moves == 0:
+          return None,None
+        ran_move = int(random.random() * num_moves)
+        return valid_moves[ran_move]
+
     def get_move(self):
         state = self.engine.get_state()
         valid_moves = self.engine.get_valid_moves()
@@ -26,9 +33,9 @@ class ReachableAI(AI):
         other_unmoved_peices = other_pieces - other_moved_peices
         other_unknown_pieces = other_pieces - revealed_peices
 
-
-        max_val = 0
-        max_move = (None, None)
+        #initialize to a random move for simplicity
+        max_val = self.parameters[ReachableParameters.RANDOM_MOVE]
+        max_move = self.get_random_move(valid_moves)
         for move in valid_moves:
             start, end = move
             piece = self.engine.get_peice_at(start)
@@ -40,6 +47,7 @@ class ReachableAI(AI):
 
     def eval_move(self, (start, end), piece, other_pieces, other_moved_pieces,other_unmoved_pieces, other_unkown_pieces):
         valuation = 0
+
         #intial
         if self.engine.is_first_move():
             valuation += self.parameters[self._get_param_index(ReachableParameters.INITIAL_MOVE.value, piece)]
@@ -70,7 +78,6 @@ class ReachableAI(AI):
             valuation += self.parameters[self._get_param_index(ReachableParameters.ATTACK_UNKNOWN_MOVED.value, piece)]
         #TODO: move around lake
         #TODO: move along wall
-        #TODO: random
 
 
 
