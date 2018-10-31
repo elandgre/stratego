@@ -5,22 +5,48 @@ import time
 from ai.random_searcher import RandomSearcher
 from ai.random_starter import RandomStarter
 from ai.basicAI import BasicAI
+from ai.reachable_ai import ReachableAI
 
 class Engine:
-    def __init__(self):
+    def __init__(self, player1_config=None, player2_config=None, time_per_move=None):
+        if not player1_config :
+            player1_config = {
+                Settings.AI.value : True,
+                Settings.START_TYPE.value : StartType.RANDOM.value,
+                Settings.START_PARAMS.value : [],
+                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
+                Settings.SEARCH_PARAMS.value : [],
+                Settings.AI_TYPE.value : AIType.NONE.value,
+                Settings.AI_PARAMS.value : []
+            }
+
+        if not player2_config :
+            player2_config = {
+                Settings.AI.value : True,
+                Settings.START_TYPE.value : StartType.RANDOM.value,
+                Settings.START_PARAMS.value : [],
+                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
+                Settings.SEARCH_PARAMS.value : [],
+                Settings.AI_TYPE.value :  AIType.NONE.value,
+                Settings.AI_PARAMS.value : []
+            }
+
+        if not time_per_move:
+            time_per_move = 10
+
         self.player1 = None
         self.player2 = None
 
         if player1_config[Settings.AI.value]:
             #init the ai for player one
-            self.player1 = Player(self, self._setup_ai(player1_config))
+            self.player1 = Player(self, self._setup_ai(player1_config, time_per_move))
         else :
             self.player1 = Player(self)
 
 
         if player2_config[Settings.AI.value]:
             #init the ai for palyer one
-            self.player2 = Player(self, self._setup_ai(player2_config))
+            self.player2 = Player(self, self._setup_ai(player2_config, time_per_move))
         else:
             self.player2 = Player(self)
 
@@ -28,7 +54,7 @@ class Engine:
         self.board = Board()
         self.player1_turn = True
 
-    def _setup_ai(self, config):
+    def _setup_ai(self, config, time_per_move):
         starter = None
         searcher = None
         evaluator = None
@@ -42,6 +68,10 @@ class Engine:
         #parse and create the searcher
         if config[Settings.SEARCH_TYPE.value] == SearchType.RANDOM.value :
             searcher = RandomSearcher(config[Settings.SEARCH_PARAMS.value])
+        elif config[Settings.SEARCH_TYPE.value] == SearchType.NONE.value :
+            searcher = None
+        elif config[Settings.SEARCH_TYPE.value] == SearchType.GREEDY.value :
+            searcher = None
         elif config[Settings.SEARCH_TYPE.value] == SearchType.FULL.value :
             #fill in the full search type
             raise NotImplementedError
@@ -52,20 +82,16 @@ class Engine:
             raise NotImplementedError
 
         #parse and create the evaluator
-        if config[Settings.EVALUATION_TYPE.value] == EvaluationType.NONE.value :
-            evaluator = None
-        elif config[Settings.EVALUATION_TYPE.value] == EvaluationType.FLAG_ATTACK.value :
+        if config[Settings.AI_TYPE.value] == AIType.NONE.value :
+            ai = BasicAI(self, time.time(), time_per_move, starter, None, searcher)
+        elif config[Settings.AI_TYPE.value] == AIType.INVINCLBLE.value :
             raise NotImplementedError
-        elif config[Settings.EVALUATION_TYPE.value] == EvaluationType.FLAG_DEFENCE.value :
-            raise NotImplementedError
-        elif config[Settings.EVALUATION_TYPE.value] == EvaluationType.STRATEGIC_DEFENCE.value :
-            raise NotImplementedError
-        elif config[Settings.EVALUATION_TYPE.value] == EvaluationType.MIXED.value :
-            raise NotImplementedError
+        elif config[Settings.AI_TYPE.value] == AIType.REACHABLE.value :
+            ai = ReachableAI(self,time.time(),time_per_move,starter, config[Settings.AI_PARAMS.value])
         else:
             raise NotImplementedError
 
-        return BasicAI(self, time.time(), TIME_PER_MOVE, starter, evaluator, searcher )
+        return ai
 
     def setup_board(self):
         invalid_state = True
@@ -109,7 +135,7 @@ class Engine:
                 if self.board.move(start,end,1):
                     self.player1_turn = False
                     invalid_move = False
-                self.num_moves += 1 
+                self.num_moves += 1
                 return self.player1_turn
             else:
                 print("player 2")
@@ -126,7 +152,7 @@ class Engine:
                 if self.board.move(start,end,2):
                     self.player1_turn = True
                     invalid_move = False
-                self.num_moves += 1 
+                self.num_moves += 1
                 return self.player1_turn
 
     def run(self):
@@ -151,13 +177,63 @@ class Engine:
     def get_num_moves(self):
         return self.num_moves
 
-    def get_all_next_moves(self):
-        def next_moves(board):
-            return []
+    def is_first_move(self):
+        return self.num_moves < 2
 
-    def get_p_percent_next_moves(self, p):
-        def next_moves(board):
-            return []
+    def get_oponents_peices(self):
+        if self.player1_turn:
+            return self.board.all_players_peice_positions(2, 1)
+        else:
+            return self.board.all_players_peice_positions(1, 2)
+
+    def get_my_peices(self):
+        #may not be needed
+        if self.player1_turn:
+            return self.board.all_players_peice_positions(1, 1)
+        else:
+            return self.board.all_players_peice_positions(2, 2)
+
+    def get_oponents_moved_peices(self):
+        if self.player1_turn:
+            return self.board.all_moved_peice_positions(2, 1)
+        else:
+            return self.board.all_moved_peice_positions(1, 2)
+
+    def get_my_moved_peices(self):
+        #may not be needed
+        if self.player1_turn:
+            return self.board.all_moved_peice_positions(1, 1)
+        else:
+            return self.board.all_moved_peice_positions(2, 2)
+
+    def get_oponents_revealed_peices(self):
+        if self.player1_turn:
+            return self.board.get_players_revealed_peice_positions(2, 1)
+        else:
+            return self.board.get_players_revealed_peice_positions(1, 2)
+
+    def get_my_revealed_peices(self):
+        #may not be needed
+        if self.player1_turn:
+            return self.board.get_players_revealed_peice_positions(1, 1)
+        else:
+            return self.board.get_players_revealed_peice_positions(2, 2)
+
+    def get_peice_at(self, pos):
+        if self.player1_turn:
+            return self.board.get_piece_at_position(pos, 1)
+        else:
+            return self.board.get_piece_at_position(pos, 2)
+
+
+
+#    def get_all_next_moves(self):
+#        def next_moves(board):
+#            return []
+
+#    def get_p_percent_next_moves(self, p):
+#        def next_moves(board):
+#            return []
 
 
 

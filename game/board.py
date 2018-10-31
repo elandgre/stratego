@@ -16,8 +16,16 @@ class Board():
         self.player2_initialized = False
         self.player1_won = False
         self.player2_won = False
+
         self.player1_piece_positions = set()
         self.player2_piece_positions = set()
+
+        self.player1_moved_pieces = set()
+        self.player2_moved_pieces = set()
+
+        self.player1_revealed_pieces = set()
+        self.player2_revealed_pieces = set()
+
 
     def copy(self):
         new_board = Board()
@@ -349,6 +357,7 @@ class Board():
             return moves
 
     def get_valid_moves_list(self, player):
+        #TODO: this should do this in the players perspective
         assert player in [1,2]
 
         if player == 1:
@@ -363,6 +372,7 @@ class Board():
         return all_moves
 
     def get_valid_moves_map(self, player):
+        #TODO:this should do this in the players perspective
         assert player in [1,2]
         if self.get_winner() : return {}
 
@@ -381,6 +391,27 @@ class Board():
 
 
         return move_map
+
+    def all_moved_peice_positions(self, player, perspective):
+        #TODO: returns set of the peices of the oponent which have been moved
+        #in the perspective
+        return set()
+
+    def all_players_peice_positions(self, player, perspective):
+        #TODO: gets set of all the players of the player
+        #in the players perspective
+        return set()
+
+    def get_players_revealed_peice_positions(self, player, perspective):
+        #TODO: gets set of all the players of the player
+        #in the players perspective
+        return set()
+
+
+    def get_piece_at_position(self, pos, player):
+        #TODO: return the peice name of the piece at the position in the
+        #perspective
+        return ''
 
 
     def in_bounds(self, x, y):
