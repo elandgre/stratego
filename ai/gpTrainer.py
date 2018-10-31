@@ -23,3 +23,4 @@ class GPTrainer(): #trains using Bayesian global optimization with GPs against r
 
     def evaluate(params):
 	   return self.objective(params)
+
