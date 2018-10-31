@@ -91,6 +91,9 @@ class Board():
                     self.player2_piece_positions.add((9 - i,9 - j))
                     self.board[9 - i][9 - j] = pieces[piece_num] + self.player2_offset
             self.player2_initialized = True
+        print(self.get_player_view(1))
+        print(self.get_player_view(2))
+        print(self.get_full_view())
         return True
 
     def attack(self,attacking,defending,player):
@@ -127,7 +130,12 @@ class Board():
     def move(self,start,end,player):
         assert self.player1_initialized
         assert self.player2_initialized
+
         if self.is_valid_move(start,end,player):
+            #PRECONDITION : start and end are in this players prespective
+            start = self._in_perspective(start, player)
+            end = self._in_perspective(end, player)
+
             #peice values
             my_piece = self.board[start[0]][start[1]]
             other_piece = self.board[end[0]][end[1]]
@@ -136,8 +144,11 @@ class Board():
             self.board[start[0]][start[1]] = piece_map[pieces.EMPTY.value]
             if player == 1:
                 self.player1_piece_positions.remove(start)
+                self.player1_moved_pieces.discard(start)
             else:
                 self.player2_piece_positions.remove(start)
+                self.player2_moved_pieces.discard(start)
+
 
             #theres an attack
             if other_piece != piece_map[pieces.EMPTY.value]:
@@ -152,13 +163,30 @@ class Board():
                         self.player2_piece_counts[piece_names[loser - self.player2_offset]] -= 1
                         if player == 1:
                             self.player2_piece_positions.remove(end)
+                            self.player2_moved_pieces.discard(end)
+                            self.player1_moved_pieces.add(end)
+                            self.player1_revealed_pieces.discard(start)
+                            self.player2_revealed_pieces.discard(end)
+                        else : #player == 2
+                            self.player2_revealed_pieces.discard(start)
+
                         self.player1_piece_positions.add(end)
+
+                        self.player1_revealed_pieces.add(end)
                     else:
                         #player 2 wins
                         self.player1_piece_counts[piece_names[loser]] -= 1
                         if player == 2:
                             self.player1_piece_positions.remove(end)
+                            self.player1_moved_pieces.discard(end)
+                            self.player2_moved_pieces.add(end)
+                            self.player2_revealed_pieces.discard(start)
+                            self.player1_revealed_pieces.discard(end)
+                        else : #player == 1
+                            self.player1_piece_positions.discard(start)
+
                         self.player2_piece_positions.add(end)
+                        self.player2_revealed_pieces.add(end)
                     return (my_piece,other_piece)
                 else:
                     #a tie
@@ -166,14 +194,29 @@ class Board():
                     #remove other players piece from the board
                     if player == 1:
                         self.player2_piece_positions.remove(end)
-                    else:
+                        self.player2_moved_pieces.discard(end)
+                        self.player1_revealed_pieces.discard(start)
+                        self.player2_revealed_pieces.discard(end)
+                    else: #player == 2
                         self.player1_piece_positions.remove(end)
+                        self.player1_moved_pieces.discard(end)
+                        self.player2_revealed_pieces.discard(start)
+                        self.player1_revealed_pieces.discard(end)
                     return (my_piece,other_piece)
             else:
                 if player == 1:
                     self.player1_piece_positions.add(end)
-                else:
+                    self.player1_moved_pieces.add(end)
+                    if start in self.player1_revealed_pieces:
+                        self.player1_revealed_pieces.add(end)
+                        self.player1_revealed_pieces.discard(start)
+                else: #player == 2
                     self.player2_piece_positions.add(end)
+                    self.player2_moved_pieces.add(end)
+                    if start in self.player2_revealed_pieces:
+                        self.player2_revealed_pieces.add(end)
+                        self.player2_revealed_pieces.discard(start)
+
                 self.board[end[0]][end[1]] = my_piece
                 return (my_piece,other_piece)
         else:
@@ -219,6 +262,9 @@ class Board():
 
     def is_valid_move(self,start,end,player):
         assert player in [1,2]
+        #PRECONDITION : start and end are in this players prespective
+        start = self._in_perspective(start, player)
+        end = self._in_perspective(end, player)
         if start == end:
             return False
 
@@ -369,9 +415,24 @@ class Board():
 
             moves = self.get_valid_piece_moves(start,player)
             all_moves.extend(moves)
-        return all_moves
+        return self._moves_to_perspective_list(all_moves, player)
 
-    def get_valid_moves_map(self, player):
+    def get_valid_moves_set(self, player):
+        #TODO: this should do this in the players perspective
+        assert player in [1,2]
+
+        if player == 1:
+            positions = self.player1_piece_positions
+        else:
+            positions = self.player2_piece_positions
+        all_moves = set()
+        for start in positions:
+
+            moves = self.get_valid_piece_moves(start,player)
+            all_moves |= set(moves)
+        return self._moves_to_perspective_set(all_moves, player)
+
+    def _get_valid_moves_map(self, player):
         #TODO:this should do this in the players perspective
         assert player in [1,2]
         if self.get_winner() : return {}
@@ -392,26 +453,54 @@ class Board():
 
         return move_map
 
+    def _in_perspective(self, (x, y), pers):
+        if pers == 1:
+            return (9-x, 9-y)
+        else : #perspective = 2
+            return (x,y)
+
+    def _moves_to_perspective_list(self, moves, pers):
+        return [(self._in_perspective(p1, pers ),self._in_perspective(p2, pers )) for (p1,p2) in moves]
+
+    def _moves_to_perspective_set(self, moves, pers):
+        return {(self._in_perspective(p1, pers ),self._in_perspective(p2, pers )) for (p1,p2) in moves}
+
+    def _pos_to_perspecive(self, pos, pers ):
+        return {self._in_perspective(p, pers ) for p in pos}
+
+
     def all_moved_peice_positions(self, player, perspective):
         #TODO: returns set of the peices of the oponent which have been moved
         #in the perspective
-        return set()
+        if player == 1 :
+            return self._pos_to_perspecive(self.player1_moved_pieces, perspective)
+        else : #player = 2
+            return self._pos_to_perspecive(self.player2_moved_pieces, perspective)
 
     def all_players_peice_positions(self, player, perspective):
         #TODO: gets set of all the players of the player
         #in the players perspective
-        return set()
+        if player == 1 :
+            return self._pos_to_perspecive(self.player1_piece_positions, perspective)
+        else : #player = 2
+            return self._pos_to_perspecive(self.player2_piece_positions, perspective)
+
 
     def get_players_revealed_peice_positions(self, player, perspective):
         #TODO: gets set of all the players of the player
-        #in the players perspective
-        return set()
+        #in the perspective
+        if player == 1 :
+            return self._pos_to_perspecive(self.player1_revealed_pieces, perspective)
+        else : #player = 2
+            return self._pos_to_perspecive(self.player2_revealed_pieces, perspective)
 
 
-    def get_piece_at_position(self, pos, player):
+    def get_piece_at_position(self, pos, perspective):
         #TODO: return the peice name of the piece at the position in the
         #perspective
-        return ''
+        x,y = self._in_perspective(pos, perspective)
+
+        return piece_names[self.board[x][y] % self.player2_offset]
 
 
     def in_bounds(self, x, y):

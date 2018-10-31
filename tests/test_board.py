@@ -95,8 +95,8 @@ def test_simple_move():
     a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,12,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 0)
-    new = (4, 0)
+    old = (6, 9)
+    new = (5, 9)
 
     old_view_one = board.get_player_view(1)
 
@@ -104,8 +104,8 @@ def test_simple_move():
     assert board.move(old, new, 1)
 
     view_one = board.get_player_view(1)
-    assert old_view_one[9-old[0]][9-old[1]] == view_one[9-new[0]][9-new[1]]
-    assert view_one[9-old[0]][9-old[1]] == piece_diplay_map[pieces.EMPTY.value]
+    assert old_view_one[old[0]][old[1]] == view_one[new[0]][new[1]]
+    assert view_one[old[0]][old[1]] == piece_diplay_map[pieces.EMPTY.value]
 
     board.move(new, old, 1)
 
@@ -128,11 +128,11 @@ def test_moving_onto_self():
     a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,12,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 0)
-    new = (2, 0)
+    old = (6, 9)
+    new = (7, 9)
     bad_move(board, old, new, 1)
 
-    new = (3, 1)
+    new = (6, 8)
     bad_move(board, old, new, 1)
 
     old = (6, 9)
@@ -148,11 +148,11 @@ def test_to_big_a_move():
     a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,12,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 0)
-    new = (5, 0)
+    old = (6, 9)
+    new = (4, 9)
     bad_move(board, old, new, 1)
 
-    new = (6, 0)
+    new = (3, 9)
     bad_move(board, old, new, 1)
 
     old = (6, 9)
@@ -168,16 +168,16 @@ def test_move_off_board():
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
 
-    old = (0, 0)
-    new = (0, -1)
+    old = (9, 0)
+    new = (9, -1)
     bad_move(board, old, new, 1)
 
-    old = (0, 0)
-    new = (-1, 0)
+    old = (9, 0)
+    new = (10, 0)
     bad_move(board, old, new, 1)
 
-    old = (0, 9)
-    new = (0, 10)
+    old = (9, 9)
+    new = (9, 10)
     bad_move(board, old, new, 1)
 
     old = (9, 0)
@@ -197,12 +197,12 @@ def test_move_op_peice():
     a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,12,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 0)
-    new = (4, 0)
+    old = (3, 9)
+    new = (4, 9)
     bad_move(board, old, new, 2)
 
-    old = (6, 9)
-    new = (5, 9)
+    old = (3, 9)
+    new = (4, 9)
     bad_move(board, old, new, 1)
 
 def test_move_on_mountain():
@@ -210,8 +210,8 @@ def test_move_on_mountain():
     a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,12,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,3,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 7)
-    new = (4, 7)
+    old = (6, 2)
+    new = (5, 2)
     bad_move(board, old, new, 1)
 
     old = (6, 2)
@@ -223,8 +223,8 @@ def test_move_flag():
     a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,11,9,10,8,12,12,12,12,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 0)
-    new = (4, 0)
+    old = (6, 9)
+    new = (5, 9)
     bad_move(board, old, new, 1)
 
     old = (6, 9)
@@ -236,8 +236,8 @@ def test_move_bomb():
     a_start_state = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,12,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 9)
-    new = (4, 9)
+    old = (6, 0)
+    new = (5, 0)
     bad_move(board, old, new, 1)
 
     old = (6, 0)
@@ -249,8 +249,8 @@ def test_basic_scout_move():
     a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,11,12,12,12,12,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 0)
-    new = (5, 0)
+    old = (6, 9)
+    new = (4, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -266,8 +266,8 @@ def test_basic_scout_not_diag():
     a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,11,12,12,12,12,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 0)
-    new = (5, 1)
+    old = (6, 9)
+    new = (4, 8)
     bad_move(board, old, new, 1)
 
     old = (6, 9)
@@ -280,8 +280,8 @@ def test_basic_scout_not_jumping_player_2():
     a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,11,12,12,12,12,12,12]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 0)
-    new = (5, 0)
+    old = (6, 9)
+    new = (4, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -304,8 +304,8 @@ def test_basic_scout_not_jumping_player_1():
     assert board.move(old, new, 2)
 
 
-    old = (3, 0)
-    new = (5, 0)
+    old = (6, 9)
+    new = (4, 9)
 
     bad_move(board, old, new, 1)
 
@@ -317,15 +317,21 @@ def test_all_valid_moves():
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
 
-    one_moves = board.get_valid_moves_map(1)
-    for start in one_moves.keys():
-        for end in one_moves[start]:
+    one_moves = board.get_valid_moves_list(1)
+    for start,end in one_moves:
             assert board.is_valid_move(start, end, 1)
 
-    two_moves = board.get_valid_moves_map(2)
-    for start in two_moves.keys():
-        for end in two_moves[start]:
-            assert board.is_valid_move(start, end, 2)
+    two_moves = board.get_valid_moves_list(2)
+    for start, end in two_moves:
+        assert board.is_valid_move(start, end, 2)
+
+    one_moves = board.get_valid_moves_set(1)
+    for start,end in one_moves:
+            assert board.is_valid_move(start, end, 1)
+
+    two_moves = board.get_valid_moves_set(2)
+    for start, end in two_moves:
+        assert board.is_valid_move(start, end, 2)
 
 def test_scout_attacking():
     board = Board()
@@ -338,8 +344,8 @@ def test_scout_attacking():
     assert board.is_valid_move(old, new, 2)
     assert board.move(old, new, 2)
 
-    old = (3, 0)
-    new = (6, 0)
+    old = (6, 9)
+    new = (3, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -350,21 +356,21 @@ def test_p1_attacking_and_win():
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
 
-    old = (3, 0)
-    new = (4, 0)
+    old = (6, 9)
+    new = (5, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
 
     old = new
-    new = (5, 0)
+    new = (4, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
 
     #attack!!!
     old = new
-    new = (6, 0)
+    new = (3, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -382,14 +388,14 @@ def test_p1_attacking_and_loose():
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
 
-    old = (3, 0)
-    new = (4, 0)
+    old = (6, 9)
+    new = (5, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
 
     old = new
-    new = (5, 0)
+    new = (4, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -397,7 +403,7 @@ def test_p1_attacking_and_loose():
 
     #attack!!!
     old = new
-    new = (6, 0)
+    new = (3, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -490,14 +496,14 @@ def test_p1_attacking_and_tie():
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
 
-    old = (3, 0)
-    new = (4, 0)
+    old = (6, 9)
+    new = (5, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
 
     old = new
-    new = (5, 0)
+    new = (4, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -505,7 +511,7 @@ def test_p1_attacking_and_tie():
 
     #attack!!!
     old = new
-    new = (6, 0)
+    new = (3, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -559,14 +565,14 @@ def test_p1_minner_attack_bomb():
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
 
-    old = (3, 0)
-    new = (4, 0)
+    old = (6, 9)
+    new = (5, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
 
     old = new
-    new = (5, 0)
+    new = (4, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -574,7 +580,7 @@ def test_p1_minner_attack_bomb():
 
     #attack!!!
     old = new
-    new = (6, 0)
+    new = (3, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -627,14 +633,14 @@ def test_p1_spy_attack_marshal():
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
 
-    old = (3, 0)
-    new = (4, 0)
+    old = (6, 9)
+    new = (5, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
 
     old = new
-    new = (5, 0)
+    new = (4, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -642,7 +648,7 @@ def test_p1_spy_attack_marshal():
 
     #attack!!!
     old = new
-    new = (6, 0)
+    new = (3, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -695,14 +701,14 @@ def test_p1_marshal_attack_spy():
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
 
-    old = (3, 0)
-    new = (4, 0)
+    old = (6, 9)
+    new = (5, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
 
     old = new
-    new = (5, 0)
+    new = (4, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -710,7 +716,7 @@ def test_p1_marshal_attack_spy():
 
     #attack!!!
     old = new
-    new = (6, 0)
+    new = (3, 9)
 
     assert board.is_valid_move(old, new, 1)
     assert board.move(old, new, 1)
@@ -762,8 +768,8 @@ def test_p1_flag_cap():
     a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,12,12,12,12,12,12,11]
     one = board.add_player(a_start_state,1)
     two = board.add_player(a_start_state,2)
-    old = (3, 0)
-    new = (6, 0)
+    old = (6, 9)
+    new = (3, 9)
 
 
     assert board.is_valid_move(old, new, 1)
@@ -792,4 +798,72 @@ def test_get_full_board():
 
 
     print(board.get_full_view())
+
+
+def test_get_player_positions_in_persp():
+    board = Board()
+    a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,12,12,12,12,12,12,11]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+
+    pl1_ps1 = board.all_players_peice_positions(1,1)
+    pl2_ps1 = board.all_players_peice_positions(2,1)
+
+    pl1_ps2 = board.all_players_peice_positions(1,2)
+    pl2_ps2 = board.all_players_peice_positions(2,2)
+
+    view_one = board.get_player_view(1)
+    view_two = board.get_player_view(2)
+
+    for (i,j) in pl1_ps1:
+        assert(view_one[i][j] != piece_diplay_map[pieces.HIDDEN.value])
+        assert(view_one[i][j] != piece_diplay_map[pieces.MOUNTAIN.value])
+        assert(view_one[i][j] != piece_diplay_map[pieces.EMPTY.value])
+
+    for (i,j) in pl2_ps1:
+        assert(view_one[i][j] == piece_diplay_map[pieces.HIDDEN.value])
+
+    for (i,j) in pl2_ps2:
+        assert(view_two[i][j] != piece_diplay_map[pieces.HIDDEN.value])
+        assert(view_two[i][j] != piece_diplay_map[pieces.MOUNTAIN.value])
+        assert(view_two[i][j] != piece_diplay_map[pieces.EMPTY.value])
+
+    for (i,j) in pl1_ps2:
+        assert(view_two[i][j] == piece_diplay_map[pieces.HIDDEN.value])
+
+
+def test_get_moved_positions_no_moves():
+    board = Board()
+    a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,12,12,12,12,12,12,11]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+
+
+    pl1_ps1 = board.all_moved_peice_positions(1,1)
+    pl2_ps1 = board.all_moved_peice_positions(2,1)
+    pl1_ps2 = board.all_moved_peice_positions(1,2)
+    pl2_ps2 = board.all_moved_peice_positions(2,2)
+
+    assert pl1_ps1 == set()
+    assert pl2_ps1 == set()
+    assert pl1_ps2 == set()
+    assert pl2_ps2 == set()
+
+def test_get_reveled_positions_no_moves():
+    board = Board()
+    a_start_state = [1,8,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,2,9,10,12,12,12,12,12,12,11]
+    one = board.add_player(a_start_state,1)
+    two = board.add_player(a_start_state,2)
+
+
+    pl1_ps1 = board.get_players_revealed_peice_positions(1,1)
+    pl2_ps1 = board.get_players_revealed_peice_positions(2,1)
+    pl1_ps2 = board.get_players_revealed_peice_positions(1,2)
+    pl2_ps2 = board.get_players_revealed_peice_positions(2,2)
+
+    assert pl1_ps1 == set()
+    assert pl2_ps1 == set()
+    assert pl1_ps2 == set()
+    assert pl2_ps2 == set()
+
 

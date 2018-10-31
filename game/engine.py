@@ -129,8 +129,8 @@ class Engine:
                     print "empty"
                     return self.player1_turn
                 if self.player1.is_human():
-                    start = start[0],9-start[1]
-                    end = end[0],9-end[1]
+                    start = 9-start[0],start[1]
+                    end = 9-end[0],end[1]
 
                 if self.board.move(start,end,1):
                     self.player1_turn = False
