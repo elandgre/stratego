@@ -1,18 +1,27 @@
 from ai import AI
 from game.config import *
 from utils.constants import *
+import numpy as np
+import random
 
 
 class ReachableAI(AI):
-    def __init__(self,engine,start_time,time_per_move,starter,params):
+    def __init__(self,engine,start_time,time_per_move,starter,params=None):
         super(ReachableAI, self).__init__(engine,start_time,time_per_move, starter)
-        self.parameters = params
+        if params==None or len(params) < 101:
+            self.parameters = np.ones(101)
+        else :
+            self.parameters = params
 
     def get_starting_state(self):
         return self.starter.start()
 
-    def _get_param_index(self, param, peice):
-        return paramStart[param] + piece_map[peice] - 1
+    def _get_param_index(self, param, piece=None):
+        if(piece == None and ReachableParameters(param) == ReachableParameters.RANDOM_MOVE):
+            return paramStart[param]
+        elif(piece == None):
+            return -1
+        return paramStart[param] + piece_map[piece] - 1
 
     def get_random_move(self,valid_moves):
         num_moves = len(valid_moves)
@@ -34,7 +43,7 @@ class ReachableAI(AI):
         other_unknown_pieces = other_pieces - revealed_peices
 
         #initialize to a random move for simplicity
-        max_val = self.parameters[ReachableParameters.RANDOM_MOVE]
+        max_val = self.parameters[self._get_param_index(ReachableParameters.RANDOM_MOVE.value)]
         max_move = self.get_random_move(valid_moves)
         for move in valid_moves:
             start, end = move
@@ -77,7 +86,7 @@ class ReachableAI(AI):
         if end in other_moved_pieces and end in other_unkown_pieces:
             valuation += self.parameters[self._get_param_index(ReachableParameters.ATTACK_UNKNOWN_MOVED.value, piece)]
         #move around lake
-        lakes_squares = {(4,1),(4,4),(4,5),(4,6),(5,1),(5,4),(5,5),(5,6)}
+        lake_squares = {(4,1),(4,4),(4,5),(4,6),(5,1),(5,4),(5,5),(5,6)}
         # end and not start are next to lakes
         if end in lake_squares and not start in lake_squares:
             valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_AROUND_LAKE.value, piece)]
@@ -88,10 +97,10 @@ class ReachableAI(AI):
         # | does set union
         outer_squares = {(0,j) for j in range(10)} | {(9,j) for j in range(10)}
         # end and not start in outer squares
-        if end in outer_sqaures and not start in outer_sqaures:
+        if end in outer_squares and not start in outer_squares:
             valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_ALONG_WALL.value, piece)]
         # start and not end in outer squares
-        elif start in outer_sqaures and not end in outer_sqaures:
+        elif start in outer_squares and not end in outer_squares:
             valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_ALONG_WALL.value, piece)]
 
         return valuation

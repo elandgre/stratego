@@ -25,9 +25,9 @@ class Engine:
                 Settings.AI.value : True,
                 Settings.START_TYPE.value : StartType.RANDOM.value,
                 Settings.START_PARAMS.value : [],
-                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
+                Settings.SEARCH_TYPE.value : SearchType.NONE.value,
                 Settings.SEARCH_PARAMS.value : [],
-                Settings.AI_TYPE.value :  AIType.NONE.value,
+                Settings.AI_TYPE.value :  AIType.REACHABLE.value,
                 Settings.AI_PARAMS.value : []
             }
 
