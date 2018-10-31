@@ -15,7 +15,7 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GPs against
         #return wins / self.n_games
 
 	def train():
-		opt = Optimizer(self.param_ranges,"GBRT")
+		opt = Optimizer(self.param_ranges,"G")
 		r = opt.run(self.objective,n_iter=self.n_iter)
 		self.params = r.x
 		print("trained paramaters are: ")
