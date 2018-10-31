@@ -76,10 +76,25 @@ class ReachableAI(AI):
         #attack unknown moved
         if end in other_moved_pieces and end in other_unkown_pieces:
             valuation += self.parameters[self._get_param_index(ReachableParameters.ATTACK_UNKNOWN_MOVED.value, piece)]
-        #TODO: move around lake
-        #TODO: move along wall
+        #move around lake
+        lakes_squares = {(4,1),(4,4),(4,5),(4,6),(5,1),(5,4),(5,5),(5,6)}
+        # end and not start are next to lakes
+        if end in lake_squares and not start in lake_squares:
+            valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_AROUND_LAKE.value, piece)]
+        # start and not end are next to lakes
+        elif start in lake_squares and not end in lake_squares:
+            valuation -= self.parameters[self._get_param_index(ReachableParameters.MOVE_AROUND_LAKE.value, piece)]
+        #move along wall
+        # | does set union
+        outer_squares = {(0,j) for j in range(10)} | {(9,j) for j in range(10)}
+        # end and not start in outer squares
+        if end in outer_sqaures and not start in outer_sqaures:
+            valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_ALONG_WALL.value, piece)]
+        # start and not end in outer squares
+        elif start in outer_sqaures and not end in outer_sqaures:
+            valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_ALONG_WALL.value, piece)]
 
-
+        return valuation
 
 
 
