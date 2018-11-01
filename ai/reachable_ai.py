@@ -10,7 +10,7 @@ class ReachableAI(AI):
         super(ReachableAI, self).__init__(engine,start_time,time_per_move, starter)
         if params==None or len(params) < 101:
             self.parameters = np.ones(101)
-        else :
+        else:
             self.parameters = params
 
     def get_starting_state(self):
@@ -102,7 +102,6 @@ class ReachableAI(AI):
         # start and not end in outer squares
         elif start in outer_squares and not end in outer_squares:
             valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_ALONG_WALL.value, piece)]
-
         return valuation
 
 

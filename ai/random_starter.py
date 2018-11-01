@@ -14,6 +14,5 @@ class RandomStarter(Starter):
                 placements.append(piece_map[piece])
 
         random.shuffle(placements)
-        print(placements)
         return placements
 

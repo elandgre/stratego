@@ -127,7 +127,7 @@ class Engine:
                 print(self.board.get_player_view(2))
         while invalid_move:
             if self.player1_turn:
-                print("player 1")
+                #print("player 1")
                 start,end = self.player1.get_move()
                 if(start == None and end == None):
                     print "empty"
@@ -142,7 +142,7 @@ class Engine:
                 self.num_moves += 1
                 return self.player1_turn
             else:
-                print("player 2")
+                #print("player 2")
                 start,end = self.player2.get_move()
                 if(start == None and end == None):
                     print "empty"
@@ -162,8 +162,10 @@ class Engine:
     def run(self):
         self.setup_board()
         self.player1_turn = True
-        while not self.board.get_winner():
+        num_moves = 0
+        while not self.board.get_winner() and num_moves < 1000:
             self.player1_turn = self.make_move(self.player1_turn)
+            num_moves += 1
         return self.board.get_winner()
 
     def get_state(self):
