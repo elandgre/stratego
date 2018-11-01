@@ -62,7 +62,7 @@ def run_test():
                 Settings.AI_PARAMS.value : []
             }
     param_ranges = [(-1,1) for i in range(101)]
-    n_iter = 500
+    n_iter = 100
     n_games = 5
 
     trainer = GBRTTrainer(ai_config, opponent_config, param_ranges, n_iter, n_games)
