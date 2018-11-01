@@ -61,7 +61,7 @@ def run_test():
                 Settings.AI_TYPE.value : AIType.NONE.value,
                 Settings.AI_PARAMS.value : []
             }
-    param_ranges = [(-1.0,1.0) for i in range(101)]
+    param_ranges = [(-1,1) for i in range(101)]
     n_iter = 500
     n_games = 5
 
