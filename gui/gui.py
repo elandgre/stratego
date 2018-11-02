@@ -24,13 +24,13 @@ class GUI:
                 turn = self.e.make_move(p)
                 #print(self.curselection())
                 print(i, j)
-                if turn == self.player1:
+                if turn == self.player1_turn:
                     self.clicked_buttons = []
                     self.button_counter = 0
                 else:
                     self.clicked_buttons = []
                     self.button_counter = 0
-                    self.player1 = not self.player1
+                    self.player1_turn = not self.player1_turn
                     self.update()
         return map_click
 
