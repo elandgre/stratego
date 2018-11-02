@@ -1,8 +1,19 @@
 import sys
+
 class Player:
     def __init__(self,engine,ai=None):
         self.ai = ai
         self.engine = engine
+        self.start_move = (-1, -1)
+        self.end_move = (-1, -1)
+
+    def set_move(self, move):
+        self.start_move = (move[0][0], move[0][1])
+        self.end_move = (move[1][0], move[1][1])
+
+    def get_move_pos(self):
+        (x1, y1) = self.start_move
+        (x2, y2) = self.end_move
 
     def get_starting_state(self):
         if not self.ai:
@@ -15,8 +26,8 @@ class Player:
             invalid_input = True
             while invalid_input:
                 try:
-                    sys.stdout.write("input your move: ")
-                    (x1,y1),(x2,y2) = input()
+                    #sys.stdout.write("input your move: ")
+                    (x1,y1),(x2,y2) = self.get_move_pos()
                     invalid_input = False
                 except Exception as e:
                     print "input must be of the form: (i1,j1),(i2,j2)"
