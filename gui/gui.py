@@ -6,7 +6,7 @@ from game.engine import Engine
 from game.player import Player
 import utils.constants
 from game.config import FRONTEND
-
+from game.config import *
 
 class GUI:
     def ind_map_click(self, i, j):
@@ -21,7 +21,7 @@ class GUI:
                 if not self.player1_turn:
                   p = self.e.player2
                 p.set_move(self.clicked_buttons)
-                turn = self.e.make_move(p)
+                turn = self.e.make_move()
                 #print(self.curselection())
                 print(i, j)
                 if turn == self.player1_turn:
@@ -36,7 +36,6 @@ class GUI:
 
 
     def __init__(self, master):
-        FRONTEND = True
         self.tiles = []
         self.master = master
         self.frame = Frame(master)
@@ -45,7 +44,7 @@ class GUI:
         Grid.columnconfigure(master, 0, weight=1)
         self.frame.grid(row=0, column=0)
 
-        self.e = Engine()
+        self.e = Engine(1000,{Settings.AI.value : False }, { Settings.AI.value : False}, False )
         self.e.setup_board()
         board = self.e.get_board(1)
         self.win = False #winner trigger
@@ -61,7 +60,7 @@ class GUI:
                 tile = Button(self.frame)
                 tile.config(height=40,
                             width=40,
-                            command = self.ind_map_click(i, j),
+                            command = self.ind_map_click(9-i, j),
                             text=board[i][j])
                 tile.grid(row=i, column=j)
 
@@ -75,7 +74,7 @@ class GUI:
         	board = self.e.get_board(2)
         for i in range(10):
             for j in range(10):
-            	self.tiles[i * 10 + j].text = board[i][j]
+            	self.tiles[i * 10 + j]["text"] = board[i][j]
 
 
 def main():
