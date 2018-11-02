@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-
+FRONTEND = False
 
 class Settings(Enum):
     AI = 'is an ai'

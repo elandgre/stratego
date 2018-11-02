@@ -8,20 +8,21 @@ from ai.basicAI import BasicAI
 from ai.reachable_ai import ReachableAI
 
 class Engine:
-    def __init__(self, player1_config=None, player2_config=None, time_per_move=None):
-        self.restart(player1_config, player2_config, time_per_move)
+    def __init__(self, max_moves=None , player1_config=None, player2_config=None, time_per_move=None):
+        self.restart(max_moves, player1_config, player2_config, time_per_move)
 
 
-    def restart(self, player1_config=None, player2_config=None, time_per_move=None):
+    def restart(self,  max_moves=None, player1_config=None, player2_config=None, time_per_move=None):
+        #defaults for the configs
         if not player1_config :
             player1_config = {
-                Settings.AI.value : True,
-                Settings.START_TYPE.value : StartType.RANDOM.value,
-                Settings.START_PARAMS.value : [],
-                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
-                Settings.SEARCH_PARAMS.value : [],
-                Settings.AI_TYPE.value : AIType.NONE.value,
-                Settings.AI_PARAMS.value : []
+                Settings.AI.value : True, #should this be Ai or person
+                Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
+                Settings.START_PARAMS.value : [], #any parameters for the stater
+                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
+                Settings.SEARCH_PARAMS.value : [], #any parameters for the search
+                Settings.AI_TYPE.value : AIType.NONE.value, # what is the AI
+                Settings.AI_PARAMS.value : [] #any params for the ai
             }
 
         if not player2_config :
@@ -34,10 +35,11 @@ class Engine:
                 Settings.AI_TYPE.value :  AIType.REACHABLE.value,
                 Settings.AI_PARAMS.value : []
             }
-
+        #time-out
         if not time_per_move:
             time_per_move = 10
 
+        #initialize and add the players to the board
         self.player1 = None
         self.player2 = None
 
@@ -54,9 +56,14 @@ class Engine:
         else:
             self.player2 = Player(self)
 
+        #count for number of moves
         self.num_moves = 0
+        #the board
         self.board = Board()
+        #keeping track of turns
         self.player1_turn = True
+        #keeps track of the max number of moves
+        self.max_moves = max_moves
 
     def _setup_ai(self, config, time_per_move):
         starter = None
@@ -98,6 +105,7 @@ class Engine:
         return ai
 
     def setup_board(self):
+        #set up the players starting state
         invalid_state = True
         while invalid_state:
             states = self.player1.get_starting_state()
@@ -117,6 +125,7 @@ class Engine:
         return self.board.get_player_view(player)
 
     def make_move(self, player1_turn):
+        #one turn
         self.player1_turn = player1_turn
         invalid_move = True
         if self.player1_turn:
@@ -129,6 +138,7 @@ class Engine:
             if self.player1_turn:
                 #print("player 1")
                 start,end = self.player1.get_move()
+                print("the move: {}, {}".format( start, end))
                 if(start == None and end == None):
                     print "empty"
                     return self.player1_turn
@@ -139,11 +149,13 @@ class Engine:
                 if self.board.move(start,end,1):
                     self.player1_turn = False
                     invalid_move = False
-                self.num_moves += 1
+                    self.num_moves += 1
+                print("the move: {}, {}".format( start, end))
                 return self.player1_turn
             else:
                 #print("player 2")
                 start,end = self.player2.get_move()
+                print("the move: {}, {}".format( start, end))
                 if(start == None and end == None):
                     print "empty"
                     return self.player1_turn
@@ -156,16 +168,22 @@ class Engine:
                 if self.board.move(start,end,2):
                     self.player1_turn = True
                     invalid_move = False
-                self.num_moves += 1
+                    self.num_moves += 1
+                print("the move: {}, {}".format( start, end))
                 return self.player1_turn
 
     def run(self):
+        #this runs the game until the end
         self.setup_board()
         self.player1_turn = True
-        num_moves = 0
-        while not self.board.get_winner() and num_moves < 1000:
+        out_of_moves = False
+        if self.max_moves :
+            out_of_moves = (self.num_moves > self.max_moves)
+        while not self.board.get_winner() and not (out_of_moves) :
             self.player1_turn = self.make_move(self.player1_turn)
-            num_moves += 1
+            if self.max_moves :
+                out_of_moves = (self.num_moves > self.max_moves)
+
         return self.board.get_winner()
 
     def get_state(self):

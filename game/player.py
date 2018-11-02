@@ -27,7 +27,11 @@ class Player:
             while invalid_input:
                 try:
                     #sys.stdout.write("input your move: ")
-                    (x1,y1),(x2,y2) = self.get_move_pos()
+                    if FRONTEND :
+                        (x1,y1),(x2,y2) = self.get_move_pos()
+                    else:
+                        sys.stdout.write("input your move: ")
+                        (x1,y1),(x2,y2) = input()
                     invalid_input = False
                 except Exception as e:
                     print "input must be of the form: (i1,j1),(i2,j2)"

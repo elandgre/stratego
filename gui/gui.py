@@ -3,8 +3,10 @@
 from tkinter import *
 import numpy as np
 from game.engine import Engine
-from game.player import Player 
+from game.player import Player
 import utils.constants
+from game.config import FRONTEND
+
 
 class GUI:
     def ind_map_click(self, i, j):
@@ -22,17 +24,19 @@ class GUI:
                 turn = self.e.make_move(p)
                 #print(self.curselection())
                 print(i, j)
-                if not turn:
+                if turn == self.player1:
                     self.clicked_buttons = []
                     self.button_counter = 0
                 else:
                     self.clicked_buttons = []
-                    self.button_counter = 0 
+                    self.button_counter = 0
+                    self.player1 = not self.player1
                     self.update()
         return map_click
 
 
     def __init__(self, master):
+        FRONTEND = True
         self.tiles = []
         self.master = master
         self.frame = Frame(master)
@@ -60,8 +64,9 @@ class GUI:
                             command = self.ind_map_click(i, j),
                             text=board[i][j])
                 tile.grid(row=i, column=j)
+
                 self.tiles.append(tile)
-        
+
 
     def update(self):
         pass
