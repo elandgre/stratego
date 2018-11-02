@@ -21,8 +21,8 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
                 wins += 0.5
             else:
                 wins += (res == 1)
-        print(float(wins) / self.n_games)
-        return float(wins) / self.n_games
+        print(float(self.n_games - wins) / self.n_games)
+        return float(self.n_games - wins) / self.n_games
 
     def train(self):
         opt = Optimizer(self.param_ranges,"GBRT")
@@ -44,7 +44,7 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
 def run_test():
     ai_config = {
                 Settings.AI.value : True,
-                Settings.START_TYPE.value : StartType.RANDOM.value,
+                Settings.START_TYPE.value : StartType.CHAMPION.value,
                 Settings.START_PARAMS.value : [],
                 Settings.SEARCH_TYPE.value : SearchType.NONE.value,
                 Settings.SEARCH_PARAMS.value : [],
@@ -54,7 +54,7 @@ def run_test():
 
     opponent_config = {
                 Settings.AI.value : True,
-                Settings.START_TYPE.value : StartType.RANDOM.value,
+                Settings.START_TYPE.value : StartType.CHAMPION.value,
                 Settings.START_PARAMS.value : [],
                 Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
                 Settings.SEARCH_PARAMS.value : [],

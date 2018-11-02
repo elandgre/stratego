@@ -69,7 +69,13 @@ class GUI:
 
 
     def update(self):
-        pass
+    	if self.player1_turn:
+        	board = self.e.get_board(1)
+        else:
+        	board = self.e.get_board(2)
+        for i in range(10):
+            for j in range(10):
+            	self.tiles[i * 10 + j].text = board[i][j]
 
 
 def main():

@@ -1,4 +1,6 @@
 from game.config import *
+from starter import Starter
+
 class ChampionStarter(Starter):
     def __init__(self,start_time):
         self.start_time = start_time
