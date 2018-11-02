@@ -4,6 +4,7 @@ from config import *
 import time
 from ai.random_searcher import RandomSearcher
 from ai.random_starter import RandomStarter
+from ai.championStarter import ChampionStarter
 from ai.basicAI import BasicAI
 from ai.reachable_ai import ReachableAI
 
@@ -64,8 +65,10 @@ class Engine:
         evaluator = None
 
         #parse and create the start state
-        if config[Settings.START_TYPE.value] == StartType.RANDOM.value :
+        if config[Settings.START_TYPE.value] == StartType.RANDOM.value:
             starter = RandomStarter(time.time())
+        elif config[Settings.START_TYPE.value] == StartType.CHAMPION.value:
+            starter = ChampionStarter(time.time())
         else:
             raise NotImplementedError
 

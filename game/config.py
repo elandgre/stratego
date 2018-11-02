@@ -16,7 +16,7 @@ class Settings(Enum):
 class StartType(Enum):
     RANDOM = 'random'
     BETTER = 'better'
-
+    CHAMPION = 'champion'
 class SearchType(Enum):
     NONE = 'no searcher'
     GREEDY = 'gready search'
