@@ -1,5 +1,8 @@
 from enum import Enum
 
+
+MS_BETWEEN_MOVES = 3000
+
 class pieces(Enum):
     EMPTY = 'empty'
     SPY = 'spy'

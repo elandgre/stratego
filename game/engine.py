@@ -127,8 +127,11 @@ class Engine:
             else:
                 print("invalid list of starting states")
 
-    def get_board(self, player):
-        return self.board.get_player_view(player)
+    def get_board(self, player=None):
+        if player == None :
+            return self.board.get_full_view()
+        else :
+            return self.board.get_player_view(player)
 
     def make_move(self):
         invalid_move = True
@@ -260,6 +263,8 @@ class Engine:
         else:
             return self.board.get_piece_at_position(pos, 2)
 
+    def get_winner(self):
+        return self.board.get_winner()
 
 
 #    def get_all_next_moves(self):
