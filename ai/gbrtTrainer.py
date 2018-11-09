@@ -16,16 +16,14 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
 
     def objective(self,params):
         self.ai_config[Settings.AI_PARAMS.value] = params
-        wins = 0
+        res = 0
         for i in range(self.n_games):
             self.engine.restart(self.max_moves,self.ai_config,self.opponent_config)
-            res = self.engine.run()
-            if res == 0:
-                wins += 0.5
-            else:
-                wins += (res == 1)
-        print(float(self.n_games - wins) / self.n_games)
-        return float(self.n_games - wins) / self.n_games
+            self.engine.run()
+            val = self.engine.get_value(1,100,-1,500)
+            res += val
+        print res
+        return -res
 
 
     def train(self):
@@ -41,13 +39,11 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
         wins = 0
         for i in range(self.n_games):
             self.engine.restart(self.max_moves,self.ai_config,self.opponent_config)
-            res = self.engine.run()
-            if res == 0:
-                wins += 0.5
-            else:
-                wins += (res == 1)
-        print(float(self.n_games - wins) / self.n_games)
-        return float(self.n_games - wins) / self.n_games
+            self.engine.run()
+            val = self.engine.get_value(1,100,-1,500)
+            res += val
+        print res
+        return -res
 
     def train_batchwise(self):
         opt = Optimizer(self.param_ranges,"GP")
@@ -85,16 +81,16 @@ def run_test():
                 Settings.AI.value : True,
                 Settings.START_TYPE.value : StartType.CHAMPION.value,
                 Settings.START_PARAMS.value : [],
-                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
+                Settings.SEARCH_TYPE.value : SearchType.NONE.value,
                 Settings.SEARCH_PARAMS.value : [],
-                Settings.AI_TYPE.value : AIType.NONE.value,
+                Settings.AI_TYPE.value :  AIType.REACHABLE.value,
                 Settings.AI_PARAMS.value : []
             }
 
     param_ranges = [(-1,1) for i in range(101)]
     init_params = [1 for i in range(101)]
     n_batches = 5
-    n_iter = 10
+    n_iter = 25
     n_games = 5
 
     trainer = GBRTTrainer(1000, ai_config, opponent_config, param_ranges, n_iter, n_games, init_params,n_batches)
