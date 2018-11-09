@@ -85,8 +85,10 @@ class LS_start_state_trainer:
         next_start[s2] = temp
         return next_start
 
-    def simulated_annealing(self):
-        pass
+    def simulated_annealing(self, factor):
+        cur = start
+        while True :
+
 
 
 
