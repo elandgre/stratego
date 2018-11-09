@@ -14,7 +14,7 @@ class LSStartStateTrainer:
 
 
         self.delta = 0.00001
-        self.n_games = 30
+        self.n_games = 10
         #make both of them random, but the simpel start state
         self.player_config = {
                 Settings.AI.value : True, #should this be Ai or person
@@ -81,11 +81,14 @@ class LSStartStateTrainer:
             n = int(random.random() * 8)
             count = 0
             for i2 in range(i1 -1, i1 +2):
+                if valid : break
                 for j2 in range(j1 -1, j1 + 2):
+                    if valid : break
                     if(i1 == i2 and j1 == j2): continue
                     s2 = 10 * i2 + j2
                     if(count == n):
                         if (not s2 < 0) and (not s2 >= len(last_start)):
+                            print(s2)
                             valid = True
 
                     count+=1

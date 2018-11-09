@@ -286,6 +286,7 @@ class Engine:
             my_piece_counts = len(self.board.player2_piece_positions)
             their_piece_counts = len(self.board.player1_piece_positions)
 
+        win = 0
         if self.get_winner() == player :
             win = 1
         else :

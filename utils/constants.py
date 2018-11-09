@@ -87,10 +87,18 @@ weak_start = [3, 12, 4, 2, 3, 12, 3, 3, 12, 11, 5, 4, 12, 2, 7, 3, 5, 6, 5, 12, 
 
 champion_start = [2,3,12,2,3,12,11,12,3,3,4,12,4,7,8,5,12,5,6,4,5,4,12,1,9,2,7,7,8,2,6,2,2,5,2,6,3,10,2,6]
 
-start_states = [
+in_order_start = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,12,12,12]
+
+good_start_states = [
     champion_start, 
     aggressive_strong_start, 
     decent_start, 
     good_start, 
-    defensive_start, 
-    weak_start]
+    defensive_start]
+
+general_start_states = [
+        in_order_start,
+        weak_start]
+
+
+
