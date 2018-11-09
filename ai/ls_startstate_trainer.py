@@ -1,14 +1,19 @@
 from utils.search_utils import get_random_start
-
+from game.config import *
+from game.engine import Engine
 import random
 
+import numpy as np
+import copy
 
-
-class LS_start_state_trainer:
-    def __init__(self, start = None):
+class LSStartStateTrainer:
+    def __init__(self, start = None, start_temp = 1024, factor = 2):
+        self.start = start
         if start == None:
-            start = get_random_start()
+            self.start = get_random_start()
 
+
+        self.delta = 0.00001
         self.n_games = 30
         #make both of them random, but the simpel start state
         self.player_config = {
@@ -30,6 +35,12 @@ class LS_start_state_trainer:
                 Settings.AI_PARAMS.value : [] #any params for the ai
             }
 
+        self.engine = Engine(1000)
+
+        self.best = self.simulated_annealing(start_temp, factor)
+
+        print(self.best)
+
     def evaluate(self, last_start, next_start):
         wins = 0
         self.player_config[Settings.START_PARAMS.value] = next_start
@@ -37,7 +48,7 @@ class LS_start_state_trainer:
 
 
         for i in range(self.n_games):
-            self.engine.restart(self.player_config,self.opponent_config)
+            self.engine.restart(1000, self.player_config,self.opponent_config)
             res = self.engine.run()
             if res == 0:
                 wins += 0.5
@@ -53,7 +64,7 @@ class LS_start_state_trainer:
         while j == i :
             j = random.random() * len(last_start)
 
-        next_start = last_start.copy()
+        next_start = copy.copy(last_start)
         temp = next_start[i]
         next_start[i] = next_start[j]
         next_start[j] = temp
@@ -79,14 +90,33 @@ class LS_start_state_trainer:
 
                     count+=1
 
-        next_start = last_start.copy()
+        next_start = copy.copy(last_start)
+
+        print("s1 : {}".format(s1))
+        print("s2 : {}".format(s2))
+
         temp = next_start[s1]
         next_start[s1] = next_start[s2]
         next_start[s2] = temp
         return next_start
 
-    def simulated_annealing(self, start_temp factor):
-        pass
+    def simulated_annealing(self, start_temp, factor):
+        cur = self.start
+        temp = start_temp
+        while True :
+            if temp <= self.delta : return cur
+            next_start = self.get_similar_random_next(cur)
+            e = self.evaluate(cur, next_start)
+            if (e > 0.5) :
+                cur = next_start
+            else :
+                should_use_anyways = random.random()
+                p = np.exp( (e - 0.5) / temp)
+                if(should_use_anyways < p):
+                    cur = next_start
+            temp = temp / factor
+
+
 
 
 
