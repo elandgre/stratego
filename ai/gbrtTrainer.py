@@ -3,19 +3,20 @@ from game.engine import Engine
 from game.config import *
 
 class GBRTTrainer(): #trains using Bayesian global optimization with GBRT against random play
-    def __init__(self,ai_config,opponent_config,param_ranges,n_iter,n_games):
+    def __init__(self,max_moves,ai_config,opponent_config,param_ranges,n_iter,n_games):
         self.ai_config = ai_config
         self.opponent_config = opponent_config
         self.param_ranges = param_ranges
         self.n_iter = n_iter
         self.n_games = n_games
-        self.engine = Engine(self.ai_config, self.opponent_config)
+        self.max_moves = max_moves
+        self.engine = Engine(self.max_moves,self.ai_config, self.opponent_config)
 
     def objective(self,params):
         self.ai_config[Settings.AI_PARAMS.value] = params
         wins = 0
         for i in range(self.n_games):
-            self.engine.restart(self.ai_config,self.opponent_config)
+            self.engine.restart(self.max_moves,self.ai_config,self.opponent_config)
             res = self.engine.run()
             if res == 0:
                 wins += 0.5
@@ -65,7 +66,7 @@ def run_test():
     n_iter = 100
     n_games = 5
 
-    trainer = GBRTTrainer(ai_config, opponent_config, param_ranges, n_iter, n_games)
+    trainer = GBRTTrainer(1000,ai_config, opponent_config, param_ranges, n_iter, n_games)
     trainer.train()
     print(trainer.evaluate())
 
