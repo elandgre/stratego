@@ -24,7 +24,7 @@ class Engine:
         self.backend = backend
         if not player1_config :
             player1_config = {
-                Settings.AI.value : False, #should this be Ai or person
+                Settings.AI.value : True, #should this be Ai or person
                 Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
                 Settings.START_PARAMS.value : [], #any parameters for the stater
                 Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
@@ -35,7 +35,7 @@ class Engine:
 
         if not player2_config :
             player2_config = {
-                Settings.AI.value : False,
+                Settings.AI.value : True,
                 Settings.START_TYPE.value : StartType.RANDOM.value,
                 Settings.START_PARAMS.value : [],
                 Settings.SEARCH_TYPE.value : SearchType.NONE.value,
@@ -72,6 +72,8 @@ class Engine:
         self.player1_turn = True
         #keeps track of the max number of moves
         self.max_moves = max_moves
+
+
 
     def _setup_ai(self, config, time_per_move):
         starter = None
@@ -272,6 +274,35 @@ class Engine:
 
     def get_winner(self):
         return self.board.get_winner()
+
+
+    def get_value(self, player, pieces_weight, plys_weight, win_weight):
+        my_piece_counts = 0
+        their_piece_counts = 0
+        if player == 1:
+            my_piece_counts = len(self.board.player1_piece_positions)
+            their_piece_counts = len(self.board.player2_piece_positions)
+        else:
+            my_piece_counts = len(self.board.player2_piece_positions)
+            their_piece_counts = len(self.board.player1_piece_positions)
+
+        if self.get_winner() == player :
+            win = 1
+        else :
+            win = -1
+
+        plys = self.num_moves/2
+
+        #print("# of my moves: {}".format(my_piece_counts))
+        #print("# of their moves: {}".format(their_piece_counts))
+        #print("plys : {}".format(plys))
+        #print("wins : {}".format(win))
+
+
+        val = (pieces_weight * (my_piece_counts - their_piece_counts) +
+                plys_weight * plys +
+                win_weight * win)
+        return val
 
 
 #    def get_all_next_moves(self):
