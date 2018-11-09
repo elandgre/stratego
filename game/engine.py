@@ -289,7 +289,9 @@ class Engine:
         win = 0
         if self.get_winner() == player :
             win = 1
-        else :
+        elif self.get_winner() == 0 :
+            win = 0
+        else:
             win = -1
 
         plys = self.num_moves/2
