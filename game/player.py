@@ -1,4 +1,5 @@
 import sys
+from utils.constants import *
 
 class Player:
     def __init__(self, backend, engine,ai=None):
@@ -18,7 +19,7 @@ class Player:
 
     def get_starting_state(self):
         if not self.ai:
-            return [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,12,12,12]
+            return good_start_states[0]
         else:
             return self.ai.get_starting_state()
 
