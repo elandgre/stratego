@@ -26,7 +26,7 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
         return float(self.n_games - wins) / self.n_games
 
     def train(self):
-        opt = Optimizer(self.param_ranges,"GBRT")
+        opt = Optimizer(self.param_ranges,"GP")
         r = opt.run(self.objective,n_iter=self.n_iter)
         self.params = r.x
         #print("trained paramaters are: ")
@@ -66,7 +66,7 @@ def run_test():
     n_iter = 100
     n_games = 5
 
-    trainer = GBRTTrainer(1000,ai_config, opponent_config, param_ranges, n_iter, n_games)
+    trainer = GBRTTrainer(1000, ai_config, opponent_config, param_ranges, n_iter, n_games)
     trainer.train()
     print(trainer.evaluate())
 
