@@ -79,7 +79,7 @@ class Engine:
         evaluator = None
 
         #parse and create the start state
-        print config[Settings.START_TYPE.value]
+        #print config[Settings.START_TYPE.value]
         if config[Settings.START_TYPE.value] == StartType.RANDOM.value:
             starter = RandomStarter(time.time())
         elif config[Settings.START_TYPE.value] == StartType.SIMPLE.value:
@@ -155,7 +155,7 @@ class Engine:
             if self.player1_turn:
                 #print("player 1")
                 start,end = self.player1.get_move()
-                print("the move: {}, {}".format( start, end))
+                #print("the move: {}, {}".format( start, end))
                 if(start == None and end == None):
                     print "empty"
                     return self.player1_turn
@@ -168,13 +168,13 @@ class Engine:
                     invalid_move = False
                     self.num_moves += 1
                 #print("the move: {}, {}".format( start, end))
-                print "player 1 turn, after:"
-                print(self.board.get_player_view(1))
+                #print "player 1 turn, after:"
+                #print(self.board.get_player_view(1))
                 return self.player1_turn
             else:
                 #print("player 2")
                 start,end = self.player2.get_move()
-                print("the move: {}, {}".format( start, end))
+                #print("the move: {}, {}".format( start, end))
                 if(start == None and end == None):
                     print "empty"
                     return self.player1_turn
@@ -189,8 +189,8 @@ class Engine:
                     invalid_move = False
                     self.num_moves += 1
                 #print("the move: {}, {}".format( start, end))
-                print "player 2 turn after"
-                print(self.board.get_player_view(2))
+                #print "player 2 turn after"
+                #print(self.board.get_player_view(2))
                 return self.player1_turn
 
     def run(self):
