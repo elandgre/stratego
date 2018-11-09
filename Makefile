@@ -10,5 +10,8 @@ stratego:
 test:
 	python -m pytest
 
+trainStart:
+	python -m ai.train_start
+
 clean:
 	find . -name '*.pyc' -delete
