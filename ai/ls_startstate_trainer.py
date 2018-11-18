@@ -7,14 +7,14 @@ import numpy as np
 import copy
 
 class LSStartStateTrainer:
-    def __init__(self, start = None, start_temp = 1024, factor = 2):
+    def __init__(self, start = None, n_games = 10, start_temp = 1024, factor = 2):
         self.start = start
         if start == None:
             self.start = get_random_start()
 
 
         self.delta = 0.00001
-        self.n_games = 10
+        self.n_games = n_games
         #make both of them random, but the simpel start state
         self.player_config = {
                 Settings.AI.value : True, #should this be Ai or person
@@ -88,15 +88,15 @@ class LSStartStateTrainer:
                     s2 = 10 * i2 + j2
                     if(count == n):
                         if (not s2 < 0) and (not s2 >= len(last_start)):
-                            print(s2)
+                            #print(s2)
                             valid = True
 
                     count+=1
 
         next_start = copy.copy(last_start)
 
-        print("s1 : {}".format(s1))
-        print("s2 : {}".format(s2))
+        #print("s1 : {}".format(s1))
+        #print("s2 : {}".format(s2))
 
         temp = next_start[s1]
         next_start[s1] = next_start[s2]
