@@ -1,2 +1,2 @@
 from ai.gbrtTrainer import *
-run_test()
+run_and_plot()

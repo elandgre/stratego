@@ -275,6 +275,8 @@ class Engine:
     def get_winner(self):
         return self.board.get_winner()
 
+    def is_player1_turn(self):
+        return self.player1_turn
 
     def get_value(self, player, pieces_weight, plys_weight, win_weight):
         my_piece_counts = 0
