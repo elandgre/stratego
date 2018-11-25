@@ -35,6 +35,7 @@ class AIType(Enum):
     INVINCLBLE = 'invincible'
     REACHABLE = 'reachable'
     MODIFIED_REACHABLE = 'modified_reachable'
+    PIECE_BASED = 'piece_based'
 
 class ReachableParameters(Enum):
     INITIAL_MOVE = 'initial' # 0 - 9

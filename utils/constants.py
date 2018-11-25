@@ -1,5 +1,8 @@
 from enum import Enum
 
+FILENAME = 'FILENAME'
+AI = 'ai'
+START = 'start'
 
 MS_BETWEEN_MOVES = 3000
 
@@ -90,15 +93,79 @@ champion_start = [2,3,12,2,3,12,11,12,3,3,4,12,4,7,8,5,12,5,6,4,5,4,12,1,9,2,7,7
 in_order_start = [1,2,2,2,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8,9,10,11,12,12,12,12,12,12]
 
 good_start_states = [
-    champion_start, 
-    aggressive_strong_start, 
-    decent_start, 
-    good_start, 
+    champion_start,
+    aggressive_strong_start,
+    decent_start,
+    good_start,
     defensive_start]
 
 general_start_states = [
         in_order_start,
         weak_start]
+
+def random_config():
+    return {
+        Settings.AI.value : True, #should this be Ai or person
+        Settings.START_TYPE.value : StartType.CHAMPION.value, #what kind of start state
+        Settings.START_PARAMS.value : [], #any parameters for the stater
+        Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
+        Settings.SEARCH_PARAMS.value : [], #any parameters for the search
+        Settings.AI_TYPE.value : AIType.NONE.value, # what is the AI
+        Settings.AI_PARAMS.value : [] #any params for the ai
+    }
+
+def reachable_config(params):
+    return {
+        Settings.AI.value : True,
+        Settings.START_TYPE.value : StartType.CHAMPION.value,
+        Settings.START_PARAMS.value : [],
+        Settings.SEARCH_TYPE.value : SearchType.NONE.value,
+        Settings.SEARCH_PARAMS.value : [],
+        Settings.AI_TYPE.value :  AIType.REACHABLE.value,
+        Settings.AI_PARAMS.value : params
+    }
+
+def mod_reachable_config(params):
+    return {
+        Settings.AI.value : True,
+        Settings.START_TYPE.value : StartType.CHAMPION.value,
+        Settings.START_PARAMS.value : [],
+        Settings.SEARCH_TYPE.value : SearchType.NONE.value,
+        Settings.SEARCH_PARAMS.value : [],
+        Settings.AI_TYPE.value :  AIType.MODIFIED_REACHABLE.value,
+        Settings.AI_PARAMS.value : params
+    }
+
+
+def flexible_start_config(params):
+    return {
+        Settings.AI.value : True, #should this be Ai or person
+        Settings.START_TYPE.value : StartType.SIMPLE.value, #what kind of start state
+        Settings.START_PARAMS.value : params, #any parameters for the stater
+        Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
+        Settings.SEARCH_PARAMS.value : [], #any parameters for the search
+        Settings.AI_TYPE.value : AIType.NONE.value, # what is the AI
+        Settings.AI_PARAMS.value : [] #any params for the ai
+    }
+
+
+def read_file_into_configs(filename, config_maker):
+    configs = []
+
+    file = open(filename, 'r')
+    text = file.read()
+    param_strings = text.split('\n')
+    for params in param_strings:
+        lst = json.loads(params)
+        conf = config_maker(lst)
+        conf[FILENAME] = filename
+        configs.append()
+    file.close()
+
+    return configs
+
+
+
 
 
 
