@@ -34,6 +34,7 @@ class AIType(Enum):
     NONE = 'none'
     INVINCLBLE = 'invincible'
     REACHABLE = 'reachable'
+    MODIFIED_REACHABLE = 'modified_reachable'
 
 class ReachableParameters(Enum):
     INITIAL_MOVE = 'initial' # 0 - 9
@@ -62,7 +63,19 @@ paramStart = {
     ReachableParameters.RANDOM_MOVE.value : 100
 }
 
-
+modifiedParamStart = {
+    ReachableParameters.INITIAL_MOVE.value : 0,
+    ReachableParameters.ATTACKING_UNMOVED.value : 2,
+    ReachableParameters.ATTACKING_WEAKER.value : 4,
+    ReachableParameters.MOVE_TO_OTHER_SIDE.value : 6,
+    ReachableParameters.MOVE_TO_RIGHT.value : 8,
+    ReachableParameters.MOVE_TO_OWN_SIDE.value: 10,
+    ReachableParameters.MOVE_TO_LEFT.value : 12,
+    ReachableParameters.ATTACK_UNKNOWN_MOVED.value: 14,
+    ReachableParameters.MOVE_AROUND_LAKE.value : 16,
+    ReachableParameters.MOVE_ALONG_WALL.value : 18,
+    ReachableParameters.RANDOM_MOVE.value : 20
+}
 
 
 

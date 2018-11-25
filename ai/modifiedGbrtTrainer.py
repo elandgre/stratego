@@ -4,7 +4,7 @@ from game.config import *
 import matplotlib.pyplot as plt
 import numpy as np
 class GBRTTrainer(): #trains using Bayesian global optimization with GBRT against random play
-    def __init__(self,max_moves,ai_config,opponent_config,param_ranges,n_iter,n_games,init_params,n_batches = 1):
+    def __init__(self,max_moves,ai_config,opponent_config,param_ranges,n_iter,n_games,init_params,n_batches = 1, ):
         self.ai_config = ai_config
         self.opponent_config = opponent_config
         self.param_ranges = param_ranges
@@ -85,7 +85,7 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
             elif winner == 0:
                 wins += 0.5
             print winner
-        return wins / (self.n_games * 10)
+        return wins / (self.n_games )
 
 
 #############################################
@@ -98,7 +98,7 @@ def run_test():
                 Settings.START_PARAMS.value : [],
                 Settings.SEARCH_TYPE.value : SearchType.NONE.value,
                 Settings.SEARCH_PARAMS.value : [],
-                Settings.AI_TYPE.value :  AIType.REACHABLE.value,
+                Settings.AI_TYPE.value :  AIType.MODIFIED_REACHABLE.value,
                 Settings.AI_PARAMS.value : []
             }
 
@@ -113,7 +113,7 @@ def run_test():
     #        }
     opponent_config = {
                 Settings.AI.value : True, #should this be Ai or person
-                Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
+                Settings.START_TYPE.value : StartType.CHAMPION.value, #what kind of start state
                 Settings.START_PARAMS.value : [], #any parameters for the stater
                 Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
                 Settings.SEARCH_PARAMS.value : [], #any parameters for the search
@@ -122,8 +122,8 @@ def run_test():
             }
 
 
-    param_ranges = [(-1,1) for i in range(101)]
-    init_params = [1 for i in range(101)]
+    param_ranges = [(-1,1) for i in range(21)]
+    init_params = [1 for i in range(21)]
     n_batches = 2
     n_iter = 100
     n_games = 5
@@ -135,7 +135,7 @@ def run_test():
 
 def run_and_plot():
     trainer = run_test()
-    good_param_file = open("good_reachable.txt", "a")
+    good_param_file = open("good_modified_reachable.txt", "a")
     for param in trainer.the_good_ones:
         print(param)
         good_param_file.write("{}\n".format(param))

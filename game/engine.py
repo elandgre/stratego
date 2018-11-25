@@ -11,6 +11,7 @@ from ai.simple_starter import SimpleStarter
 
 from ai.basicAI import BasicAI
 from ai.reachable_ai import ReachableAI
+from ai.modified_reachable import ModifiedReachableAI
 
 class Engine:
     def __init__(self, max_moves=None , player1_config=None, player2_config=None, backend= True, time_per_move=None):
@@ -114,6 +115,8 @@ class Engine:
             raise NotImplementedError
         elif config[Settings.AI_TYPE.value] == AIType.REACHABLE.value :
             ai = ReachableAI(self,time.time(),time_per_move,starter, config[Settings.AI_PARAMS.value])
+        elif config[Settings.AI_TYPE.value] == AIType.MODIFIED_REACHABLE.value :
+            ai = ModifiedReachableAI(self,time.time(),time_per_move,starter, config[Settings.AI_PARAMS.value])
         else:
             raise NotImplementedError
 
