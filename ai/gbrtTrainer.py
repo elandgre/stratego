@@ -29,7 +29,7 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
                 wins += 0.5
         print wins / self.n_games
         self.score_history.append(wins / self.n_games)
-        if(wins / self.n_games) > .99:
+        if(wins / self.n_games) >= .99:
             #print(params)
             self.the_good_ones.append(params)
         return 1 - (wins / self.n_games)
@@ -85,7 +85,7 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
             elif winner == 0:
                 wins += 0.5
             print winner
-        return wins / (self.n_games * 10)
+        return wins / (self.n_games)
 
 
 #############################################
@@ -135,7 +135,7 @@ def run_test():
 
 def run_and_plot():
     trainer = run_test()
-    good_param_file = open("good_reachable.txt", "a")
+    good_param_file = open("train/good_reachable.txt", "a")
     for param in trainer.the_good_ones:
         print(param)
         good_param_file.write("{}\n".format(param))

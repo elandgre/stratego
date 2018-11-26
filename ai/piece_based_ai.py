@@ -7,6 +7,7 @@ import random
 class PieceBasedAI(AI):
     def __init__(self,engine,start_time,time_per_move,starter,params=None, op=None):
         super(PieceBasedAI, self).__init__(engine,start_time,time_per_move, starter)
+
         self.op = op
         if self.op == None:
             self.op = PieceBasedOp.ADD.value
@@ -21,9 +22,9 @@ class PieceBasedAI(AI):
 
     def _get_param_index(self, param, piece=None):
         if(PieceBasedParameters.PIECE_VALUE.value == param):
-            return piece
+            return piece_map[piece] - 1
         else :
-            return modifiedParamStart[param]
+            return pieceBasedParamStart[param]
 
     def get_random_move(self,valid_moves):
         num_moves = len(valid_moves)
@@ -58,7 +59,8 @@ class PieceBasedAI(AI):
 
     def eval_move(self, (start, end), piece, other_pieces, other_moved_pieces,other_unmoved_pieces, other_unkown_pieces):
         valuation = 0
-
+        (i1, j1) = start
+        (i2, j2) = end
         #forward
         if i2 > i1 :
             valuation += self.parameters[self._get_param_index(PieceBasedParameters.MOVE_FORWARD.value)]

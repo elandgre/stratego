@@ -29,9 +29,10 @@ class Tournement:
             self.ai_configs += read_file_into_configs(filename, reachable_config)
         for filename in config[AI_FIELD][AIType.MODIFIED_REACHABLE.value]:
             self.ai_configs += read_file_into_configs(filename, mod_reachable_config)
-        for params in config[AI_FIELD][AIType.PIECE_BASED.value]:
-            #TODO
-            pass
+        for params in config[AI_FIELD][AIType.PIECE_BASED_ADD.value]:
+            self.ai_configs += read_file_into_configs(filename, piecebased_config_add)
+        for params in config[AI_FIELD][AIType.PIECE_BASED_MUL.value]:
+            self.ai_configs += read_file_into_configs(filename, piecebased_config_mul)
 
 
         self.start_configs = []
@@ -45,7 +46,7 @@ class Tournement:
         self.max_moves = max_moves
 
 
-    def play_against(self, config1, config2, n_games=10):
+    def play_against(self, config1, config2, n_games=5):
         player1_wins = 0
         player2_wins = 0
         for i in range(n_games):

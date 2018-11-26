@@ -12,6 +12,7 @@ from ai.simple_starter import SimpleStarter
 from ai.basicAI import BasicAI
 from ai.reachable_ai import ReachableAI
 from ai.modified_reachable import ModifiedReachableAI
+from ai.piece_based_ai import PieceBasedAI
 
 class Engine:
     def __init__(self, max_moves=None , player1_config=None, player2_config=None, backend= True, time_per_move=None):
@@ -108,7 +109,7 @@ class Engine:
         else:
             raise NotImplementedError
 
-        #parse and create the evaluator
+        #parse and create the ai
         if config[Settings.AI_TYPE.value] == AIType.NONE.value :
             ai = BasicAI(self, time.time(), time_per_move, starter, None, searcher)
         elif config[Settings.AI_TYPE.value] == AIType.INVINCLBLE.value :
@@ -117,6 +118,10 @@ class Engine:
             ai = ReachableAI(self,time.time(),time_per_move,starter, config[Settings.AI_PARAMS.value])
         elif config[Settings.AI_TYPE.value] == AIType.MODIFIED_REACHABLE.value :
             ai = ModifiedReachableAI(self,time.time(),time_per_move,starter, config[Settings.AI_PARAMS.value])
+        elif config[Settings.AI_TYPE.value] == AIType.PIECE_BASED_ADD.value :
+            ai = PieceBasedAI(self,time.time(),time_per_move,starter, config[Settings.AI_PARAMS.value], PieceBasedOp.ADD.value)
+        elif config[Settings.AI_TYPE.value] == AIType.PIECE_BASED_MUL.value :
+            ai = PieceBasedAI(self,time.time(),time_per_move,starter, config[Settings.AI_PARAMS.value], PieceBasedOp.MUL.value)
         else:
             raise NotImplementedError
 

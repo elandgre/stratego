@@ -19,8 +19,11 @@ trainReachable:
 trainModifiedReachable:
 	python -m train.trainerTestModifiedReachable
 
-trainPieceBased:
-	python -m train.trainerTestPieceBased
+trainPieceBasedAdd:
+	python -m train.trainerTestPieceBasedAdd
+
+trainPieceBasedMul:
+	python -m train.trainerTestPieceBasedMul
 
 tournement:
 	python -m train.run_tournement

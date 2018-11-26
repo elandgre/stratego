@@ -36,7 +36,8 @@ class AIType(Enum):
     INVINCLBLE = 'invincible'
     REACHABLE = 'reachable'
     MODIFIED_REACHABLE = 'modified_reachable'
-    PIECE_BASED = 'piece_based'
+    PIECE_BASED_ADD = 'piece_based_add'
+    PIECE_BASED_MUL = 'piece_based_mull'
 
 
 class ReachableParameters(Enum):
@@ -80,6 +81,8 @@ modifiedParamStart = {
     ReachableParameters.RANDOM_MOVE.value : 20
 }
 
+
+
 class PieceBasedParameters(Enum):
     PIECE_VALUE = 'initial' # 0 - 9
     MOVE_FORWARD = 'other side of the board' #10
@@ -88,6 +91,8 @@ class PieceBasedParameters(Enum):
     MOVE_TO_LEFT = 'move to the left' #13
     ATTACKING = 'attacking' #14
     RANDOM_MOVE = 'make a random move' #15
+    OP = 'op'
+    PARAMS = 'params'
 
 class PieceBasedOp(Enum):
     ADD = 'add'
@@ -242,6 +247,27 @@ def mod_reachable_config(params):
         Settings.AI_PARAMS.value : params
     }
 
+def piecebased_config_add(params):
+    return {
+        Settings.AI.value : True,
+        Settings.START_TYPE.value : StartType.CHAMPION.value,
+        Settings.START_PARAMS.value : [],
+        Settings.SEARCH_TYPE.value : SearchType.NONE.value,
+        Settings.SEARCH_PARAMS.value : [],
+        Settings.AI_TYPE.value :  AIType.PIECE_BASED_ADD.value,
+        Settings.AI_PARAMS.value : params
+    }
+
+def piecebased_config_mul(params):
+    return {
+        Settings.AI.value : True,
+        Settings.START_TYPE.value : StartType.CHAMPION.value,
+        Settings.START_PARAMS.value : [],
+        Settings.SEARCH_TYPE.value : SearchType.NONE.value,
+        Settings.SEARCH_PARAMS.value : [],
+        Settings.AI_TYPE.value :  AIType.PIECE_BASED_MUL.value,
+        Settings.AI_PARAMS.value : params
+    }
 
 def flexible_start_config(params):
     return {

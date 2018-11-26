@@ -3,8 +3,8 @@ from utils.constants import *
 
 tourney = Tournement({
     AI_FIELD : {
-      AIType.REACHABLE.value: ['good_reachable.txt'],
-      AIType.MODIFIED_REACHABLE.value : ['good_modified_reachable.txt'],
+      AIType.REACHABLE.value: ['train/good_reachable.txt'],
+      AIType.MODIFIED_REACHABLE.value : ['train/good_modified_reachable.txt'],
       AIType.PIECE_BASED.value : []
     },
     START_FIELD : []
