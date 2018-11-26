@@ -1,6 +1,6 @@
 from player import Player
 from board import Board
-from config import *
+from utils.constants import *
 import time
 
 from ai.random_searcher import RandomSearcher

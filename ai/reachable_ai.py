@@ -1,9 +1,7 @@
 from ai import AI
-from game.config import *
 from utils.constants import *
 import numpy as np
 import random
-
 
 class ReachableAI(AI):
     def __init__(self,engine,start_time,time_per_move,starter,params=None):

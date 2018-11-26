@@ -1,5 +1,4 @@
 from ai import AI
-from game.config import *
 from utils.constants import *
 import numpy as np
 import random

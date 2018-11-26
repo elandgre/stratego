@@ -5,8 +5,7 @@ import numpy as np
 from game.engine import Engine
 from game.player import Player
 from utils.constants import *
-from game.config import FRONTEND
-from game.config import *
+
 
 class GUI:
     def ind_map_click(self, i, j):

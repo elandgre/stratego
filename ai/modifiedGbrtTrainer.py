@@ -1,6 +1,6 @@
 from skopt import Optimizer
 from game.engine import Engine
-from game.config import *
+from utils.constants import *
 import matplotlib.pyplot as plt
 import numpy as np
 class GBRTTrainer(): #trains using Bayesian global optimization with GBRT against random play
