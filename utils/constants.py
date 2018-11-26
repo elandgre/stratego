@@ -38,6 +38,8 @@ class AIType(Enum):
     MODIFIED_REACHABLE = 'modified_reachable'
     PIECE_BASED_ADD = 'piece_based_add'
     PIECE_BASED_MUL = 'piece_based_mull'
+    MC_PLAYOFF = 'monte_carlo_playoff_eval'
+    MC_HUER = 'monte_carlo_huristic_eval'
 
 
 class ReachableParameters(Enum):

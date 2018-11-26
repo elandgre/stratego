@@ -117,8 +117,40 @@ class Tournement:
         best_start = self.playoff_helper(self.start_configs, num)
         return best_ai, best_start
 
+#observations from training
+#full reachable takes a long time to find states that result in winning all 10 of the games
+#modified reachable finds such states faster but those states often loose to the
+#full reachable ones, it seems because the parameter state space is so much larger
+#for the full reachable its harder for the optimizer to optimize, but these lead to
+#better solutions
+
+#when we attempted training the ais against another reachable AI with all the
+#parameters set to 1 the optimizer had a hard time finding solutions that would win
+#significantly, this seemed to cause the optimizer to essentially find AIs that
+#just avoided loosing, which meant that the ais learned to run out the clock
+#so that the game would be called a tie after the max number of iterations
+#even using different evaluation functions to encourage winning more
+#few AIs we found that could win more than 0.6 or 0.7 percent of the time
+
+
+#in order to preserve the properies of the reachable ai but decrease the
+#parameter space I created an AI called piece based which has a parameter
+#value for each piece and a parameter value of different types of moves
+#with the result that the sum of the parameters for the type of moves was either
+#added to or multiplied by the piece parameter value.
+
+#multiplying found strong solutions faster than reachable, and additive slower
+#than reachable, but in the tournement style evaluations of all the types of
+#paramters both additive and multiplicative piece based beat out the reachable
+#solutions
 
 #the best AI found currently:
 #{'ai parameters': [1, -1, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 1, 1, -1, 1, 0, -1, 0, 0, 1, 1, -1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, -1, 0, 0, -1, 0, 0, -1, 1, 1, -1, -1, 0, -1, -1, 0, 1, 0, 0, 0, -1, 1, -1, -1, 1, -1, -1, 0, -1, 0, 0, -1, -1, 0, 0, 0, 0, 1, 0, 1, 0, -1, -1, -1, -1, 0, -1, -1, 1, -1, 1, -1, 0, 1, -1, -1, 0, 0, -1, -1, 0, 0, 0, 1, -1, 0, 1, 0], 'eval_type': 'reachable', 'search_parmeters': [], 'FILENAME': 'good_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
+
+#better:
+#[{'ai parameters': [0, 1, 1, 1, 1, -1, -1, -1, 1, -1, 1, -1, 1, 1, 1, -1, 0, 1, 0, 1, -1], 'eval_type': 'piece_based_mull', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'},
+#{'ai parameters': [0, -1, 1, 1, 0, 0, -1, 1, 0, 0, 1, -1, 0, 1, 0, 0, 0, 0, -1, 0, 0], 'eval_type': 'piece_based_add', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'},
+#{'ai parameters': [-1, 1, 1, 1, 1, 0, -1, 1, -1, 0, 1, -1, -1, -1, -1, -1, 0, -1, -1, -1, 0], 'eval_type': 'piece_based_mull', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}]
+
 
 

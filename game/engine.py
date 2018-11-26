@@ -13,6 +13,7 @@ from ai.basicAI import BasicAI
 from ai.reachable_ai import ReachableAI
 from ai.modified_reachable import ModifiedReachableAI
 from ai.piece_based_ai import PieceBasedAI
+from ai.monte_carlo_ai import MonteCarloCheatingAI
 
 class Engine:
     def __init__(self, max_moves=None , player1_config=None, player2_config=None, backend= True, time_per_move=None):
@@ -27,22 +28,22 @@ class Engine:
         if not player1_config :
             player1_config = {
                 Settings.AI.value : True, #should this be Ai or person
-                Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
+                Settings.START_TYPE.value : StartType.CHAMPION.value, #what kind of start state
                 Settings.START_PARAMS.value : [], #any parameters for the stater
-                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
+                Settings.SEARCH_TYPE.value : SearchType.NONE.value, #what kind of search is happening
                 Settings.SEARCH_PARAMS.value : [], #any parameters for the search
-                Settings.AI_TYPE.value : AIType.NONE.value, # what is the AI
+                Settings.AI_TYPE.value : AIType.REACHABLE.value, # what is the AI
                 Settings.AI_PARAMS.value : [] #any params for the ai
             }
 
         if not player2_config :
             player2_config = {
                 Settings.AI.value : True,
-                Settings.START_TYPE.value : StartType.RANDOM.value,
+                Settings.START_TYPE.value : StartType.CHAMPION.value,
                 Settings.START_PARAMS.value : [],
-                Settings.SEARCH_TYPE.value : SearchType.NONE.value,
+                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
                 Settings.SEARCH_PARAMS.value : [],
-                Settings.AI_TYPE.value :  AIType.REACHABLE.value,
+                Settings.AI_TYPE.value :  AIType.NONE.value,
                 Settings.AI_PARAMS.value : []
             }
         #time-out
@@ -55,14 +56,14 @@ class Engine:
 
         if player1_config[Settings.AI.value]:
             #init the ai for player one
-            self.player1 = Player(backend, self, self._setup_ai(player1_config, time_per_move))
+            self.player1 = Player(backend, self, self._setup_ai(player1_config, time_per_move, 1))
         else :
             self.player1 = Player(backend, self )
 
 
         if player2_config[Settings.AI.value]:
             #init the ai for palyer one
-            self.player2 = Player(backend, self, self._setup_ai(player2_config, time_per_move))
+            self.player2 = Player(backend, self, self._setup_ai(player2_config, time_per_move, 2))
         else:
             self.player2 = Player(backend, self)
 
@@ -77,7 +78,7 @@ class Engine:
 
 
 
-    def _setup_ai(self, config, time_per_move):
+    def _setup_ai(self, config, time_per_move, player=None):
         starter = None
         searcher = None
         evaluator = None
@@ -122,6 +123,8 @@ class Engine:
             ai = PieceBasedAI(self,time.time(),time_per_move,starter, config[Settings.AI_PARAMS.value], PieceBasedOp.ADD.value)
         elif config[Settings.AI_TYPE.value] == AIType.PIECE_BASED_MUL.value :
             ai = PieceBasedAI(self,time.time(),time_per_move,starter, config[Settings.AI_PARAMS.value], PieceBasedOp.MUL.value)
+        elif config[Settings.AI_TYPE.value] == AIType.MC_PLAYOFF.value:
+            ai = MonteCarloCheatingAI(self, time.time(), time_per_move, starter, self.get_playoff_value, 5, 2, player)
         else:
             raise NotImplementedError
 
@@ -149,6 +152,8 @@ class Engine:
             return self.board.get_full_view()
         else :
             return self.board.get_player_view(player)
+
+
 
     def make_move(self):
         invalid_move = True
@@ -207,6 +212,9 @@ class Engine:
         #this runs the game until the end
         self.setup_board()
         self.player1_turn = True
+        return self._run()
+
+    def _run(self):
         out_of_moves = False
         if self.max_moves :
             out_of_moves = (self.num_moves > self.max_moves)
@@ -316,6 +324,47 @@ class Engine:
                 plys_weight * plys +
                 win_weight * win)
         return val
+
+
+    def _set_board(self, board):
+        self.board = board
+
+    def _set_player1_turn(self, player1_turn):
+        self.player1_turn = player1_turn
+
+    def _set_num_moves(self, num_moves):
+        self.num_moves = num_moves
+
+    def _midGameEngine(self, board, player, cur_moves, max_moves, tpm):
+        board_copy = board.copy()
+
+        #print 'making copy engine'
+        copy_engine = Engine(max_moves, random_config(), random_config(), True, tpm)
+        #print 'made copy engine'
+
+        copy_engine._set_board(board_copy)
+        copy_engine._set_player1_turn(player == 1)
+        copy_engine._set_num_moves(cur_moves)
+        return copy_engine
+
+
+
+    def get_playoff_value(self, board, player, cur_moves, max_moves, tpm, n_games):
+        wins = 0.0
+        for i in range(n_games):
+            #print 'making the helper engine'
+            helper = self._midGameEngine(board, player, cur_moves, max_moves, tpm)
+            #print 'made the helper engine'
+            winner = helper._run()
+            if winner == player:
+                wins += 1.0
+            elif winner == 0:
+                wins += 0.5
+
+        return wins/n_games
+
+    def get_max_moves(self):
+        return self.max_moves
 
 
 #    def get_all_next_moves(self):
