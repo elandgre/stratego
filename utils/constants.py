@@ -38,6 +38,7 @@ class AIType(Enum):
     MODIFIED_REACHABLE = 'modified_reachable'
     PIECE_BASED = 'piece_based'
 
+
 class ReachableParameters(Enum):
     INITIAL_MOVE = 'initial' # 0 - 9
     ATTACKING_UNMOVED = 'attack unmoved' # 10 -19
@@ -79,7 +80,28 @@ modifiedParamStart = {
     ReachableParameters.RANDOM_MOVE.value : 20
 }
 
+class PieceBasedParameters(Enum):
+    PIECE_VALUE = 'initial' # 0 - 9
+    MOVE_FORWARD = 'other side of the board' #10
+    MOVE_TO_RIGHT = 'move the price to the right' #11
+    MOVE_BACKWARD = 'move to our side of the board'#12
+    MOVE_TO_LEFT = 'move to the left' #13
+    ATTACKING = 'attacking' #14
+    RANDOM_MOVE = 'make a random move' #15
 
+class PieceBasedOp(Enum):
+    ADD = 'add'
+    MUL = 'mul'
+
+pieceBasedParamStart = {
+    PieceBasedParameters.PIECE_VALUE.value : 0,
+    PieceBasedParameters.MOVE_FORWARD.value : 10,
+    PieceBasedParameters.MOVE_TO_RIGHT.value : 11,
+    PieceBasedParameters.MOVE_BACKWARD.value : 12,
+    PieceBasedParameters.MOVE_TO_LEFT.value : 13,
+    PieceBasedParameters.ATTACKING.value: 14,
+    PieceBasedParameters.RANDOM_MOVE.value : 15,
+}
 
 FILENAME_FIELD = 'FILENAME'
 AI_FIELD = 'ai'
