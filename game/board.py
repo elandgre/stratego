@@ -38,6 +38,7 @@ class Board():
         new_board.player2_won = self.player2_won
         new_board.player1_piece_positions = copy.deepcopy(self.player1_piece_positions)
         new_board.player2_piece_positions = copy.deepcopy(self.player2_piece_positions)
+        return new_board
 
 
 

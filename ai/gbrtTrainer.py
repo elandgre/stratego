@@ -1,6 +1,6 @@
 from skopt import Optimizer
 from game.engine import Engine
-from game.config import *
+from utils.constants import *
 import matplotlib.pyplot as plt
 import numpy as np
 class GBRTTrainer(): #trains using Bayesian global optimization with GBRT against random play
@@ -15,6 +15,7 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
         self.params = init_params
         self.n_batches = n_batches
         self.score_history = []
+        self.the_good_ones = []
 
     def objective(self,params):
         self.ai_config[Settings.AI_PARAMS.value] = params
@@ -28,6 +29,9 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
                 wins += 0.5
         print wins / self.n_games
         self.score_history.append(wins / self.n_games)
+        if(wins / self.n_games) >= .99:
+            #print(params)
+            self.the_good_ones.append(params)
         return 1 - (wins / self.n_games)
 
         #res = 0
@@ -81,7 +85,7 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
             elif winner == 0:
                 wins += 0.5
             print winner
-        return wins / (self.n_games * 10)
+        return wins / (self.n_games)
 
 
 #############################################
@@ -131,10 +135,16 @@ def run_test():
 
 def run_and_plot():
     trainer = run_test()
-    scores = np.array(trainer.score_history)
-    x = np.linspace(0,len(trainer.score_history)-1,len(trainer.score_history))
-    plt.plot(x,scores)
-    plt.show()
+    good_param_file = open("train/good_reachable.txt", "a")
+    for param in trainer.the_good_ones:
+        print(param)
+        good_param_file.write("{}\n".format(param))
+    good_param_file.close()
+    #scores = np.array(trainer.score_history)
+    #x = np.linspace(0,len(trainer.score_history)-1,len(trainer.score_history))
+    #plt.plot(x,scores)
+    #plt.show()
+
 
 if __name__ == '__main__':
     run_and_plot()

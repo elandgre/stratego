@@ -3,11 +3,12 @@ from utils.constants import *
 import numpy as np
 import random
 
-class ReachableAI(AI):
+
+class ModifiedReachableAI(AI):
     def __init__(self,engine,start_time,time_per_move,starter,params=None):
-        super(ReachableAI, self).__init__(engine,start_time,time_per_move, starter)
-        if params==None or len(params) < 101:
-            self.parameters = np.ones(101)
+        super(ModifiedReachableAI, self).__init__(engine,start_time,time_per_move, starter)
+        if params==None or len(params) < 21:
+            self.parameters = np.ones(21)
         else:
             self.parameters = params
 
@@ -16,10 +17,12 @@ class ReachableAI(AI):
 
     def _get_param_index(self, param, piece=None):
         if(piece == None and ReachableParameters(param) == ReachableParameters.RANDOM_MOVE):
-            return paramStart[param]
+            return modifiedParamStart[param]
         elif(piece == None):
             return -1
-        return paramStart[param] + piece_map[piece] - 1
+        elif(piece == pieces.SCOUT.value):
+            return modifiedParamStart[param] + 1
+        return modifiedParamStart[param]
 
     def get_random_move(self,valid_moves):
         num_moves = len(valid_moves)
@@ -101,11 +104,3 @@ class ReachableAI(AI):
         elif start in outer_squares and not end in outer_squares:
             valuation += self.parameters[self._get_param_index(ReachableParameters.MOVE_ALONG_WALL.value, piece)]
         return valuation
-
-
-
-
-
-
-
-

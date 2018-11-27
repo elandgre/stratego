@@ -1,5 +1,10 @@
+<<<<<<< HEAD:ai/train_start.py
 from ls_startstate_trainer import LSStartStateTrainer
 from utils.constants import *
+=======
+from ai.ls_startstate_trainer import LSStartStateTrainer
+
+>>>>>>> 2184cdb20ac00fa5f8673cc3a7591d7e39da18f9:train/train_start.py
 def train():
     start = good_start_states[0]
     LSStartStateTrainer(start, 20, 1099511627776, 8)

@@ -1,4 +1,3 @@
-from game.config import *
 from starter import Starter
 from utils.constants import *
 
@@ -8,4 +7,3 @@ class ChampionStarter(Starter):
 
     def start(self):
         return good_start_states[0]
-        

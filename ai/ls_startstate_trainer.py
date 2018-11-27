@@ -1,5 +1,5 @@
 from utils.search_utils import get_random_start
-from game.config import *
+from utils.constants import *
 from game.engine import Engine
 import random
 
