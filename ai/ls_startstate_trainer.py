@@ -27,7 +27,7 @@ class LSStartStateTrainer:
             }
         self.opponent_config = {
                 Settings.AI.value : True, #should this be Ai or person
-                Settings.START_TYPE.value : StartType.SIMPLE.value, #what kind of start state
+                Settings.START_TYPE.value : StartType.CHAMPION.value, #what kind of start state
                 Settings.START_PARAMS.value : [], #any parameters for the stater
                 Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
                 Settings.SEARCH_PARAMS.value : [], #any parameters for the search
@@ -36,10 +36,20 @@ class LSStartStateTrainer:
             }
 
         self.engine = Engine(1000)
-
-        self.best = self.simulated_annealing(start_temp, factor)
-
+        self.best,stats= self.simulated_annealing(start_temp, factor)
         print(self.best)
+        f = open("train/simulated_annealing_results.txt", "a")
+        t = open("train/simulated_annealing_factors.txt", "a")
+        s = open("train/simuated_annealing_start_state.txt", "a")
+        g = open("train/simulated_annealing_stats.txt","a")
+        f.write("{}\n".format(self.best))
+        t.write("{}\n".format([start_temp, factor]))
+        s.write("{}\n".format(self.start))
+        g.write("{}\n".format(stats))
+        g.close()
+        s.close()
+        t.close()
+        f.close()
 
     def evaluate(self, last_start, next_start):
         wins = 0
@@ -106,10 +116,12 @@ class LSStartStateTrainer:
     def simulated_annealing(self, start_temp, factor):
         cur = self.start
         temp = start_temp
+        stats = []
         while True :
-            if temp <= self.delta : return cur
+            if temp <= self.delta : return cur,stats
             next_start = self.get_similar_random_next(cur)
             e = self.evaluate(cur, next_start)
+            stats.append(e)
             if (e > 0.5) :
                 cur = next_start
             else :

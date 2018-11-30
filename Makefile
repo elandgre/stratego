@@ -25,7 +25,7 @@ trainPieceBasedAdd:
 trainPieceBasedMul:
 	python -m train.trainerTestPieceBasedMul
 
-tournement:
+tournament:
 	python -m train.run_tournement
 
 clean:

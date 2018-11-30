@@ -77,7 +77,6 @@ class Tournement:
             for i in range(int(len(this_round)/2)):
                 config1 = param_lst[i]
                 config2 = param_lst[i+1]
-
                 # do a playoff and the winner goes to the next round
                 winner = self.play_against(config1, config2)
                 if winner == 1:
@@ -108,7 +107,6 @@ class Tournement:
             next_round = []
 
         return this_round
-
 
     def playoff(self, num=1):
         print('finding the best ai configurations')

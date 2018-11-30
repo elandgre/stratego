@@ -1,16 +1,21 @@
-<<<<<<< HEAD:ai/train_start.py
-from ls_startstate_trainer import LSStartStateTrainer
-from utils.constants import *
-=======
 from ai.ls_startstate_trainer import LSStartStateTrainer
+from utils.constants import *
+import numpy as np
 
->>>>>>> 2184cdb20ac00fa5f8673cc3a7591d7e39da18f9:train/train_start.py
 def train():
     start = good_start_states[0]
-    LSStartStateTrainer(start, 20, 1099511627776, 8)
+    LSStartStateTrainer(start, 20, 131072, 2)
+
+def randomTrain():
+	i = np.random.randint(0, 4)
+	start = good_start_states[i]
+	start_temp = np.random.randint(2**10, 2**40)
+	factor = np.random.randint(2, 10)
+	LSStartStateTrainer(start, 20, start_temp, factor)
 
 if __name__ == "__main__":
-    train()
+	for i in range(0, 15):
+		randomTrain()
 
 
 
