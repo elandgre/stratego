@@ -50,6 +50,7 @@ class GUI:
         self.textids = []
         self.master = master
         self.frame = Frame(master)
+        self.canvas = Canvas(self.frame, width=510, height=510)
 
         Grid.rowconfigure(master, 0, weight=1)
         Grid.columnconfigure(master, 0, weight=1)
@@ -87,31 +88,37 @@ class GUI:
         self.clicked_buttons = []
         # board setup
         for i in range(10):
-            Grid.rowconfigure(self.frame, i, weight=1)
+            # Grid.rowconfigure(self.frame, i, weight=1)
             for j in range(10):
-                tile = Canvas(  master=master,
-                                width=40,
-                                height=40)
-                textid = None
-                self.tiles.append(tile)
+                # tile = Canvas(  master=master,
+                #                 width=40,
+                #                 height=40)
+                # textid = None
+                # self.tiles.append(tile)
 
-                if board[i][j] == 111:
-                    tile.configure(background="white")
-                else:
-                    Grid.columnconfigure(self.frame, j, weight=1)
-                    if board[i][j] == 1:
-                        tile.configure(background="green")
-                    else:
-                        tile.configure(background="grey")
+                # if board[i][j] == 111:
+                #     tile.configure(background="white")
+                # else:
+                #     Grid.columnconfigure(self.frame, j, weight=1)
+                #     if board[i][j] == 1:
+                #         tile.configure(background="green")
+                #     else:
+                #         tile.configure(background="grey")
 
-                    textid = tile.create_text(20, 20, text=board[i][j])
-                    tile.bind("<ButtonPress-1>", self.ind_map_click(9-i, j), add="+")
-                    tile.bind("<Enter-1>", 
-                        lambda x: tile.configure(background="pink"), add="+")
-                    tile.bind("<Leave-1>", 
-                        lambda x: tile.configure(background="grey"), add="+")
-                    tile.grid(row=i, column=j, padx=2, pady=2)
-                self.textids.append(textid)
+                #     textid = tile.create_text(20, 20, text=board[i][j])
+                #     tile.bind("<ButtonPress-1>", self.ind_map_click(9-i, j), add="+")
+                #     tile.bind("<Enter-1>", 
+                #         lambda x: tile.configure(background="pink"), add="+")
+                #     tile.bind("<Leave-1>", 
+                #         lambda x: tile.configure(background="grey"), add="+")
+                #     tile.grid(row=i, column=j, padx=2, pady=2)
+                # self.textids.append(textid)
+                tag = i * 10 + j
+                self.canvas.create_rectangle(
+                    j*50+10, i*50+10, j*50+50, i*50+50, outline="black", fill="grey", tags=tag)
+                self.canvas.create_text(
+                    j*50+30, i*50+30, text=board[i][j], tags=str(tag)+"text")
+        self.canvas.grid(row=0, column=0)
 
 
     def ai_move(self):
@@ -161,19 +168,20 @@ class GUI:
 
         for i in range(10):
             for j in range(10):
-                tempid = self.textids[i * 10 + j]
-                tile = self.tiles[i * 10 + j]
-            	tile.itemconfigure(tempid, text=board[i][j])
-                if board[i][j] == 0:
-                    tile.configure(background="green")
-                else:
-                    tile.configure(background="grey")
+                pass
+             #    tempid = self.textids[i * 10 + j]
+             #    tile = self.tiles[i * 10 + j]
+            	# tile.itemconfigure(tempid, text=board[i][j])
+             #    if board[i][j] == 0:
+             #        tile.configure(background="green")
+             #    else:
+             #        tile.configure(background="grey")
 
 
 def main():
     window = Tk()
     window.title("Stratego")
-    window.geometry("500x500")
+    window.geometry("510x510")
     window.resizable(0, 0)
     gui = GUI(window)
 
