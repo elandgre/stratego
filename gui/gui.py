@@ -46,6 +46,7 @@ class GUI:
 
     def __init__(self, master):
         self.tiles = []
+        self.textids = []
         self.master = master
         self.frame = Frame(master)
 
@@ -87,15 +88,30 @@ class GUI:
         for i in range(10):
             Grid.rowconfigure(self.frame, i, weight=1)
             for j in range(10):
-                Grid.columnconfigure(self.frame, j, weight=1)
-                tile = Button(self.frame)
-                tile.config(height=40,
-                            width=40,
-                            command = self.ind_map_click(9-i, j),
-                            text=board[i][j])
-                tile.grid(row=i, column=j)
-
+                tile = Canvas(  master=master,
+                                width=40,
+                                height=40)
+                textid = None
                 self.tiles.append(tile)
+
+                if board[i][j] == 111:
+                    tile.configure(background="white")
+                else:
+                    Grid.columnconfigure(self.frame, j, weight=1)
+                    if board[i][j] == 1:
+                        tile.configure(background="green")
+                    else:
+                        tile.configure(background="grey")
+
+                    textid = tile.create_text(20, 20, text=board[i][j])
+                    tile.bind("<ButtonPress-1>", self.ind_map_click(9-i, j), add="+")
+                    tile.bind("<Enter-1>", 
+                        lambda x: tile.configure(background="pink"), add="+")
+                    tile.bind("<Leave-1>", 
+                        lambda x: tile.configure(background="grey"), add="+")
+                    tile.grid(row=i, column=j, padx=2, pady=2)
+                self.textids.append(textid)
+
 
     def ai_move(self):
         print("ai_move called")
@@ -144,7 +160,13 @@ class GUI:
 
         for i in range(10):
             for j in range(10):
-            	self.tiles[i * 10 + j]["text"] = board[i][j]
+                tempid = self.textids[i * 10 + j]
+                tile = self.tiles[i * 10 + j]
+            	tile.itemconfigure(tempid, text=board[i][j])
+                if board[i][j] == 0:
+                    tile.configure(background="green")
+                else:
+                    tile.configure(background="grey")
 
 
 def main():
