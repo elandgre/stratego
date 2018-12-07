@@ -174,7 +174,7 @@ class Engine:
             else:
                 #print("player 2")
                 start,end = self.player2.get_move()
-                #print("the move: {}, {}".format( start, end))
+                print("the move: {}, {}".format( start, end))
                 if(start == None and end == None):
                     print "empty"
                     return self.player1_turn
