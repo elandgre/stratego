@@ -9,8 +9,9 @@ from utils.constants import *
 
 class GUI:
     def ind_map_click(self, i, j):
-        def map_click():
+        def map_click(throw_me_away):
             #ignore if the current player ia an Ai
+            print("click")
             if self.player1_turn and self.player1_config[Settings.AI.value]:
                 return None
             if not self.player1_turn and self.player2_config[Settings.AI.value]:
@@ -25,6 +26,7 @@ class GUI:
                 p = self.e.player1
                 if not self.player1_turn:
                   p = self.e.player2
+                print(self.clicked_buttons)
                 p.set_move(self.clicked_buttons)
                 turn = self.e.make_move()
                 #print(self.curselection())
@@ -83,18 +85,21 @@ class GUI:
         "#D16471", "#CA505F", "#C23D4D", "#BB293A", "#B31528", "#AC0216"]
         ]
 
+        self.hidden_color = ["#787FD9", "#D97884"]
+
         self.e = Engine(1000,self.player1_config, self.player2_config , False )
         self.e.setup_board()
         if not self.player1_config[Settings.AI.value]:
-            board = self.e.get_board(1)
+            board = self.e.get_board(1, True)
         else :
-            board = self.e.get_board()
+            board = self.e.get_board(None, True)
         self.win = False #winner trigger
         self.player1_turn = True #player 1 turn trigger
         self.winning_player = 0
         self.button_counter = 0
         self.clicked_buttons = []
         # board setup
+        #print(board)
         for i in range(10):
             for j in range(10):
                 tag = i * 10 + j
@@ -106,9 +111,16 @@ class GUI:
                     text_item = ""
                     tile_outline = "black"
                     tile_color = "grey"
+                elif board[i][j] % 1000 == piece_diplay_map[pieces.HIDDEN.value]:
+                    text_item = ""
+                    tile_outline = "black"
+                    tile_color = self.hidden_color[board[i][j] / 1000 -2]
                 else:
                     text_item = str(board[i][j]%100)
                     tile_outline = "black"
+                    #print(board[i][j])
+                    #print(board[i][j]/100 - 2)
+                    #print(board[i][j]%100 - 1)
                     tile_color = self.tile_colors[board[i][j]/100 - 2][board[i][j]%100 - 1]
                 tile = self.canvas.create_rectangle(
                     j*50+10, i*50+10, j*50+50, i*50+50,
@@ -118,8 +130,13 @@ class GUI:
                     tags=tag)
                 textid = self.canvas.create_text(
                     j*50+30, i*50+30, text=text_item, tags=str(tag)+"text")
+
+                rect_handler = self.ind_map_click(9-i,j)
+
+
                 self.tiles.append(tile)
                 self.textids.append(textid)
+                self.canvas.tag_bind(tile,"<Button-1>",rect_handler)
         self.canvas.grid(row=0, column=0)
 
 
@@ -148,25 +165,25 @@ class GUI:
         if (self.player2_config[Settings.AI.value] and
             self.player1_config[Settings.AI.value]):
 
-            board = self.e.get_board()
+            board = self.e.get_board(None, True)
 
         #player 1 is manual and 2 is an ai
         elif (self.player2_config[Settings.AI.value] and
                 not self.player1_config[Settings.AI.value]):
 
-            board = self.e.get_board(1)
+            board = self.e.get_board(1, True)
 
         #player 1 is an ai and 2 is manual
         elif (not self.player2_config[Settings.AI.value] and
                  self.player1_config[Settings.AI.value]):
 
-            board = self.e.get_board(2)
+            board = self.e.get_board(2, True)
 
         else: #both are manual players
             if self.player1_turn :
-                board = self.e.get_board(1)
+                board = self.e.get_board(1, True)
             else:
-        	   board = self.e.get_board(2)
+        	   board = self.e.get_board(2, True)
 
         for i in range(10):
             for j in range(10):
@@ -176,6 +193,9 @@ class GUI:
                 elif board[i][j] == 0:
                     text_item = ""
                     tile_color = "grey"
+                elif board[i][j] % 1000 == piece_diplay_map[pieces.HIDDEN.value]:
+                    text_item = ""
+                    tile_color = self.hidden_color[board[i][j] / 1000 -2]
                 else:
                     text_item = str(board[i][j]%100)
                     tile_color = self.tile_colors[board[i][j]/100 - 2][board[i][j]%100 - 1]

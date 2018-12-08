@@ -306,15 +306,38 @@ class Board():
         new_board = np.zeros((10,10),dtype=int)
         if player == 1:
             for x,y in self.player1_piece_positions:
+                new_board[x][y] = piece_diplay_map[piece_names[self.board[x][y]]]
+            for x,y in self.player2_piece_positions:
+                new_board[x][y] = piece_diplay_map[pieces.HIDDEN.value]
+            new_board = np.rot90(np.rot90(new_board))
+        else:
+            for x,y in self.player2_piece_positions:
+                new_board[x][y] = piece_diplay_map[piece_names[self.board[x][y] - self.player2_offset]]
+            for x,y in self.player1_piece_positions:
+                new_board[x][y] = piece_diplay_map[pieces.HIDDEN.value]
+
+        rows = [4,5]
+        columns = [2,3,6,7]
+        for i in rows:
+            for j in columns:
+                new_board[i][j] = piece_diplay_map[pieces.MOUNTAIN.value]
+
+        return new_board
+
+    def frontend_get_player_view(self,player):
+        assert player in [1,2]
+        new_board = np.zeros((10,10),dtype=int)
+        if player == 1:
+            for x,y in self.player1_piece_positions:
                 new_board[x][y] = 200 + piece_diplay_map[piece_names[self.board[x][y]]]
             for x,y in self.player2_piece_positions:
-                new_board[x][y] = 300 + piece_diplay_map[pieces.HIDDEN.value]
+                new_board[x][y] = 3000 + piece_diplay_map[pieces.HIDDEN.value]
             new_board = np.rot90(np.rot90(new_board))
         else:
             for x,y in self.player2_piece_positions:
                 new_board[x][y] = 300 + piece_diplay_map[piece_names[self.board[x][y] - self.player2_offset]]
             for x,y in self.player1_piece_positions:
-                new_board[x][y] = 200 + piece_diplay_map[pieces.HIDDEN.value]
+                new_board[x][y] = 2000 + piece_diplay_map[pieces.HIDDEN.value]
 
         rows = [4,5]
         columns = [2,3,6,7]
@@ -325,6 +348,23 @@ class Board():
         return new_board
 
     def get_full_view(self):
+        new_board = np.zeros((10,10),dtype=int)
+        for x,y in self.player1_piece_positions:
+            new_board[x][y] = piece_diplay_map[piece_names[self.board[x][y]]]
+
+        #new_board = np.rot90(np.rot90(new_board))
+        for x,y in self.player2_piece_positions:
+            new_board[x][y] = piece_diplay_map[piece_names[self.board[x][y] - self.player2_offset]]
+
+        rows = [4,5]
+        columns = [2,3,6,7]
+        for i in rows:
+            for j in columns:
+                new_board[i][j] = piece_diplay_map[pieces.MOUNTAIN.value]
+
+        return new_board
+
+    def frontend_get_full_view(self):
         new_board = np.zeros((10,10),dtype=int)
         for x,y in self.player1_piece_positions:
             new_board[x][y] = 200 + piece_diplay_map[piece_names[self.board[x][y]]]
