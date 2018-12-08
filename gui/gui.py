@@ -77,11 +77,11 @@ class GUI:
 
         self.tile_colors = [
         [
-        "#0001D6", "#1112D9", "#2324DD", "#3435E1", "#4647E4", "#5858E8", 
-        "#696AEC", "#7B7BF0", "#8D8DF3", "#9E9EF7", "#B0B0FB", "#C2C2FF"
+        "#DBE0FF", "#C7CCF7", "#B3B9EF", "#9FA6E8", "#8C92E0", "#787FD9",
+        "#646CD1", "#5059CA", "#3D45C2", "#2932BB", "#151FB3", "#020CAC"
         ], [
-        "#C6151B", "#CB2329", "#D03237", "#D54146", "#DA5054", "#DF5F63", 
-        "#E56D71", "#EA7C80", "#EF8B8E", "#F49A9D", "#F9A9AB", "#FFB8BA"]
+        "#FFDBE0", "#F7C7CD", "#EFB3BB", "#E89FA8", "#E08C96", "#D97884",
+        "#D16471", "#CA505F", "#C23D4D", "#BB293A", "#B31528", "#AC0216"]
         ]
 
         self.e = Engine(1000,self.player1_config, self.player2_config , False )
@@ -112,7 +112,11 @@ class GUI:
                     tile_outline = "black"
                     tile_color = self.tile_colors[board[i][j]/100 - 2][board[i][j]%100 - 1]
                 tile = self.canvas.create_rectangle(
-                    j*50+10, i*50+10, j*50+50, i*50+50, outline=tile_outline, fill=tile_color, tags=tag)
+                    j*50+10, i*50+10, j*50+50, i*50+50,
+                    outline=tile_outline,
+                    fill=tile_color,
+                    activefill="cyan",
+                    tags=tag)
                 textid = self.canvas.create_text(
                     j*50+30, i*50+30, text=text_item, tags=str(tag)+"text")
                 self.tiles.append(tile)
