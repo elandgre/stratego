@@ -12,7 +12,7 @@ def run_training(ai_config, opponent_config, n_params):
     param_ranges = [(-1, 1) for i in range(n_params)]
     init_params = [1 for i in range(n_params)]
     n_batches = 2
-    n_iter = 100
+    n_iter = 50
     n_games = 5
 
     trainer = GBRTTrainer(1000, ai_config, opponent_config, param_ranges, n_iter, n_games, init_params, n_batches)
