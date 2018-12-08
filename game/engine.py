@@ -158,11 +158,18 @@ class Engine:
             else:
                 print("invalid list of starting states")
 
-    def get_board(self, player=None):
-        if player == None :
-            return self.board.get_full_view()
-        else :
-            return self.board.get_player_view(player)
+    def get_board(self, player=None, frontend=False):
+        if not frontend:
+            if player == None :
+                return self.board.get_full_view()
+            else :
+                return self.board.get_player_view(player)
+        else:
+            if player == None :
+                return self.board.frontend_get_full_view()
+            else :
+                return self.board.frontend_get_player_view(player)
+
 
 
 

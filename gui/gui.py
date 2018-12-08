@@ -9,8 +9,9 @@ from utils.constants import *
 
 class GUI:
     def ind_map_click(self, i, j):
-        def map_click():
+        def map_click(throw_me_away):
             #ignore if the current player ia an Ai
+            print("click")
             if self.player1_turn and self.player1_config[Settings.AI.value]:
                 return None
             if not self.player1_turn and self.player2_config[Settings.AI.value]:
@@ -25,6 +26,7 @@ class GUI:
                 p = self.e.player1
                 if not self.player1_turn:
                   p = self.e.player2
+                print(self.clicked_buttons)
                 p.set_move(self.clicked_buttons)
                 turn = self.e.make_move()
                 #print(self.curselection())
@@ -46,22 +48,27 @@ class GUI:
 
     def __init__(self, master):
         self.tiles = []
+        self.textids = []
         self.master = master
         self.frame = Frame(master)
+        self.canvas = Canvas(self.frame, width=510, height=510)
 
         Grid.rowconfigure(master, 0, weight=1)
         Grid.columnconfigure(master, 0, weight=1)
         self.frame.grid(row=0, column=0)
 
-        self.player1_config = {
-                Settings.AI.value : True, #should this be Ai or person
-                Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
-                Settings.START_PARAMS.value : [], #any parameters for the stater
-                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
-                Settings.SEARCH_PARAMS.value : [], #any parameters for the search
-                Settings.AI_TYPE.value : AIType.NONE.value, # what is the AI
-                Settings.AI_PARAMS.value : [] #any params for the ai
-            }
+        # self.player1_config = {
+        #         Settings.AI.value : True, #should this be Ai or person
+        #         Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
+        #         Settings.START_PARAMS.value : [], #any parameters for the stater
+        #         Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
+        #         Settings.SEARCH_PARAMS.value : [], #any parameters for the search
+        #         Settings.AI_TYPE.value : AIType.NONE.value, # what is the AI
+        #         Settings.AI_PARAMS.value : [] #any params for the ai
+        #     }
+        self.player1_config = {'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
+
+
         self.player2_config = {
                 Settings.AI.value : True, #should this be Ai or person
                 Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
@@ -72,30 +79,69 @@ class GUI:
                 Settings.AI_PARAMS.value : [] #any params for the ai
             }
 
+        self.tile_colors = [
+        [
+        "#DBE0FF", "#C7CCF7", "#B3B9EF", "#9FA6E8", "#8C92E0", "#787FD9",
+        "#646CD1", "#5059CA", "#3D45C2", "#2932BB", "#151FB3", "#020CAC"
+        ], [
+        "#FFDBE0", "#F7C7CD", "#EFB3BB", "#E89FA8", "#E08C96", "#D97884",
+        "#D16471", "#CA505F", "#C23D4D", "#BB293A", "#B31528", "#AC0216"]
+        ]
+
+        self.hidden_color = ["#787FD9", "#D97884"]
+
         self.e = Engine(1000,self.player1_config, self.player2_config , False )
         self.e.setup_board()
         if not self.player1_config[Settings.AI.value]:
-            board = self.e.get_board(1)
+            board = self.e.get_board(1, True)
         else :
-            board = self.e.get_board()
+            board = self.e.get_board(None, True)
         self.win = False #winner trigger
         self.player1_turn = True #player 1 turn trigger
         self.winning_player = 0
         self.button_counter = 0
         self.clicked_buttons = []
         # board setup
+        #print(board)
         for i in range(10):
-            Grid.rowconfigure(self.frame, i, weight=1)
             for j in range(10):
-                Grid.columnconfigure(self.frame, j, weight=1)
-                tile = Button(self.frame)
-                tile.config(height=40,
-                            width=40,
-                            command = self.ind_map_click(9-i, j),
-                            text=board[i][j])
-                tile.grid(row=i, column=j)
+                tag = i * 10 + j
+                if board[i][j] == 111:
+                    text_item = ""
+                    tile_color = "white"
+                    tile_outline = "white"
+                elif board[i][j] == 0:
+                    text_item = ""
+                    tile_outline = "black"
+                    tile_color = "grey"
+                elif board[i][j] % 1000 == piece_diplay_map[pieces.HIDDEN.value]:
+                    text_item = ""
+                    tile_outline = "black"
+                    tile_color = self.hidden_color[board[i][j] / 1000 -2]
+                else:
+                    text_item = str(board[i][j]%100)
+                    tile_outline = "black"
+                    #print(board[i][j])
+                    #print(board[i][j]/100 - 2)
+                    #print(board[i][j]%100 - 1)
+                    tile_color = self.tile_colors[board[i][j]/100 - 2][board[i][j]%100 - 1]
+                tile = self.canvas.create_rectangle(
+                    j*50+10, i*50+10, j*50+50, i*50+50,
+                    outline=tile_outline,
+                    fill=tile_color,
+                    activefill="cyan",
+                    tags=tag)
+                textid = self.canvas.create_text(
+                    j*50+30, i*50+30, text=text_item, tags=str(tag)+"text")
+
+                rect_handler = self.ind_map_click(9-i,j)
+
 
                 self.tiles.append(tile)
+                self.textids.append(textid)
+                self.canvas.tag_bind(tile,"<Button-1>",rect_handler)
+        self.canvas.grid(row=0, column=0)
+
 
     def ai_move(self):
         print("ai_move called")
@@ -122,35 +168,48 @@ class GUI:
         if (self.player2_config[Settings.AI.value] and
             self.player1_config[Settings.AI.value]):
 
-            board = self.e.get_board()
+            board = self.e.get_board(None, True)
 
         #player 1 is manual and 2 is an ai
         elif (self.player2_config[Settings.AI.value] and
                 not self.player1_config[Settings.AI.value]):
 
-            board = self.e.get_board(1)
+            board = self.e.get_board(1, True)
 
         #player 1 is an ai and 2 is manual
         elif (not self.player2_config[Settings.AI.value] and
                  self.player1_config[Settings.AI.value]):
 
-            board = self.e.get_board(2)
+            board = self.e.get_board(2, True)
 
         else: #both are manual players
             if self.player1_turn :
-                board = self.e.get_board(1)
+                board = self.e.get_board(1, True)
             else:
-        	   board = self.e.get_board(2)
+        	   board = self.e.get_board(2, True)
 
         for i in range(10):
             for j in range(10):
-            	self.tiles[i * 10 + j]["text"] = board[i][j]
+                if board[i][j] == 111:
+                    text_item = ""
+                    tile_color = "white"
+                elif board[i][j] == 0:
+                    text_item = ""
+                    tile_color = "grey"
+                elif board[i][j] % 1000 == piece_diplay_map[pieces.HIDDEN.value]:
+                    text_item = ""
+                    tile_color = self.hidden_color[board[i][j] / 1000 -2]
+                else:
+                    text_item = str(board[i][j]%100)
+                    tile_color = self.tile_colors[board[i][j]/100 - 2][board[i][j]%100 - 1]
+                self.canvas.itemconfig(self.tiles[i*10+j], fill=tile_color)
+                self.canvas.itemconfig(self.textids[i*10+j], text=text_item)
 
 
 def main():
     window = Tk()
     window.title("Stratego")
-    window.geometry("500x500")
+    window.geometry("510x510")
     window.resizable(0, 0)
     gui = GUI(window)
 
