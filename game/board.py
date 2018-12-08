@@ -331,13 +331,19 @@ class Board():
             for x,y in self.player1_piece_positions:
                 new_board[x][y] = 200 + piece_diplay_map[piece_names[self.board[x][y]]]
             for x,y in self.player2_piece_positions:
-                new_board[x][y] = 3000 + piece_diplay_map[pieces.HIDDEN.value]
+                if (x,y) in self.player2_revealed_pieces :
+                    new_board[x][y] = 300 + piece_diplay_map[piece_names[self.board[x][y] - self.player2_offset]]
+                else:
+                    new_board[x][y] = 3000 + piece_diplay_map[pieces.HIDDEN.value]
             new_board = np.rot90(np.rot90(new_board))
         else:
             for x,y in self.player2_piece_positions:
                 new_board[x][y] = 300 + piece_diplay_map[piece_names[self.board[x][y] - self.player2_offset]]
             for x,y in self.player1_piece_positions:
-                new_board[x][y] = 2000 + piece_diplay_map[pieces.HIDDEN.value]
+                if (x,y) in self.player1_revealed_pieces:
+                    new_board[x][y] = 200 + piece_diplay_map[piece_names[self.board[x][y]]]
+                else :
+                    new_board[x][y] = 2000 + piece_diplay_map[pieces.HIDDEN.value]
 
         rows = [4,5]
         columns = [2,3,6,7]

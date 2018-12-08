@@ -67,7 +67,7 @@ class GUI:
                 Settings.AI_PARAMS.value : [] #any params for the ai
             }
         self.player2_config = {
-                Settings.AI.value : True, #should this be Ai or person
+                Settings.AI.value : False, #should this be Ai or person
                 Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
                 Settings.START_PARAMS.value : [], #any parameters for the stater
                 Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
