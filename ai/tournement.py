@@ -29,9 +29,9 @@ class Tournement:
             self.ai_configs += read_file_into_configs(filename, reachable_config)
         for filename in config[AI_FIELD][AIType.MODIFIED_REACHABLE.value]:
             self.ai_configs += read_file_into_configs(filename, mod_reachable_config)
-        for params in config[AI_FIELD][AIType.PIECE_BASED_ADD.value]:
+        for filename in config[AI_FIELD][AIType.PIECE_BASED_ADD.value]:
             self.ai_configs += read_file_into_configs(filename, piecebased_config_add)
-        for params in config[AI_FIELD][AIType.PIECE_BASED_MUL.value]:
+        for filename in config[AI_FIELD][AIType.PIECE_BASED_MUL.value]:
             self.ai_configs += read_file_into_configs(filename, piecebased_config_mul)
 
 
@@ -142,8 +142,14 @@ class Tournement:
 #paramters both additive and multiplicative piece based beat out the reachable
 #solutions
 
-#the best AI found currently:
+#the best reachable AI found currently:
 #{'ai parameters': [1, -1, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 1, 1, -1, 1, 0, -1, 0, 0, 1, 1, -1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, -1, 0, 0, -1, 0, 0, -1, 1, 1, -1, -1, 0, -1, -1, 0, 1, 0, 0, 0, -1, 1, -1, -1, 1, -1, -1, 0, -1, 0, 0, -1, -1, 0, 0, 0, 0, 1, 0, 1, 0, -1, -1, -1, -1, 0, -1, -1, 1, -1, 1, -1, 0, 1, -1, -1, 0, 0, -1, -1, 0, 0, 0, 1, -1, 0, 1, 0], 'eval_type': 'reachable', 'search_parmeters': [], 'FILENAME': 'good_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
+
+#the best modified reachable:
+#[{'ai parameters': [1, 0, -1, 0, 1, 0, -1, 0, 0, -1, 1, -1, -1, 1, 0, 0, -1, 0, 0, 0, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}, {'ai parameters': [0, 0, 1, 0, 0, 0, -1, 1, 0, 0, 1, -1, 0, 1, 0, -1, 0, 0, 0, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}, {'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}, {'ai parameters': [1, 0, -1, 0, 1, 0, -1, 0, 0, -1, 1, -1, -1, 1, 0, 0, -1, 0, 0, 0, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}]
+
+#best mul peice based:
+#[{'ai parameters': [0, -1, 0, -1, 0, 0, 1, 0, 1, -1, -1, -1, -1, -1, 0, -1], 'eval_type': 'piece_based_mull', 'search_parmeters': [], 'FILENAME': 'train/good_piece_based_mul.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}, {'ai parameters': [1, 0, 1, -1, -1, 1, 1, -1, 0, 1, -1, 0, -1, 1, 1, 1], 'eval_type': 'piece_based_mull', 'search_parmeters': [], 'FILENAME': 'train/good_piece_based_mul.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}, {'ai parameters': [-1, 0, -1, -1, 1, 0, 1, -1, -1, -1, -1, 1, 0, 0, 1, 1], 'eval_type': 'piece_based_mull', 'search_parmeters': [], 'FILENAME': 'train/good_piece_based_mul.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}, {'ai parameters': [-1, 1, 0, 0, -1, -1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0], 'eval_type': 'piece_based_mull', 'search_parmeters': [], 'FILENAME': 'train/good_piece_based_mul.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}, {'ai parameters': [0, 0, -1, -1, 1, 0, 0, 1, -1, 0, 1, -1, 0, 1, -1, 0], 'eval_type': 'piece_based_mull', 'search_parmeters': [], 'FILENAME': 'train/good_piece_based_mul.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}]
 
 #better:
 #[{'ai parameters': [0, 1, 1, 1, 1, -1, -1, -1, 1, -1, 1, -1, 1, 1, 1, -1, 0, 1, 0, 1, -1], 'eval_type': 'piece_based_mull', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'},

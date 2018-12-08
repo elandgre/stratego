@@ -25,4 +25,5 @@ n_params = 16
 
 
 
-run_and_plot(ai_config, opponent_config, output_file, n_params)
+res = run_and_plot(ai_config, opponent_config, output_file, n_params)
+print("Print the results are in the average is {}".format(res))

@@ -32,8 +32,8 @@ class GBRTTrainer(): #trains using Bayesian global optimization with GBRT agains
         if(wins / self.n_games) >= .99:
             #print(params)
             self.the_good_ones.append(params)
-        return 1 - (wins / self.n_games)
-
+        #return 1 - (wins / self.n_games)
+        return - self.engine.get_value(1, 100, -1, 500)
         #res = 0
         #for i in range(self.n_games):
         #    self.engine.restart(self.max_moves,self.ai_config,self.opponent_config)
@@ -113,7 +113,7 @@ def run_test():
     #        }
     opponent_config = {
                 Settings.AI.value : True, #should this be Ai or person
-                Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
+                Settings.START_TYPE.value : StartType.CHAMPION.value, #what kind of start state
                 Settings.START_PARAMS.value : [], #any parameters for the stater
                 Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
                 Settings.SEARCH_PARAMS.value : [], #any parameters for the search
@@ -125,7 +125,7 @@ def run_test():
     param_ranges = [(-1,1) for i in range(101)]
     init_params = [1 for i in range(101)]
     n_batches = 2
-    n_iter = 100
+    n_iter = 50
     n_games = 5
 
     trainer = GBRTTrainer(1000, ai_config, opponent_config, param_ranges, n_iter, n_games, init_params, n_batches)
@@ -138,12 +138,13 @@ def run_and_plot():
     good_param_file = open("train/good_reachable.txt", "a")
     for param in trainer.the_good_ones:
         print(param)
-        good_param_file.write("{}\n".format(param))
+        #good_param_file.write("{}\n".format(param))
     good_param_file.close()
     #scores = np.array(trainer.score_history)
     #x = np.linspace(0,len(trainer.score_history)-1,len(trainer.score_history))
     #plt.plot(x,scores)
     #plt.show()
+    return len(trainer.the_good_ones)
 
 
 if __name__ == '__main__':

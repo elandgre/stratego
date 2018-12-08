@@ -24,5 +24,5 @@ output_file = 'train/good_modified_reachable.txt'
 n_params = 21
 
 
-
-run_and_plot(ai_config, opponent_config, output_file, n_params)
+res = run_and_plot(ai_config, opponent_config, output_file, n_params)
+print("Print the results are in the average is {}".format(res))

@@ -1,2 +1,7 @@
 from ai.gbrtTrainer import *
-run_and_plot()
+
+
+
+res = run_and_plot()
+
+print("Print the results are in the average is {}".format(res))

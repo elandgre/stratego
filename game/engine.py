@@ -27,19 +27,30 @@ class Engine:
         self.backend = backend
         if not player1_config :
             player1_config = {
-                Settings.AI.value : True, #should this be Ai or person
-                Settings.START_TYPE.value : StartType.CHAMPION.value, #what kind of start state
-                Settings.START_PARAMS.value : [], #any parameters for the stater
-                Settings.SEARCH_TYPE.value : SearchType.NONE.value, #what kind of search is happening
-                Settings.SEARCH_PARAMS.value : [], #any parameters for the search
-                Settings.AI_TYPE.value : AIType.REACHABLE.value, # what is the AI
-                Settings.AI_PARAMS.value : [] #any params for the ai
+                'ai parameters': [1, -1, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 1, 1, -1, 1, 0, -1, 0, 0, 1, 1, -1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, -1, 0, 0, -1, 0, 0, -1, 1, 1, -1, -1, 0, -1, -1, 0, 1, 0, 0, 0, -1, 1, -1, -1, 1, -1, -1, 0, -1, 0, 0, -1, -1, 0, 0, 0, 0, 1, 0, 1, 0, -1, -1, -1, -1, 0, -1, -1, 1, -1, 1, -1, 0, 1, -1, -1, 0, 0, -1, -1, 0, 0, 0, 1, -1, 0, 1, 0],
+                'eval_type': 'reachable',
+                'search_parmeters': [],
+                'FILENAME': 'good_reachable.txt',
+                'params_for_start_state': [],
+                'type_of_start_state': 'champion',
+                'is an ai': True,
+                'type_of_search': 'no searcher'
             }
+
+            # player1_config = {
+            #     Settings.AI.value : True, #should this be Ai or person
+            #     Settings.START_TYPE.value : StartType.CHAMPION.value, #what kind of start state
+            #     Settings.START_PARAMS.value : [], #any parameters for the stater
+            #     Settings.SEARCH_TYPE.value : SearchType.NONE.value, #what kind of search is happening
+            #     Settings.SEARCH_PARAMS.value : [], #any parameters for the search
+            #     Settings.AI_TYPE.value : AIType.REACHABLE.value, # what is the AI
+            #     Settings.AI_PARAMS.value : [] #any params for the ai
+            # }
 
         if not player2_config :
             player2_config = {
                 Settings.AI.value : True,
-                Settings.START_TYPE.value : StartType.CHAMPION.value,
+                Settings.START_TYPE.value : StartType.RANDOM.value,
                 Settings.START_PARAMS.value : [],
                 Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
                 Settings.SEARCH_PARAMS.value : [],
