@@ -57,15 +57,18 @@ class GUI:
         Grid.columnconfigure(master, 0, weight=1)
         self.frame.grid(row=0, column=0)
 
-        self.player1_config = {
-                Settings.AI.value : True, #should this be Ai or person
-                Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
-                Settings.START_PARAMS.value : [], #any parameters for the stater
-                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
-                Settings.SEARCH_PARAMS.value : [], #any parameters for the search
-                Settings.AI_TYPE.value : AIType.NONE.value, # what is the AI
-                Settings.AI_PARAMS.value : [] #any params for the ai
-            }
+        # self.player1_config = {
+        #         Settings.AI.value : True, #should this be Ai or person
+        #         Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
+        #         Settings.START_PARAMS.value : [], #any parameters for the stater
+        #         Settings.SEARCH_TYPE.value : SearchType.RANDOM.value, #what kind of search is happening
+        #         Settings.SEARCH_PARAMS.value : [], #any parameters for the search
+        #         Settings.AI_TYPE.value : AIType.NONE.value, # what is the AI
+        #         Settings.AI_PARAMS.value : [] #any params for the ai
+        #     }
+        self.player1_config = {'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
+
+
         self.player2_config = {
                 Settings.AI.value : True, #should this be Ai or person
                 Settings.START_TYPE.value : StartType.RANDOM.value, #what kind of start state
