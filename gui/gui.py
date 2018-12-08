@@ -75,6 +75,15 @@ class GUI:
                 Settings.AI_PARAMS.value : [] #any params for the ai
             }
 
+        self.tile_colors = [
+        [
+        "#0001D6", "#1112D9", "#2324DD", "#3435E1", "#4647E4", "#5858E8", 
+        "#696AEC", "#7B7BF0", "#8D8DF3", "#9E9EF7", "#B0B0FB", "#C2C2FF"
+        ], [
+        "#C6151B", "#CB2329", "#D03237", "#D54146", "#DA5054", "#DF5F63", 
+        "#E56D71", "#EA7C80", "#EF8B8E", "#F49A9D", "#F9A9AB", "#FFB8BA"]
+        ]
+
         self.e = Engine(1000,self.player1_config, self.player2_config , False )
         self.e.setup_board()
         if not self.player1_config[Settings.AI.value]:
@@ -88,36 +97,26 @@ class GUI:
         self.clicked_buttons = []
         # board setup
         for i in range(10):
-            # Grid.rowconfigure(self.frame, i, weight=1)
             for j in range(10):
-                # tile = Canvas(  master=master,
-                #                 width=40,
-                #                 height=40)
-                # textid = None
-                # self.tiles.append(tile)
-
-                # if board[i][j] == 111:
-                #     tile.configure(background="white")
-                # else:
-                #     Grid.columnconfigure(self.frame, j, weight=1)
-                #     if board[i][j] == 1:
-                #         tile.configure(background="green")
-                #     else:
-                #         tile.configure(background="grey")
-
-                #     textid = tile.create_text(20, 20, text=board[i][j])
-                #     tile.bind("<ButtonPress-1>", self.ind_map_click(9-i, j), add="+")
-                #     tile.bind("<Enter-1>", 
-                #         lambda x: tile.configure(background="pink"), add="+")
-                #     tile.bind("<Leave-1>", 
-                #         lambda x: tile.configure(background="grey"), add="+")
-                #     tile.grid(row=i, column=j, padx=2, pady=2)
-                # self.textids.append(textid)
                 tag = i * 10 + j
-                self.canvas.create_rectangle(
-                    j*50+10, i*50+10, j*50+50, i*50+50, outline="black", fill="grey", tags=tag)
-                self.canvas.create_text(
-                    j*50+30, i*50+30, text=board[i][j], tags=str(tag)+"text")
+                if board[i][j] == 111:
+                    text_item = ""
+                    tile_color = "white"
+                    tile_outline = "white"
+                elif board[i][j] == 0:
+                    text_item = ""
+                    tile_outline = "black"
+                    tile_color = "grey"
+                else:
+                    text_item = str(board[i][j]%100)
+                    tile_outline = "black"
+                    tile_color = self.tile_colors[board[i][j]/100 - 2][board[i][j]%100 - 1]
+                tile = self.canvas.create_rectangle(
+                    j*50+10, i*50+10, j*50+50, i*50+50, outline=tile_outline, fill=tile_color, tags=tag)
+                textid = self.canvas.create_text(
+                    j*50+30, i*50+30, text=text_item, tags=str(tag)+"text")
+                self.tiles.append(tile)
+                self.textids.append(textid)
         self.canvas.grid(row=0, column=0)
 
 
@@ -168,14 +167,17 @@ class GUI:
 
         for i in range(10):
             for j in range(10):
-                pass
-             #    tempid = self.textids[i * 10 + j]
-             #    tile = self.tiles[i * 10 + j]
-            	# tile.itemconfigure(tempid, text=board[i][j])
-             #    if board[i][j] == 0:
-             #        tile.configure(background="green")
-             #    else:
-             #        tile.configure(background="grey")
+                if board[i][j] == 111:
+                    text_item = ""
+                    tile_color = "white"
+                elif board[i][j] == 0:
+                    text_item = ""
+                    tile_color = "grey"
+                else:
+                    text_item = str(board[i][j]%100)
+                    tile_color = self.tile_colors[board[i][j]/100 - 2][board[i][j]%100 - 1]
+                self.canvas.itemconfig(self.tiles[i*10+j], fill=tile_color)
+                self.canvas.itemconfig(self.textids[i*10+j], text=text_item)
 
 
 def main():
