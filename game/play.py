@@ -2,9 +2,17 @@ from engine import Engine
 from config import FRONTEND
 def play():
     all_wins = []
-    ai1 = {'ai parameters': [1, 0, 0, 0, 0, 0, 1, 1, -1, 1, 0, -1, 1, 0, 0, 1, 0, -1, 0, 1, 0, 0, 0, 0, -1, -1, 1, 0, 0, 1, 0, 1, 1, 1, -1, 1, -1, 0, 1, -1, 1, -1, 0, 0, 0, -1, -1, -1, 0, 1, 0, 0, 0, -1, 0, 0, 0, -1, 0, -1, 1, -1, 0, 0, 1, 1, 0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 1, -1, 1, -1, -1, 1, 0, 1, 0, 1, 0, -1, -1, -1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1], 'eval_type': 'reachable', 'search_parmeters': [], 'FILENAME': 'train/good_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
-    ai2 = {'ai parameters': [-0.8071999597000045, 0.14082462182940536, -0.7603731881329097, 0.12750473491157677, 0.2831446004522624, 0.36397186789709246, 0.6164866708441277, 0.443941322557174, -0.9879041769967224, 0.7454435014094059, 0.843800172498504, -0.4589268902722091, -0.7654114477446744, -0.5584312826387791, -0.2907695097063754, -0.6619474886694041], 'eval_type': 'piece_based_add', 'search_parmeters': [], 'FILENAME': 'train/good_piece_based_add.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
+    #ai1 = {'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
+    ai1 = {'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
 
+    #alt. eval function std
+    #[0, 0, 0, 1, 0, -1, -1, 0, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, 0, 0, 0, -1, 1, -1, 1, -1, 1, 1, 0, 0, 1, -1, 0, 1, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, -1, 0, 1, 1, -1, -1, -1, 0, 0, 1, 0, 0, 0, -1, 1, 0, 0, 0, 0, 0, 1, -1, 0, 1, 0, 0, 1, 0, 1, -1, 0, 0, -1, 0, -1, 0, 0, 0, 1, 0, 0, -1, 0, 0, 1, 1, 1, -1, -1, -1, -1, 1, 0, 0, 0]
+    #[0, 1, 0, 0, 0, -1, -1, 0, 1, 1, 1, 1, -1, 0, -1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, -1, 0, 1, 0, 0, -1, 1, -1, 0, 1, 1, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, -1, -1, -1, 0, 1, -1, 0, 0, 0, -1, 0, -1, 0, -1, 0, 1, -1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0, -1, 0, 0, 0, -1, -1, -1, 1, 0, 0, 0, 1, 0, -1, -1, 1, 0, 0, 0, 1]
+
+    #alt eval funciton mod
+    #[-1, -1, 1, 0, 1, 1, -1, 0, 0, 0, 1, 0, 0, 0, 0, 0, -1, 1, 0, 0, 0]
+    #[0, 1, 0, -1, 1, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, -1, 0, 1, 1, 0, 0]
+    #[0, 1, 0, -1, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, 0, -1, 0, 1, 1, 0, 0]
 
     # standard
     #{'ai parameters': [1, 0, 0, 0, 0, 0, 1, 1, -1, 1, 0, -1, 1, 0, 0, 1, 0, -1, 0, 1, 0, 0, 0, 0, -1, -1, 1, 0, 0, 1, 0, 1, 1, 1, -1, 1, -1, 0, 1, -1, 1, -1, 0, 0, 0, -1, -1, -1, 0, 1, 0, 0, 0, -1, 0, 0, 0, -1, 0, -1, 1, -1, 0, 0, 1, 1, 0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 1, -1, 1, -1, -1, 1, 0, 1, 0, 1, 0, -1, -1, -1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1], 'eval_type': 'reachable', 'search_parmeters': [], 'FILENAME': 'train/good_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
@@ -23,7 +31,8 @@ def play():
     wins2 = 0
     ties = 0
     for i in range(100):
-        e = Engine(1000, ai1, ai2)
+        e = Engine(1000, ai1)
+        #, ai2
         winner = e.run()
         if(winner == 1):
             wins1 +=1
