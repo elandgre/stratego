@@ -7,8 +7,11 @@ an AI to play stratego
 
 ## Running
 The lazy way:
+- `make frontend` will run the frontend
 - `make` or `make stratego` will run the backend
 - `make test` will run all the tests
+- `make tournement` will run the trournement of all the AIs
+- `make train<AI NAME>` will run the training for an AI
 - `make clean` will delete all the .pyc files
 
 The python way:
