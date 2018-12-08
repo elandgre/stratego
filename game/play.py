@@ -2,8 +2,8 @@ from engine import Engine
 from config import FRONTEND
 def play():
     all_wins = []
-    #ai1 = {'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
     ai1 = {'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
+    ai2 = {'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
 
     #alt. eval function std
     #[0, 0, 0, 1, 0, -1, -1, 0, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, 0, 0, 0, -1, 1, -1, 1, -1, 1, 1, 0, 0, 1, -1, 0, 1, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, -1, 0, 1, 1, -1, -1, -1, 0, 0, 1, 0, 0, 0, -1, 1, 0, 0, 0, 0, 0, 1, -1, 0, 1, 0, 0, 1, 0, 1, -1, 0, 0, -1, 0, -1, 0, 0, 0, 1, 0, 0, -1, 0, 0, 1, 1, 1, -1, -1, -1, -1, 1, 0, 0, 0]
@@ -31,7 +31,7 @@ def play():
     wins2 = 0
     ties = 0
     for i in range(100):
-        e = Engine(1000, ai1)
+        e = Engine(1000, ai1, ai2)
         #, ai2
         winner = e.run()
         if(winner == 1):
