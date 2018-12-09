@@ -1,5 +1,6 @@
 from ai.ls_startstate_trainer import LSStartStateTrainer
 from utils.constants import *
+from utils.search_utils import get_random_start
 import numpy as np
 
 def train():
@@ -13,9 +14,12 @@ def randomTrain():
 	factor = np.random.randint(2, 10)
 	LSStartStateTrainer(start, 20, start_temp, factor)
 
+def start_w_random():
+	LSStartStateTrainer(get_random_start(), 20, 1099511627776, 2)
+
 if __name__ == "__main__":
 	for i in range(0, 15):
-		randomTrain()
+		start_w_random()
 
 
 
