@@ -19,6 +19,7 @@ class StartType(Enum):
     BETTER = 'better'
     CHAMPION = 'champion'
     SIMPLE = 'simple'
+    RANDOM_STRONG = 'random_strong'
     LS = 'ls'
 
 class SearchType(Enum):
@@ -114,7 +115,7 @@ FILENAME_FIELD = 'FILENAME'
 AI_FIELD = 'ai'
 START_FIELD = 'start'
 
-MS_BETWEEN_MOVES = 3000
+MS_BETWEEN_MOVES = 1000
 
 
 
