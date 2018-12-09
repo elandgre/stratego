@@ -11,7 +11,7 @@ def play():
                 #[7, 5, 5, 2, 3, 12, 6, 3, 4, 6, 1, 2, 12, 2, 4, 7, 4, 3, 8, 2, 12, 12, 6, 5, 6, 5, 3, 7, 10, 2, 2, 2, 8, 12, 4, 3, 2, 9, 11, 12],
                 #[2, 12, 3, 4, 9, 2, 3, 6, 12, 2, 4, 3, 7, 12, 4, 2, 3, 5, 5, 12, 11, 4, 8, 1, 12, 2, 7, 7, 6, 3, 6, 5, 5, 12, 2, 6, 2, 10, 2, 8],
                 #[7, 3, 3, 7, 3, 12, 4, 11, 12, 5, 2, 7, 4, 9, 12, 6, 2, 12, 3, 6, 2, 8, 6, 1, 3, 12, 4, 5, 2, 4, 5, 5, 2, 8, 2, 6, 2, 12, 2, 10],
-                #[11, 12, 7, 12, 4, 2, 3, 3, 12, 3, 4, 8, 4, 12, 12, 2, 6, 7, 5, 12, 5, 2, 1, 5, 3, 6, 7, 3, 8, 5, 6, 4, 2, 9, 2, 2, 2, 10, 2, 6],
+                ##[11, 12, 7, 12, 4, 2, 3, 3, 12, 3, 4, 8, 4, 12, 12, 2, 6, 7, 5, 12, 5, 2, 1, 5, 3, 6, 7, 3, 8, 5, 6, 4, 2, 9, 2, 2, 2, 10, 2, 6],
                 #[4, 2, 12, 3, 7, 12, 11, 12, 3, 3, 12, 3, 12, 8, 2, 5, 12, 4, 5, 6, 5, 4, 1, 4, 9, 2, 7, 7, 10, 6, 2, 6, 2, 5, 2, 3, 6, 8, 2, 2],
                 Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
                 Settings.SEARCH_PARAMS.value : [],
@@ -22,12 +22,12 @@ def play():
 
     ai2 = {
                 Settings.AI.value : True,
-                Settings.START_TYPE.value : StartType.RANDOM.value,
+                Settings.START_TYPE.value : StartType.CHAMPION.value,
                 Settings.START_PARAMS.value : [],
-                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
+                Settings.SEARCH_TYPE.value : SearchType.NONE.value,
                 Settings.SEARCH_PARAMS.value : [],
-                Settings.AI_TYPE.value :  AIType.NONE.value,
-                Settings.AI_PARAMS.value : []
+                Settings.AI_TYPE.value :  AIType.MODIFIED_REACHABLE.value,
+                Settings.AI_PARAMS.value : [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0]
             }
     #radnom trained:
     #[69, 30, 1]
@@ -42,6 +42,25 @@ def play():
 
 
 
+    #against champ random ai
+    #[69, 29, 2] not random start
+    #[75, 24, 1] random start
+
+    #against champ standard ai
+    #[59, 39, 2] not random start
+    #[76, 22, 2] random start
+
+    #against RANDOM standard ai
+    #[73, 24, 3] not random start
+    #[70, 28, 2] random start
+
+    #AGAINST RANDOM GENERALIZED ai
+    #[67, 28, 5] not random start
+    #[64, 36, 0] random start
+
+    #AGAINST champion GENERALIZED ai
+    #[76, 23, 1] not random start
+    #[70, 26, 4] random start
 
 
 

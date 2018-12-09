@@ -211,7 +211,9 @@ good_start_states = [
     aggressive_strong_start,
     decent_start,
     good_start,
-    defensive_start]
+    defensive_start,
+    [11, 12, 7, 12, 4, 2, 3, 3, 12, 3, 4, 8, 4, 12, 12, 2, 6, 7, 5, 12, 5, 2, 1, 5, 3, 6, 7, 3, 8, 5, 6, 4, 2, 9, 2, 2, 2, 10, 2, 6],
+    [4, 5, 6, 2, 3, 3, 7, 10, 6, 12, 2, 12, 4, 5, 1, 2, 2, 7, 5, 2, 6, 12, 2, 9, 12, 4, 12, 8, 3, 3, 3, 5, 8, 2, 6, 11, 12, 4, 7, 2]]
 
 general_start_states = [
         in_order_start,

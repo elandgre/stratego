@@ -8,7 +8,7 @@ def train():
     LSStartStateTrainer(start, 20, 131072, 2)
 
 def randomTrain():
-	i = np.random.randint(0, 4)
+	i = np.random.randint(0, len(good_start_states)-1)
 	start = good_start_states[i]
 	start_temp = np.random.randint(2**10, 2**40)
 	factor = np.random.randint(2, 10)
