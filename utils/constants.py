@@ -19,6 +19,7 @@ class StartType(Enum):
     BETTER = 'better'
     CHAMPION = 'champion'
     SIMPLE = 'simple'
+    RANDOM_STRONG = 'random_strong'
     LS = 'ls'
 
 class SearchType(Enum):

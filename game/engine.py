@@ -8,6 +8,8 @@ from ai.random_searcher import RandomSearcher
 from ai.random_starter import RandomStarter
 from ai.championStarter import ChampionStarter
 from ai.simple_starter import SimpleStarter
+from ai.random_string_starter import RandomStrongStarter
+
 
 from ai.basicAI import BasicAI
 from ai.reachable_ai import ReachableAI
@@ -50,7 +52,7 @@ class Engine:
         if not player2_config :
             player2_config = {
                 Settings.AI.value : True,
-                Settings.START_TYPE.value : StartType.RANDOM.value,
+                Settings.START_TYPE.value : StartType.RANDOM_STRONG.value,
                 Settings.START_PARAMS.value : [],
                 Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
                 Settings.SEARCH_PARAMS.value : [],
@@ -102,6 +104,8 @@ class Engine:
             starter = SimpleStarter(time.time(), config[Settings.START_PARAMS.value])
         elif config[Settings.START_TYPE.value] == StartType.CHAMPION.value:
             starter = ChampionStarter(time.time())
+        elif config[Settings.START_TYPE.value] == StartType.RANDOM_STRONG.value:
+            starter = RandomStrongStarter(time.time())
         else:
             raise NotImplementedError
 

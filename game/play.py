@@ -31,7 +31,7 @@ def play():
     wins2 = 0
     ties = 0
     for i in range(100):
-        e = Engine(1000, ai1, ai2)
+        e = Engine(1000)
         #, ai2
         winner = e.run()
         if(winner == 1):
