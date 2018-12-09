@@ -7,7 +7,7 @@ class RandomStrongStarter(Starter):
         super(RandomStrongStarter, self).__init__(start_time)
 
     def start(self):
-        i = np.random.randint(0, 4)
+        i = np.random.randint(0, len(good_start_states)-1)
         start = good_start_states[i]
         return start
 
