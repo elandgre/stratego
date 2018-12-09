@@ -1,9 +1,40 @@
 from engine import Engine
 from config import FRONTEND
+from utils.constants import *
 def play():
     all_wins = []
-    ai1 = {'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
-    ai2 = {'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
+    ai1 = {
+                Settings.AI.value : True,
+                Settings.START_TYPE.value : StartType.SIMPLE.value,
+                Settings.START_PARAMS.value : [7, 5, 5, 2, 3, 12, 6, 3, 4, 6, 1, 2, 12, 2, 4, 7, 4, 3, 8, 2, 12, 12, 6, 5, 6, 5, 3, 7, 10, 2, 2, 2, 8, 12, 4, 3, 2, 9, 11, 12],
+                #[2, 12, 3, 4, 9, 2, 3, 6, 12, 2, 4, 3, 7, 12, 4, 2, 3, 5, 5, 12, 11, 4, 8, 1, 12, 2, 7, 7, 6, 3, 6, 5, 5, 12, 2, 6, 2, 10, 2, 8],
+                #[7, 3, 3, 7, 3, 12, 4, 11, 12, 5, 2, 7, 4, 9, 12, 6, 2, 12, 3, 6, 2, 8, 6, 1, 3, 12, 4, 5, 2, 4, 5, 5, 2, 8, 2, 6, 2, 12, 2, 10],
+                #[11, 12, 7, 12, 4, 2, 3, 3, 12, 3, 4, 8, 4, 12, 12, 2, 6, 7, 5, 12, 5, 2, 1, 5, 3, 6, 7, 3, 8, 5, 6, 4, 2, 9, 2, 2, 2, 10, 2, 6],
+                #[4, 2, 12, 3, 7, 12, 11, 12, 3, 3, 12, 3, 12, 8, 2, 5, 12, 4, 5, 6, 5, 4, 1, 4, 9, 2, 7, 7, 10, 6, 2, 6, 2, 5, 2, 3, 6, 8, 2, 2],
+                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
+                Settings.SEARCH_PARAMS.value : [],
+                Settings.AI_TYPE.value :  AIType.NONE.value,
+                Settings.AI_PARAMS.value : []
+            }
+
+
+    ai2 = {
+                Settings.AI.value : True,
+                Settings.START_TYPE.value : StartType.RANDOM.value,
+                Settings.START_PARAMS.value : [],
+                Settings.SEARCH_TYPE.value : SearchType.RANDOM.value,
+                Settings.SEARCH_PARAMS.value : [],
+                Settings.AI_TYPE.value :  AIType.NONE.value,
+                Settings.AI_PARAMS.value : []
+            }
+
+    #[57, 40, 3]
+    #[60, 38, 2]
+    #[71, 28, 1]
+    #[67, 31, 2]
+
+
+
 
     #alt. eval function std
     #[0, 0, 0, 1, 0, -1, -1, 0, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, 0, 0, 0, -1, 1, -1, 1, -1, 1, 1, 0, 0, 1, -1, 0, 1, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, -1, 0, 1, 1, -1, -1, -1, 0, 0, 1, 0, 0, 0, -1, 1, 0, 0, 0, 0, 0, 1, -1, 0, 1, 0, 0, 1, 0, 1, -1, 0, 0, -1, 0, -1, 0, 0, 0, 1, 0, 0, -1, 0, 0, 1, 1, 1, -1, -1, -1, -1, 1, 0, 0, 0]
@@ -21,7 +52,7 @@ def play():
     #{'ai parameters': [-1, 1, 0, 0, -1, -1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0], 'eval_type': 'piece_based_mull', 'search_parmeters': [], 'FILENAME': 'train/good_piece_based_mul.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
 
 
-    #mod
+    #generalized
     #{'ai parameters': [-1, 1, 0, 0, 0, 0, -1, 1, -1, 0, 1, -1, -1, 1, 0, -1, 0, 0, 1, 1, 0], 'eval_type': 'modified_reachable', 'search_parmeters': [], 'FILENAME': 'train/good_modified_reachable.txt', 'params_for_start_state': [], 'type_of_start_state': 'champion', 'is an ai': True, 'type_of_search': 'no searcher'}
 
     #add
